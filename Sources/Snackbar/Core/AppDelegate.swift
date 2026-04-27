@@ -2,7 +2,7 @@ import AppKit
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-    private var statusItem: NSStatusItem?
+    var statusItem: NSStatusItem?
     private var menuBuilder: MenuBuilder?
     private var snackScheduler: SnackScheduler?
     var feedManager: FeedManager?
