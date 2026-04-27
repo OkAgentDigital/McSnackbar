@@ -1,5 +1,16 @@
 import Foundation
 
+struct FeedEntry: Codable {
+    let id: String
+    let timestamp: String
+    let project: String
+    let source: String
+    let level: String
+    let message: String
+    let data: [String: Any]?
+    let metadata: [String: Any]?
+}
+
 class FeedManager {
     private let configManager = ConfigManager.shared
     
