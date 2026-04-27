@@ -11,15 +11,22 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Change to the Snackbar directory
 cd "$SCRIPT_DIR"
 
-# Check if config.yaml exists
-if [ ! -f "config.yaml" ]; then
-    echo "❌ Configuration file config.yaml not found!"
+# Check for configuration in central location or locally
+CENTRAL_CONFIG="$HOME/Code/Projects/Snackbar/config/config.yaml"
+LOCAL_CONFIG="$SCRIPT_DIR/config.yaml"
+
+if [ -f "$CENTRAL_CONFIG" ]; then
+    CONFIG_PATH="$CENTRAL_CONFIG"
+elif [ -f "$LOCAL_CONFIG" ]; then
+    CONFIG_PATH="$LOCAL_CONFIG"
+else
+    echo "❌ Configuration file not found at $CENTRAL_CONFIG or $LOCAL_CONFIG!"
     echo "   Please create a config.yaml file with your LeChat Pro API key."
     exit 1
 fi
 
 # Verify LeChat API configuration
-if ! grep -q "lechat:" config.yaml; then
+if ! grep -q "lechat:" "$CONFIG_PATH"; then
     echo "⚠️  Warning: LeChat API configuration not found in config.yaml"
     echo "   Snackbar will run without LeChat integration."
 fi

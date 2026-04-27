@@ -4,20 +4,34 @@ class ConfigManager {
     static let shared = ConfigManager()
     
     private var config: [String: Any] = [:]
+    private let projectName: String
     
-    private init() {
+    init(projectName: String = "Snackbar") {
+        self.projectName = projectName
         loadConfig()
     }
     
     private func loadConfig() {
         let fileManager = FileManager.default
-        let currentDirectory = fileManager.currentDirectoryPath
-        let configPath = "\(currentDirectory)/config.yaml"
+        let homeDirectory = fileManager.homeDirectoryForCurrentUser.path
+        let centralConfigPath = "\(homeDirectory)/Code/Projects/\(projectName)/config/config.yaml"
+        let localConfigPath = "\(fileManager.currentDirectoryPath)/config.yaml"
+        
+        let configPath: String
+        if fileManager.fileExists(atPath: centralConfigPath) {
+            configPath = centralConfigPath
+        } else if fileManager.fileExists(atPath: localConfigPath) {
+            configPath = localConfigPath
+        } else {
+            print("❌ Configuration file not found at \(centralConfigPath) or \(localConfigPath)")
+            config = [:]
+            return
+        }
         
         do {
             let yamlContent = try String(contentsOfFile: configPath, encoding: .utf8)
             config = parseYAML(yamlContent)
-            print("✅ Configuration loaded successfully")
+            print("✅ Configuration loaded successfully from \(configPath)")
         } catch {
             print("❌ Failed to load configuration: \(error.localizedDescription)")
             config = [:]
