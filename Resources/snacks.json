@@ -1,0 +1,56 @@
+[
+    {
+        "id": "reminders",
+        "name": "Reminders",
+        "emoji": "📋",
+        "code": "tell application \"Reminders\" to activate",
+        "runtime": "appleScript",
+        "categoryId": "productivity",
+        "isEnabled": true
+    },
+    {
+        "id": "mail_vip",
+        "name": "Mail VIP",
+        "emoji": "✉️",
+        "code": "tell application \"Mail\" to set vipCount to count of messages of inbox whose is VIP is true",
+        "runtime": "appleScript",
+        "categoryId": "communication",
+        "isEnabled": true
+    },
+    {
+        "id": "contacts",
+        "name": "Contacts",
+        "emoji": "👥",
+        "code": "tell application \"Contacts\" to set vipNames to name of people whose is VIP is true",
+        "runtime": "appleScript",
+        "categoryId": "communication",
+        "isEnabled": true
+    },
+    {
+        "id": "notes",
+        "name": "Notes",
+        "emoji": "📓",
+        "code": "tell application \"Notes\" to activate",
+        "runtime": "appleScript",
+        "categoryId": "productivity",
+        "isEnabled": true
+    },
+    {
+        "id": "calendar",
+        "name": "Calendar",
+        "emoji": "📅",
+        "code": "tell application \"Calendar\" to activate",
+        "runtime": "appleScript",
+        "categoryId": "productivity",
+        "isEnabled": true
+    },
+    {
+        "id": "permissions",
+        "name": "Permissions Helper",
+        "emoji": "🔐",
+        "code": "open x-apple.systempreferences:com.apple.preference.security?Privacy_Automation",
+        "runtime": "shell",
+        "categoryId": "system",
+        "isEnabled": true
+    }
+]

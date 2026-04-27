@@ -1,0 +1,406 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.Snackbar-arm64-apple-macosx-debug.module" : {
+      "executable" : "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "fileList" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/sources",
+      "importPath" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/AppDelegate.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/FeedManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/MenuBuilder.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/PermissionsManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/SnackExecutor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/SnackScheduler.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Category.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/FeedEntry.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Schedule.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Snack.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "Snackbar",
+      "moduleOutputPath" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Modules/Snackbar.swiftmodule",
+      "objects" : [
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/AppDelegate.swift.o",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/FeedManager.swift.o",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/MenuBuilder.swift.o",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/PermissionsManager.swift.o",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/SnackExecutor.swift.o",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/SnackScheduler.swift.o",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Category.swift.o",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/FeedEntry.swift.o",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Schedule.swift.o",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Snack.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx12.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j8",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "Snackbar_main",
+        "-color-diagnostics",
+        "-swift-version",
+        "5",
+        "-I",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-L",
+        "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+        "-plugin-path",
+        "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g"
+      ],
+      "outputFileMapPath" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/AppDelegate.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/FeedManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/MenuBuilder.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/PermissionsManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/SnackExecutor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/SnackScheduler.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Category.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/FeedEntry.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Schedule.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Snack.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Modules/Snackbar.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/AppDelegate.swift",
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/FeedManager.swift",
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/MenuBuilder.swift",
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/PermissionsManager.swift",
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/SnackExecutor.swift",
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/SnackScheduler.swift",
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Category.swift",
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/FeedEntry.swift",
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Schedule.swift",
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Snack.swift"
+      ],
+      "tempsPath" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "Snackbar" : [
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "-module-name",
+      "Snackbar",
+      "-c",
+      "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/AppDelegate.swift",
+      "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/FeedManager.swift",
+      "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/MenuBuilder.swift",
+      "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/PermissionsManager.swift",
+      "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/SnackExecutor.swift",
+      "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/SnackScheduler.swift",
+      "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Category.swift",
+      "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/FeedEntry.swift",
+      "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Schedule.swift",
+      "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Snack.swift",
+      "-I",
+      "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx12.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j8",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-Xfrontend",
+      "-entry-point-function-name",
+      "-Xfrontend",
+      "Snackbar_main",
+      "-color-diagnostics",
+      "-swift-version",
+      "5",
+      "-I",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-L",
+      "/Library/Developer/CommandLineTools/Library/Developer/Frameworks",
+      "-plugin-path",
+      "/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-driver-use-frontend-path",
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "Snackbar" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar-entitlement.plist" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<entitlement-plist>"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<com.apple.security.get-task-allow>"
+        }
+      ],
+      "outputFilePath" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar-entitlement.plist"
+    },
+    "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/AppDelegate.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/FeedManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/MenuBuilder.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/PermissionsManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/SnackExecutor.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/SnackScheduler.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Category.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/FeedEntry.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Schedule.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Snack.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/sources"
+    },
+    "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/AppDelegate.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Category.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/FeedEntry.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/FeedManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/MenuBuilder.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/PermissionsManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Schedule.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Snack.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/SnackExecutor.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/SnackScheduler.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.product/Objects.LinkFileList"
+    },
+    "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+    }
+  }
+}

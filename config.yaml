@@ -4,9 +4,11 @@
 lechat:
   api_key: "lGLYWMnUnlAj3FKgAmpSihta471xyZkT"
   api_url: "https://api.lechat.pro"
+  enabled: true
 
 # Snackbar-specific settings
 snackbar:
   debug_mode: false
   log_level: "info"
   max_log_entries: 100
+  feed_log_path: "~/Library/Logs/Snackbar/feed.log"
