@@ -64,6 +64,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Utils/ConfigManager.swift"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
         },
         {
@@ -84,7 +88,8 @@
         "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Category.swift.o",
         "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/FeedEntry.swift.o",
         "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Schedule.swift.o",
-        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Snack.swift.o"
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Snack.swift.o",
+        "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager.swift.o"
       ],
       "otherArguments" : [
         "-target",
@@ -107,7 +112,6 @@
         "-entry-point-function-name",
         "-Xfrontend",
         "Snackbar_main",
-        "-color-diagnostics",
         "-swift-version",
         "5",
         "-I",
@@ -172,6 +176,10 @@
         },
         {
           "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager.swift.o"
+        },
+        {
+          "kind" : "file",
           "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Modules/Snackbar.swiftmodule"
         }
       ],
@@ -186,7 +194,8 @@
         "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Category.swift",
         "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/FeedEntry.swift",
         "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Schedule.swift",
-        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Snack.swift"
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Snack.swift",
+        "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Utils/ConfigManager.swift"
       ],
       "tempsPath" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build",
       "wholeModuleOptimization" : false
@@ -211,6 +220,7 @@
       "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/FeedEntry.swift",
       "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Schedule.swift",
       "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Snack.swift",
+      "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Utils/ConfigManager.swift",
       "-I",
       "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Modules",
       "-target",
@@ -233,7 +243,6 @@
       "-entry-point-function-name",
       "-Xfrontend",
       "Snackbar_main",
-      "-color-diagnostics",
       "-swift-version",
       "5",
       "-I",
@@ -334,6 +343,10 @@
         {
           "kind" : "file",
           "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Snack.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Utils/ConfigManager.swift"
         }
       ],
       "outputFilePath" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/sources"
@@ -352,6 +365,10 @@
         {
           "kind" : "file",
           "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Category.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager.swift.o"
         },
         {
           "kind" : "file",

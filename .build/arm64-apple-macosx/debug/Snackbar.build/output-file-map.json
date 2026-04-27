@@ -71,5 +71,12 @@
     "swiftmodule": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Snack~partial.swiftmodule",
     "swift-dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Snack.swiftdeps",
     "diagnostics": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Snack.dia"
+  },
+  "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Utils/ConfigManager.swift": {
+    "dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager.d",
+    "object": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager.swift.o",
+    "swiftmodule": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager~partial.swiftmodule",
+    "swift-dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager.swiftdeps",
+    "diagnostics": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager.dia"
   }
 }
