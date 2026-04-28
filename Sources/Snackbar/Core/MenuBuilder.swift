@@ -101,18 +101,24 @@ class MenuBuilder {
             }
         }
         
-        // About and Preferences
+        // About, Settings, Close, and Quit
         menu.addItem(NSMenuItem.separator())
         let aboutItem = NSMenuItem(title: "ℹ️ About Snackbar", action: #selector(showAbout), keyEquivalent: "")
         aboutItem.target = NSApp.delegate
         menu.addItem(aboutItem)
         
-        let prefsItem = NSMenuItem(title: "⚙️ Preferences...", action: #selector(openPreferences), keyEquivalent: ",")
-        prefsItem.target = NSApp.delegate
-        menu.addItem(prefsItem)
+        let settingsItem = NSMenuItem(title: "⚙️ Settings...", action: #selector(openPreferences), keyEquivalent: ",")
+        settingsItem.target = NSApp.delegate
+        menu.addItem(settingsItem)
         
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        let closeItem = NSMenuItem(title: "🔒 Close", action: #selector(closeMenu), keyEquivalent: "")
+        closeItem.target = NSApp.delegate
+        menu.addItem(closeItem)
+        
+        menu.addItem(NSMenuItem.separator())
+        let quitItem = NSMenuItem(title: "✕ Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        menu.addItem(quitItem)
         
         return menu
     }

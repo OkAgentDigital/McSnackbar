@@ -6,6 +6,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var menuBuilder: MenuBuilder?
     private var snackScheduler: SnackScheduler?
     var feedManager: FeedManager?
+    var popover: NSPopover?
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         print("🍔 Snackbar Pro - Launching...")
@@ -86,9 +87,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func showPreferencesView() {
         print("⚙️ Showing Preferences View - Would open preferences window")
         let alert = NSAlert()
-        alert.messageText = "Preferences"
+        alert.messageText = "Settings"
         alert.informativeText = "This feature will be implemented in the full version"
         alert.addButton(withTitle: "OK")
         alert.runModal()
+    }
+    
+    @objc func closeMenu() {
+        print("🔒 Closing menu")
+        // Hide the status bar menu
+        if let statusItem = statusItem {
+            statusItem.menu = nil
+        }
+        // Alternatively, close the popover if shown
+        popover?.performClose(nil)
     }
 }
