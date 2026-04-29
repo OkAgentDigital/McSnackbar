@@ -1,38 +1,34 @@
 #!/bin/bash
 
-# Snackbar Launcher
-# Double-click this file to launch Snackbar
+# Snackbar.command
+# Double-clickable launcher for Snackbar (SPM build)
+# Launches the full-featured Snackbar app via Swift Package Manager
 
-# Get the directory of this script
+set -e
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 cd "$SCRIPT_DIR"
 
-echo "🍔 Launching Snackbar..."
-echo "Building application..."
+echo "🍔 Snackbar Launcher"
+echo "=================="
+echo ""
 
-# Build the app
-swift build
-
-if [ $? -eq 0 ]; then
-    echo "✅ Build successful!"
-    echo "Starting Snackbar..."
-    
-    # Run the app in background
-    swift run &
-    
-    echo "🚀 Snackbar is now running!"
-    echo "Look for the 🍔 icon in your menu bar."
-    echo "Features:"
-    echo "  - Organized snacks by category"
-    echo "  - Run All Enabled (⌘R)"
-    echo "  - Add New Snack (⌘N)"
-    echo "  - Import/Export (⌘⇧E)"
-    echo "  - About & Preferences"
-else
-    echo "❌ Build failed. Check the console for errors."
-    exit 1
+# Open Terminal so the user sees output
+if [ -z "$TERM_PROMPT" ] && [ -z "$TERM_PROGRAM" ]; then
+    # Launched from Finder — reopen in Terminal
+    osascript -e "tell application \"Terminal\" to do script \"cd '$SCRIPT_DIR' && echo '🍔 Snackbar - Building...' && swift run Snackbar\""
+    exit 0
 fi
 
-# Keep terminal open briefly to show messages
-sleep 3
+echo "Building Snackbar via Swift..."
+
+if swift run Snackbar 2>&1; then
+    echo ""
+    echo "✅ Snackbar launched! Look for the 🍔 icon in your menu bar."
+else
+    echo ""
+    echo "❌ Build failed. Check the error messages above."
+    echo "Make sure you have Swift 5.7+ installed (run: xcode-select --install)"
+    read -r -p "Press Enter to close..."
+    exit 1
+fi

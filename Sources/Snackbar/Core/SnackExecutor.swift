@@ -1,11 +1,11 @@
-import Foundation
 import AppKit
+import Foundation
 
 class SnackExecutor {
     static func run(_ snack: Snack) {
         var success = false
         var output: String?
-        
+
         do {
             switch snack.runtime {
             case "appleScript":
@@ -15,11 +15,11 @@ class SnackExecutor {
                 var error: NSDictionary?
                 let result = script.executeAndReturnError(&error)
                 if let error = error {
-                    throw SnackError.appleScriptError(error.description ?? "Unknown error")
+                    throw SnackError.appleScriptError(error.description)
                 }
                 success = true
                 output = result.stringValue
-                
+
             case "shell":
                 let task = Process()
                 let pipe = Pipe()
@@ -29,22 +29,23 @@ class SnackExecutor {
                 task.standardError = pipe
                 try task.run()
                 task.waitUntilExit()
-                
+
                 let outputData = pipe.fileHandleForReading.readDataToEndOfFile()
-                output = String(data: outputData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
-                
+                output = String(data: outputData, encoding: .utf8)?.trimmingCharacters(
+                    in: .whitespacesAndNewlines)
+
                 if task.terminationStatus != 0 {
                     throw SnackError.shellError("Exit code: \(task.terminationStatus)")
                 }
                 success = true
-                
+
             default:
                 throw SnackError.unknownRuntime(snack.runtime)
             }
         } catch {
             output = error.localizedDescription
         }
-        
+
         // Log to feed
         let feedEntry = FeedEntry(
             snackId: snack.id,
@@ -53,10 +54,10 @@ class SnackExecutor {
             output: output,
             metadata: [
                 "runtime": snack.runtime,
-                "category": snack.categoryId
+                "category": snack.categoryId,
             ]
         )
-        
+
         // Get feed manager from AppDelegate
         if let appDelegate = NSApplication.shared.delegate as? AppDelegate {
             appDelegate.feedManager?.logExecution(feedEntry)
@@ -69,7 +70,7 @@ enum SnackError: Error {
     case appleScriptError(String)
     case shellError(String)
     case unknownRuntime(String)
-    
+
     var localizedDescription: String {
         switch self {
         case .scriptCompilationFailed: return "Failed to compile script"

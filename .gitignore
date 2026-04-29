@@ -1,0 +1,14 @@
+# Build artifacts
+.build/
+build/
+*.log
+
+# Xcode
+*.xcworkspace/
+*.xcodeproj/xcuserdata/
+
+# macOS
+.DS_Store
+
+# Editor files
+*.code-workspace

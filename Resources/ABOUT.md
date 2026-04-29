@@ -1,36 +1,26 @@
-# Snackbar
+# 🍔 About Snackbar
 
-**Native macOS menu bar automation with uDos integration**
+**Snackbar** is a macOS menu bar automation tool that lets you execute
+AppleScript and shell "snacks" right from your menu bar.
 
-## Overview
+## Version
 
-Snackbar is a powerful menu bar application that lets you run AppleScript and shell scripts with just a click. It's designed for power users who want quick access to their favorite automation tasks.
+Version 1.0 — Expanded Edition
 
 ## Features
 
-- **Native macOS App**: Built with Swift and AppKit
-- **Script Management**: Organize scripts into categories
-- **Scheduling**: Run scripts automatically on a schedule
-- **iCloud Sync**: Sync your custom scripts across devices
-- **uDos Integration**: Full feed integration and MCP client support
-- **Import/Export**: Backup and share your script collection
-- **Dark Mode**: Beautiful interface in both light and dark modes
+- 6 built-in snacks organized by category (Productivity, Communication, System)
+- Menu bar status icon (🍔)
+- Run All Enabled — execute all enabled snacks at once
+- Custom snack support via UserDefaults
+- Execution feed logging
+- Scheduling support (hourly, daily, weekly)
 
-## uDos Integration
+## Requirements
 
-Snackbar includes full integration with the uDos ecosystem:
+- macOS 12.0 (Monterey) or later
+- Swift 5.7+
 
-- **Feed System**: All executions are logged to the uDos feed
-- **MCP Client**: Communicates with uDos servers using the MCP protocol
-- **Monitoring**: Can be monitored by other uDos applications
+## Credits
 
-## Keyboard Shortcuts
-
-- **⌘R**: Run all enabled snacks
-- **⌘N**: Add new snack
-- **⌘⇧E**: Import/Export snacks
-- **⌘,**: Open preferences
-
-## License
-
-MIT License
+© 2024 uDos. All rights reserved.
