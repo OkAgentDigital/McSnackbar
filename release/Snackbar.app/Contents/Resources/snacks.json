@@ -1,0 +1,62 @@
+[
+    {
+        "id": "reminders",
+        "name": "Reminders",
+        "description": "Open the Reminders app.",
+        "emoji": "📋",
+        "code": "tell application \"Reminders\" to activate",
+        "runtime": "appleScript",
+        "categoryId": "productivity",
+        "isEnabled": true
+    },
+    {
+        "id": "mail_vip",
+        "name": "Mail VIP",
+        "description": "Count VIP emails in your inbox.",
+        "emoji": "✉️",
+        "code": "tell application \"Mail\" to set vipCount to count of messages of inbox whose is VIP is true",
+        "runtime": "appleScript",
+        "categoryId": "communication",
+        "isEnabled": true
+    },
+    {
+        "id": "contacts",
+        "name": "Contacts",
+        "description": "Open the Contacts app.",
+        "emoji": "👥",
+        "code": "tell application \"Contacts\" to activate",
+        "runtime": "appleScript",
+        "categoryId": "communication",
+        "isEnabled": true
+    },
+    {
+        "id": "notes",
+        "name": "Notes",
+        "description": "Open the Notes app.",
+        "emoji": "📓",
+        "code": "tell application \"Notes\" to activate",
+        "runtime": "appleScript",
+        "categoryId": "productivity",
+        "isEnabled": true
+    },
+    {
+        "id": "calendar",
+        "name": "Calendar",
+        "description": "Open the Calendar app.",
+        "emoji": "📅",
+        "code": "tell application \"Calendar\" to activate",
+        "runtime": "appleScript",
+        "categoryId": "productivity",
+        "isEnabled": true
+    },
+    {
+        "id": "permissions",
+        "name": "Permissions Helper",
+        "description": "Open the Permissions settings.",
+        "emoji": "🔐",
+        "code": "open x-apple.systempreferences:com.apple.preference.security?Privacy_Automation",
+        "runtime": "shell",
+        "categoryId": "system",
+        "isEnabled": true
+    }
+]
