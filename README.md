@@ -1,6 +1,6 @@
-# 🍔 Snackbar for macOS
+# 🍔 McSnackbar for macOS
 
-**Phase 1: Lightweight menu bar automation tool with 6 built-in snacks.**
+**Phase 1: Lightweight menu bar automation tool with 6 built-in snacks and OkAgentDigital component management.**
 
 ## ✨ Features (Phase 1 - Current)
 - Native macOS menu bar app (Swift/AppKit)
@@ -11,6 +11,7 @@
   - 📓 Notes
   - 📅 Calendar
   - 🔐 Permissions Helper
+- **OkAgentDigital Component Management** - Manage ThinUi, Hivemind, Re3Engine, MCP Server, MCP Client (Rust)
 - Status bar menu with category organization
 - Menu items: About, Settings, Close, Quit
 - Run All Enabled functionality

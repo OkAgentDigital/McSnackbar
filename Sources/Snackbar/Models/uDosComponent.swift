@@ -363,6 +363,48 @@ public class uDosProcessManager: ObservableObject {
                     requiredComponents: [],
                     description: "Utility server for various tasks",
                     isEssential: false
+                ),
+                uDosComponent(
+                    id: "thinui",
+                    displayName: "ThinUi",
+                    command: "/usr/local/bin/thinui",
+                    args: ["server"],
+                    workingDirectory: "~/uDos/core/thinui",
+                    env: ["RUST_LOG": "info"],
+                    healthCheckURL: "http://localhost:3001/health",
+                    icon: "🖥️",
+                    port: 3001,
+                    requiredComponents: ["hivemind"],
+                    description: "ThinUi interface server",
+                    isEssential: true
+                ),
+                uDosComponent(
+                    id: "mcp-server",
+                    displayName: "MCP Server",
+                    command: "/usr/local/bin/python3",
+                    args: ["-m", "mcp_server"],
+                    workingDirectory: "~/uDos/core/mcp_server",
+                    env: ["PYTHONPATH": "~/uDos/core/mcp_server"],
+                    healthCheckURL: "http://localhost:3002/health",
+                    icon: "🌐",
+                    port: 3002,
+                    requiredComponents: ["hivemind"],
+                    description: "MCP communication server",
+                    isEssential: true
+                ),
+                uDosComponent(
+                    id: "mcp-client-rs",
+                    displayName: "MCP Client (Rust)",
+                    command: "/usr/local/bin/cargo",
+                    args: ["run", "--release"],
+                    workingDirectory: "~/uDos/core/mcp-client-rs",
+                    env: ["RUST_LOG": "info"],
+                    healthCheckURL: "http://localhost:3003/health",
+                    icon: "🔗",
+                    port: 3003,
+                    requiredComponents: ["mcp-server"],
+                    description: "Rust MCP client for communication",
+                    isEssential: true
                 )
             ]
         }
