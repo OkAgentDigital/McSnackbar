@@ -32,6 +32,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Request permissions
         PermissionsManager.requestAutomationPermission()
 
+        // Check for updates
+        UpdateChecker.shared.checkForUpdates()
+
         print("✅ Snackbar Pro is ready!")
     }
 

@@ -1,0 +1,33 @@
+{
+  "icloud_sync": true,
+  "vault_path": "~/Vault/notes/",
+  "notifications": [
+    {
+      "type": "vault-tidy",
+      "trigger": "daily",
+      "enabled": true
+    },
+    {
+      "type": "note-reminder",
+      "trigger": "hourly",
+      "enabled": false
+    }
+  ],
+  "skills": [
+    {
+      "name": "VAULTRUN",
+      "enabled": true,
+      "args": ["inbox", "all-about-me"]
+    },
+    {
+      "name": "note-taker",
+      "enabled": true,
+      "args": ["--title", "Meeting Notes", "--content", "Discussed X, Y, Z"]
+    },
+    {
+      "name": "vault-tidy",
+      "enabled": true,
+      "args": ["--dry-run"]
+    }
+  ]
+}

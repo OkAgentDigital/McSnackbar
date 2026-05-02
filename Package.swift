@@ -44,6 +44,7 @@ let package = Package(
                 "SNACKBAR_SUMMARY.md",
                 "project.yml",
                 "config.yaml",
+                "Snackbar.app",
                 "Snackbar.command",
             ],
             sources: ["Sources/Snackbar"],

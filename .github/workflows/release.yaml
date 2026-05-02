@@ -1,0 +1,41 @@
+name: Snackbar Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: '5.10'
+      
+      - name: Build Snackbar (Release)
+        run: |
+          swift build -c release
+          
+      - name: Package App
+        run: |
+          mkdir -p release/Snackbar.app/Contents/MacOS
+          cp .build/release/Snackbar release/Snackbar.app/Contents/MacOS/Snackbar
+          mkdir -p release/Snackbar.app/Contents/Resources
+          cp Resources/Info.plist release/Snackbar.app/Contents/Info.plist
+          cp Resources/snacks.json release/Snackbar.app/Contents/Resources/
+          cp Resources/categories.json release/Snackbar.app/Contents/Resources/
+          cp Resources/ABOUT.md release/Snackbar.app/Contents/Resources/
+          cd release
+          zip -r Snackbar.zip Snackbar.app
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/Snackbar.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
