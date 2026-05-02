@@ -4,8 +4,12 @@
 /Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/PermissionsManager.swift
 /Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/SnackExecutor.swift
 /Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/SnackScheduler.swift
+/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/UpdateChecker.swift
 /Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Category.swift
 /Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/FeedEntry.swift
 /Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Schedule.swift
 /Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Snack.swift
+/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/uDosComponent.swift
 /Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Utils/ConfigManager.swift
+/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Views/uDosComponentView.swift
+/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/DerivedSources/resource_bundle_accessor.swift

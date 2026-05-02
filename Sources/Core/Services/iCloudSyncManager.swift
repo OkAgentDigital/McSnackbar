@@ -10,8 +10,8 @@ import CloudKit
 public class iCloudSyncManager {
     public static let shared = iCloudSyncManager()
     
-    private let container: CKContainer
-    private let privateDatabase: CKDatabase
+    public let container: CKContainer
+    public let privateDatabase: CKDatabase
     public let zoneID: CKRecordZone.ID
     
     public init() {
@@ -107,11 +107,7 @@ public class iCloudSyncManager {
                 return
             }
             
-            if let status = status {
-                completion(.success(status))
-            } else {
-                completion(.failure(NSError(domain: "iCloudSync", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to get account status"])))
-            }
+            completion(.success(status))
         }
     }
 }

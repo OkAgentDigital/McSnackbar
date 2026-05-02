@@ -48,12 +48,23 @@ public class DevStudioSkillTrigger {
     }
 
     // MARK: - MCP Communication
+    public func sendViaMCP(_ skillName: String, arguments: [String] = [], completion: ((Result<String, Error>) -> Void)? = nil) {
+        let mcpClient = MCPClient.shared
+        
+        guard mcpClient.isConnected else {
+            completion?(.failure(NSError(domain: "MCP", code: -1, userInfo: [NSLocalizedDescriptionKey: "MCP not connected"])))
+            return
+        }
+        
+        mcpClient.sendSkillCommand(skillName, arguments: arguments, completion: completion)
+    }
+
     public func sendMCPMessage(_ message: String, completion: @escaping (Result<String, Error>) -> Void) {
         // Expand tilde in path
         let expandedSocketPath = (mcpSocketPath as NSString).expandingTildeInPath
         
         // Create a socket connection
-        let socket = NSFileHandle(forReadingAtPath: expandedSocketPath) ?? NSFileHandle(forWritingAtPath: expandedSocketPath)
+        let socket = FileHandle(forReadingAtPath: expandedSocketPath) ?? FileHandle(forWritingAtPath: expandedSocketPath)
         
         guard let socket = socket else {
             completion(.failure(NSError(domain: "MCP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to open socket"])))

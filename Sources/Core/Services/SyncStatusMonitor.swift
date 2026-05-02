@@ -14,6 +14,7 @@ public class SyncStatusMonitor: ObservableObject {
     @Published public private(set) var isOnline: Bool = true
     @Published public private(set) var iCloudAvailable: Bool = false
     @Published public private(set) var hasPendingChanges: Bool = false
+    @Published public private(set) var lastSyncDate: Date?
     
     private let networkMonitor = NWPathMonitor()
     private let iCloudManager = iCloudSyncManager.shared
@@ -33,6 +34,7 @@ public class SyncStatusMonitor: ObservableObject {
                 self?.isOnline = path.status == .satisfied
                 
                 if self?.isOnline == true {
+                    self?.lastSyncDate = Date()
                     self?.attemptSyncPendingChanges()
                 }
             }

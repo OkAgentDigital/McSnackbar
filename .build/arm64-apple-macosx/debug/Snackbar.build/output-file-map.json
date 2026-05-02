@@ -44,6 +44,13 @@
     "swift-dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/SnackScheduler.swiftdeps",
     "diagnostics": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/SnackScheduler.dia"
   },
+  "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Core/UpdateChecker.swift": {
+    "dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/UpdateChecker.d",
+    "object": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/UpdateChecker.swift.o",
+    "swiftmodule": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/UpdateChecker~partial.swiftmodule",
+    "swift-dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/UpdateChecker.swiftdeps",
+    "diagnostics": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/UpdateChecker.dia"
+  },
   "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/Category.swift": {
     "dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Category.d",
     "object": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Category.swift.o",
@@ -72,11 +79,32 @@
     "swift-dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Snack.swiftdeps",
     "diagnostics": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/Snack.dia"
   },
+  "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Models/uDosComponent.swift": {
+    "dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/uDosComponent.d",
+    "object": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/uDosComponent.swift.o",
+    "swiftmodule": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/uDosComponent~partial.swiftmodule",
+    "swift-dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/uDosComponent.swiftdeps",
+    "diagnostics": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/uDosComponent.dia"
+  },
   "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Utils/ConfigManager.swift": {
     "dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager.d",
     "object": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager.swift.o",
     "swiftmodule": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager~partial.swiftmodule",
     "swift-dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager.swiftdeps",
     "diagnostics": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/ConfigManager.dia"
+  },
+  "/Users/fredbook/Code/Apps/Snackbar/Sources/Snackbar/Views/uDosComponentView.swift": {
+    "dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/uDosComponentView.d",
+    "object": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/uDosComponentView.swift.o",
+    "swiftmodule": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/uDosComponentView~partial.swiftmodule",
+    "swift-dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/uDosComponentView.swiftdeps",
+    "diagnostics": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/uDosComponentView.dia"
+  },
+  "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/DerivedSources/resource_bundle_accessor.swift": {
+    "dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/resource_bundle_accessor.d",
+    "object": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/resource_bundle_accessor.swift.o",
+    "swiftmodule": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/resource_bundle_accessor~partial.swiftmodule",
+    "swift-dependencies": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/resource_bundle_accessor.swiftdeps",
+    "diagnostics": "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/debug/Snackbar.build/resource_bundle_accessor.dia"
   }
 }

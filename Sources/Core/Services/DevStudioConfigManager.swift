@@ -96,7 +96,7 @@ public class DevStudioConfigManager {
     }
 
     // MARK: - Update Config
-    public func updateConfig(_ updates: (inout DevStudioConfig) -> Void, completion: @escaping (Result<DevStudioConfig, Error>) -> Void) {
+    public func updateConfig(_ updates: @escaping (inout DevStudioConfig) -> Void, completion: @escaping (Result<DevStudioConfig, Error>) -> Void) {
         loadConfig { result in
             switch result {
             case .success(var config):

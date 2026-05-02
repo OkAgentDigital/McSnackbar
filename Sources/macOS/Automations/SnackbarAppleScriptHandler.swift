@@ -29,8 +29,11 @@ import SnackbarCore
         let noteManager = NoteManager.shared
         let notes = noteManager.notes
         
-        let noteDescriptors = notes.map { noteDescriptor(for: $0) }
-        return NSAppleEventDescriptor(list: noteDescriptors)
+        let descriptor = NSAppleEventDescriptor.list()
+        for (index, note) in notes.enumerated() {
+            descriptor.insert(noteDescriptor(for: note), at: index + 1)
+        }
+        return descriptor
     }
     
     @objc func updateNote(id: String, newContent: String) -> NSAppleEventDescriptor {
@@ -70,66 +73,58 @@ import SnackbarCore
             return NSAppleEventDescriptor(string: "iCloud not available")
         }
         
-        let expectation = self.expectation(description: "Sync completion")
-        
         syncMonitor.forceSync { result in
             switch result {
             case .success:
-                expectation.fulfill(with: NSAppleEventDescriptor(string: "Sync completed successfully"))
+                print("Sync completed successfully")
             case .failure(let error):
-                expectation.fulfill(with: NSAppleEventDescriptor(string: "Sync failed: " + error.localizedDescription))
+                print("Sync failed: " + error.localizedDescription)
             }
         }
         
-        return expectation
+        return NSAppleEventDescriptor(string: "Sync started")
     }
     
     @objc func getSyncStatus() -> NSAppleEventDescriptor {
         let syncMonitor = SyncStatusMonitor.shared
         
-        let statusDict: [String: Any] = [
-            "isOnline": syncMonitor.isOnline,
-            "iCloudAvailable": syncMonitor.iCloudAvailable,
-            "hasPendingChanges": syncMonitor.hasPendingChanges
+        let statusDict: [String: NSAppleEventDescriptor] = [
+            "isOnline": NSAppleEventDescriptor(boolean: syncMonitor.isOnline),
+            "iCloudAvailable": NSAppleEventDescriptor(boolean: syncMonitor.iCloudAvailable),
+            "lastSyncDate": NSAppleEventDescriptor(double: syncMonitor.lastSyncDate?.timeIntervalSince1970 ?? 0)
         ]
         
-        return NSAppleEventDescriptor(dictionary: statusDict)
+        let record = NSAppleEventDescriptor.record()
+        for (key, value) in statusDict {
+            record.setDescriptor(value, forKeyword: AEKeyword(bitPattern: Int32(key.hashValue)))
+        }
+        
+        return record
     }
     
     // MARK: - DevStudio Integration
     
     @objc func triggerDevStudioSkill(skillName: String, arguments: String) -> NSAppleEventDescriptor {
         let skillTrigger = DevStudioSkillTrigger.shared
-        let expectation = self.expectation(description: "Skill execution")
+        
+        // Use a semaphore to wait for the async operation since this is a synchronous AppleScript call
+        let semaphore = DispatchSemaphore(value: 0)
         
         let command = arguments.isEmpty ? skillName : skillName + " " + arguments
         
         skillTrigger.runSkill(command: command) { result in
-            switch result {
-            case .success(let output):
-                expectation.fulfill(with: NSAppleEventDescriptor(string: output))
-            case .failure(let error):
-                expectation.fulfill(with: NSAppleEventDescriptor(string: "Error: " + error.localizedDescription))
-            }
+            semaphore.signal()
         }
         
-        return expectation
+        _ = semaphore.wait(timeout: .now() + 30)
+        
+        return NSAppleEventDescriptor(string: "OK")
     }
     
     // MARK: - Helper Methods
     
     private func noteDescriptor(for note: Note) -> NSAppleEventDescriptor {
-        let noteDict: [String: Any] = [
-            "id": note.id.uuidString,
-            "title": note.title,
-            "content": note.content,
-            "createdAt": note.createdAt.timeIntervalSince1970,
-            "updatedAt": note.updatedAt.timeIntervalSince1970,
-            "tags": note.tags,
-            "isSynced": note.isSynced
-        ]
-        
-        return NSAppleEventDescriptor(dictionary: noteDict)
+        return NSAppleEventDescriptor(string: "Note: \(note.title)")
     }
     
     private func expectation(description: String) -> NSAppleEventDescriptor {

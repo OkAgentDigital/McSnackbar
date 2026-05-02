@@ -6,6 +6,7 @@
 
 import Foundation
 import Combine
+import CloudKit
 
 public class NoteManager: ObservableObject {
     public static let shared = NoteManager()

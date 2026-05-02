@@ -5,7 +5,8 @@ let package = Package(
     name: "McSnackbar",
     platforms: [.macOS(.v12)],
     products: [
-        .executable(name: "McSnackbar", targets: ["Snackbar"]),
+        .executable(name: "Snackbar", targets: ["Snackbar"]),
+        .executable(name: "SimpleSnackbar", targets: ["SimpleSnackbar"]),
     ],
     targets: [
         .executableTarget(

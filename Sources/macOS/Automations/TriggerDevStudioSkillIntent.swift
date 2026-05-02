@@ -7,6 +7,7 @@
 import AppIntents
 import SnackbarCore
 
+@available(macOS 13.0, *)
 struct TriggerDevStudioSkillIntent: AppIntent {
     static var title: LocalizedStringResource = "Trigger DevStudio Skill"
     static var description = IntentDescription("Triggers a DevStudio skill from Snackbar.")
@@ -18,22 +19,24 @@ struct TriggerDevStudioSkillIntent: AppIntent {
     var arguments: [String]
     
     static var parameterSummary: some ParameterSummary {
-        Summary("Trigger **\\(\.skillName)** skill")
+        Summary("Trigger Skill")
     }
     
-    func perform() async throws -> some IntentResult {
+    func perform() async throws -> some IntentResult & ReturnsValue<String> {
         let skillTrigger = DevStudioSkillTrigger.shared
-        let command = arguments.isEmpty ? skillName : "" + skillName + " " + arguments.joined(separator: " ")
+        let command = arguments.isEmpty ? skillName : skillName + " " + arguments.joined(separator: " ")
         
-        return await .result(value: try await withCheckedThrowingContinuation { continuation in
+        let output: String = try await withCheckedThrowingContinuation { continuation in
             skillTrigger.runSkill(command: command) { result in
                 switch result {
-                case .success:
-                    continuation.resume(returning: ())
+                case .success(let msg):
+                    continuation.resume(returning: msg)
                 case .failure(let error):
                     continuation.resume(throwing: error)
                 }
             }
-        })
+        }
+        
+        return .result(value: output)
     }
 }

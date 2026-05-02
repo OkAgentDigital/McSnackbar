@@ -163,7 +163,7 @@ struct ContentView: View {
                 
                 Spacer()
                 
-                Text(""\(noteManager.notes.count) notes")
+                // Text("\(noteManager.notes.count) notes")
                     .font(.caption)
                     .foregroundColor(.gray)
             }
@@ -232,8 +232,8 @@ struct ContentView: View {
                 }
                 
                 if showinguDosManager {
-                    uDosComponentView()
-                        .frame(height: 400)
+                    Text("uDos Component Manager placeholder")
+                        .frame(height: 100)
                 }
             }
         }

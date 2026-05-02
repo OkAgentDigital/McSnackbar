@@ -15,34 +15,38 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.0</string>
+    <string>1.0.1</string>
     <key>CFBundleVersion</key>
-    <string>1</string>
+    <string>2</string>
     <key>LSMinimumSystemVersion</key>
     <string>$(MACOSX_DEPLOYMENT_TARGET)</string>
     <key>NSHumanReadableCopyright</key>
     <string>Copyright © 2024 uDos. All rights reserved.</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon.icns</string>
     
     <!-- AppIntents Configuration -->
     <key>NSSupportsAppIntents</key>
     <true/>
     <key>NSAppIntents</key>
     <array>
-        <string>SnackbarShortcuts</string>
+        <string>McSnackbarShortcuts</string>
     </array>
     
     <!-- AppleScript Configuration -->
     <key>NSAppleScriptEnabled</key>
     <true/>
     <key>NSAppleScriptSuiteDefinition</key>
-    <string>Snackbar.sdef</string>
+    <string>McSnackbar.sdef</string>
     
     <!-- iCloud Configuration -->
     <key>NSBundleDocumentTypes</key>
     <array>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>Snackbar Note</string>
+            <string>McSnackbar Note</string>
             <key>LSHandlerRank</key>
             <string>Owner</string>
             <key>NSDocumentClass</key>
@@ -53,7 +57,7 @@
     <!-- iCloud Entitlements -->
     <key>com.apple.developer.icloud-container-identifiers</key>
     <array>
-        <string>iCloud.com.udos.Snackbar</string>
+        <string>iCloud.com.udos.McSnackbar</string>
     </array>
     <key>com.apple.developer.icloud-services</key>
     <array>
@@ -61,7 +65,7 @@
     </array>
     <key>com.apple.developer.ubiquity-container-identifiers</key>
     <array>
-        <string>iCloud.com.udos.Snackbar</string>
+        <string>iCloud.com.udos.McSnackbar</string>
     </array>
 </dict>
 </plist>

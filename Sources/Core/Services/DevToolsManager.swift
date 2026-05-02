@@ -200,7 +200,11 @@ public class DevToolsManager: ObservableObject {
     public func toggleAgent(named name: String) {
         if let index = config.agents.firstIndex(where: { $0.name == name }) {
             config.agents[index].isEnabled = !config.agents[index].isEnabled
-            saveConfig()
+        do {
+            try saveConfig()
+        } catch {
+            print("Failed to save config: \(error)")
+        }
         }
     }
     

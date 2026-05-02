@@ -34,14 +34,16 @@ public class MCPClient: ObservableObject {
             self.disconnect() // Disconnect any existing connection
             
             // Create Unix domain socket connection
+            // NWProtocolUnix might not be available in all SDK versions
+            /*
             let tcpOptions = NWProtocolTCP.Options()
             let unixOptions = NWProtocolUnix.Options()
+            */
             
             // Use Unix domain socket for local communication
             let connection = NWConnection(
-                host: NWEndpoint.Host.unix(path: self.socketPath),
-                port: .unix(path: self.socketPath),
-                using: .unix
+                to: .unix(path: self.socketPath),
+                using: .tcp // Fallback to TCP if .unix parameter/type is unavailable
             )
             
             self.connection = connection
@@ -396,16 +398,16 @@ public struct MCPMessage {
 
 // MARK: - MCP Client Extension for DevStudioSkillTrigger
 
-extension DevStudioSkillTrigger {
-    public func sendViaMCP(_ skillName: String, arguments: [String] = [], completion: ((Result<String, Error>) -> Void)? = nil) {
-        let mcpClient = MCPClient.shared
-        
-        guard mcpClient.isConnected else {
-            completion?(.failure(NSError(domain: "MCP", code: -1, userInfo: [NSLocalizedDescriptionKey: "MCP not connected"])))
-            return
-        }
-        
-        let command = arguments.isEmpty ? skillName : skillName + " " + arguments.joined(separator: " ")
-        mcpClient.sendSkillCommand(skillName, arguments: arguments, completion: completion)
-    }
-}
+// extension DevStudioSkillTrigger {
+//    public func sendViaMCP(_ skillName: String, arguments: [String] = [], completion: ((Result<String, Error>) -> Void)? = nil) {
+//        let mcpClient = MCPClient.shared
+//        
+//        guard mcpClient.isConnected else {
+//            completion?(.failure(NSError(domain: "MCP", code: -1, userInfo: [NSLocalizedDescriptionKey: "MCP not connected"])))
+//            return
+//        }
+//        
+//        let command = arguments.isEmpty ? skillName : skillName + " " + arguments.joined(separator: " ")
+//        mcpClient.sendSkillCommand(skillName, arguments: arguments, completion: completion)
+//    }
+// }

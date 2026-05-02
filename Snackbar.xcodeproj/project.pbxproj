@@ -7,23 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0219FBF093AF258FA7D4F237 /* FeedEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F744D0E5716178E7C45352 /* FeedEntry.swift */; };
+		079A273324F49C894DDF1EA6 /* TriggerDevStudioSkillIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622E355B6301BF5EC301F790 /* TriggerDevStudioSkillIntent.swift */; };
+		1640700EE5A233F986F766C6 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 046F882B7476E815A2978AD8 /* AppIcon.icns */; };
 		17A7E19D4C650025356748E4 /* ABOUT.md in Resources */ = {isa = PBXBuildFile; fileRef = 3E474C7509B883E7EB7861FA /* ABOUT.md */; };
-		1BF39342B8172C7E4B919D38 /* FeedManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571B387D96E7A8DBB9A7B932 /* FeedManager.swift */; };
-		222D7856B669D1A26C2AFC49 /* SnackExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B074C7F428726C287192E82 /* SnackExecutor.swift */; };
+		1DE0342A97666CA81C8F351D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0017CD1E066303DD869164 /* ContentView.swift */; };
+		3265BF91A86E2BB4E13156FE /* SnackbarCore-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1D8D097614984ADEE38ABC82 /* SnackbarCore-Info.plist */; };
+		3BAB8E57A05F1D95DBB5F09F /* iCloudSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C68A86C20F2F59599973484 /* iCloudSyncManager.swift */; };
 		47D3D7A6DC04ED047C79C910 /* snacks.json in Resources */ = {isa = PBXBuildFile; fileRef = AF9DC8017087B387DC34904E /* snacks.json */; };
-		5A3552AA9F2A3693BA8A772A /* ConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8867C9E92E399B784F90C7F1 /* ConfigManager.swift */; };
-		5D0407609986E653DEC88C23 /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1659427147513712B86C77A /* PermissionsManager.swift */; };
+		580B1D7C7251235D905DF567 /* MCPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC6A9038F7E2A8D771A8C5D /* MCPClient.swift */; };
+		61C467F96FB815BE95D84118 /* SnackbarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD781801CF730493F97209FC /* SnackbarApp.swift */; };
+		67F7B4DFA3EA4DD9B9556133 /* Snackbar.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 664935C1BCF9C344C4CD6F8C /* Snackbar.sdef */; };
+		6C6B86889F28478F74F5848C /* DevToolsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5608F8084FCF935EF4284FEA /* DevToolsManager.swift */; };
+		6DC2BA67332FCEB456E8984D /* NoteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5032ED8ACB45A3EA112BA38A /* NoteManager.swift */; };
 		717787D3228980329EEA2F76 /* SnackbarCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79A71262CD79BADF3857117F /* SnackbarCore.framework */; };
-		776825675A75A40F46501372 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F19467A5416C3E5596D122 /* AppDelegate.swift */; };
-		9900E300445A2DFF263A298C /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328CA76673E769125041F65C /* Schedule.swift */; };
-		9AA9E530174C0D5BD07D88D0 /* Snack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0DD9AEE96770E2D3C0236EB /* Snack.swift */; };
+		78ED8556FC5A54044DCE6BF6 /* SyncStatusMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A2C7A205CF71AC8B097B02 /* SyncStatusMonitor.swift */; };
+		8F34A6C2B193A54C1FC385B2 /* NoteManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C792D099F3198D5023D132 /* NoteManagerTests.swift */; };
+		94FC81690D27C67326A494C4 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = E936AA0AACF808F737658518 /* Note.swift */; };
+		A685782D5A9EC55E6E27E076 /* CreateNoteIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8AC390D80EF1C05F005044 /* CreateNoteIntent.swift */; };
+		B3ECD966AE93A2320E38E957 /* SyncNotesIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F1B19BB561E2AA7973AB52 /* SyncNotesIntent.swift */; };
 		B54C2D916F51BEB847727DF8 /* SnackbarCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79A71262CD79BADF3857117F /* SnackbarCore.framework */; };
-		B5602FB225FDB1D6FFF8954B /* SnackbarCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 79A71262CD79BADF3857117F /* SnackbarCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B5602FB225FDB1D6FFF8954B /* SnackbarCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 79A71262CD79BADF3857117F /* SnackbarCore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BD9FA62ABF8F066D4F56C47A /* categories.json in Resources */ = {isa = PBXBuildFile; fileRef = 6529F8C11A4C16741D7B60D9 /* categories.json */; };
-		C26E8B8D7FBADE8577615D46 /* SnackScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB3287B099304B90FF73CF5 /* SnackScheduler.swift */; };
-		D06B42E92CDC57EDCEA20CF4 /* MenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83A5C3A5EB66A611E988DA5 /* MenuBuilder.swift */; };
-		E568E3FAC77438A083B68201 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59248036695851F96B4A3E99 /* Category.swift */; };
+		C692FE241AC11C99BD2FABC9 /* SnackbarShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196CDB7A4810499C25492EEE /* SnackbarShortcuts.swift */; };
+		D31C738876466EA5E4DBFE31 /* DevStudioConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EA1F1E989A3AC01489C814 /* DevStudioConfigManager.swift */; };
+		E8F23DDEF4FAE5D866ABBEAD /* SnackbarAppleScriptHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAB5DEF19672314CF843DEC /* SnackbarAppleScriptHandler.swift */; };
+		EF844B9EBAC1A4E0F44DF0DE /* DevToolsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B8CFCF7AC6169760232BD5 /* DevToolsConfig.swift */; };
+		EFF0EC87FA06155859FCC107 /* DevStudioSkillTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293780B3F9204A1667B8A09D /* DevStudioSkillTrigger.swift */; };
 		F74FD13C0A2C7373959905D2 /* SnackbarCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 79A71262CD79BADF3857117F /* SnackbarCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -77,23 +86,34 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		046F882B7476E815A2978AD8 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		13274A62538F3255BFECD659 /* Snackbar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Snackbar.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		1B074C7F428726C287192E82 /* SnackExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackExecutor.swift; sourceTree = "<group>"; };
-		328CA76673E769125041F65C /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		13EA1F1E989A3AC01489C814 /* DevStudioConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevStudioConfigManager.swift; sourceTree = "<group>"; };
+		196CDB7A4810499C25492EEE /* SnackbarShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackbarShortcuts.swift; sourceTree = "<group>"; };
+		1D8D097614984ADEE38ABC82 /* SnackbarCore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "SnackbarCore-Info.plist"; sourceTree = "<group>"; };
+		293780B3F9204A1667B8A09D /* DevStudioSkillTrigger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevStudioSkillTrigger.swift; sourceTree = "<group>"; };
+		3AAB5DEF19672314CF843DEC /* SnackbarAppleScriptHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackbarAppleScriptHandler.swift; sourceTree = "<group>"; };
 		3E474C7509B883E7EB7861FA /* ABOUT.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ABOUT.md; sourceTree = "<group>"; };
-		571B387D96E7A8DBB9A7B932 /* FeedManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedManager.swift; sourceTree = "<group>"; };
-		59248036695851F96B4A3E99 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		5032ED8ACB45A3EA112BA38A /* NoteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteManager.swift; sourceTree = "<group>"; };
+		5608F8084FCF935EF4284FEA /* DevToolsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevToolsManager.swift; sourceTree = "<group>"; };
+		5D8AC390D80EF1C05F005044 /* CreateNoteIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNoteIntent.swift; sourceTree = "<group>"; };
+		622E355B6301BF5EC301F790 /* TriggerDevStudioSkillIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriggerDevStudioSkillIntent.swift; sourceTree = "<group>"; };
 		6529F8C11A4C16741D7B60D9 /* categories.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = categories.json; sourceTree = "<group>"; };
+		664935C1BCF9C344C4CD6F8C /* Snackbar.sdef */ = {isa = PBXFileReference; path = Snackbar.sdef; sourceTree = "<group>"; };
+		69C792D099F3198D5023D132 /* NoteManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteManagerTests.swift; sourceTree = "<group>"; };
 		6E714162BB78D4593F104F52 /* SnackbarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnackbarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EC6A9038F7E2A8D771A8C5D /* MCPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCPClient.swift; sourceTree = "<group>"; };
+		75A2C7A205CF71AC8B097B02 /* SyncStatusMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusMonitor.swift; sourceTree = "<group>"; };
 		79A71262CD79BADF3857117F /* SnackbarCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnackbarCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		81F19467A5416C3E5596D122 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8867C9E92E399B784F90C7F1 /* ConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigManager.swift; sourceTree = "<group>"; };
-		A83A5C3A5EB66A611E988DA5 /* MenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBuilder.swift; sourceTree = "<group>"; };
+		87F1B19BB561E2AA7973AB52 /* SyncNotesIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncNotesIntent.swift; sourceTree = "<group>"; };
+		8B0017CD1E066303DD869164 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		8C68A86C20F2F59599973484 /* iCloudSyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudSyncManager.swift; sourceTree = "<group>"; };
+		9501D9034920B64E2BFE1168 /* Snackbar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Snackbar.entitlements; sourceTree = "<group>"; };
 		AF9DC8017087B387DC34904E /* snacks.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = snacks.json; sourceTree = "<group>"; };
-		D0DD9AEE96770E2D3C0236EB /* Snack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snack.swift; sourceTree = "<group>"; };
-		E3F744D0E5716178E7C45352 /* FeedEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedEntry.swift; sourceTree = "<group>"; };
-		F1659427147513712B86C77A /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
-		FBB3287B099304B90FF73CF5 /* SnackScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackScheduler.swift; sourceTree = "<group>"; };
+		B708B728956CE65026EC3E50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D7B8CFCF7AC6169760232BD5 /* DevToolsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevToolsConfig.swift; sourceTree = "<group>"; };
+		DD781801CF730493F97209FC /* SnackbarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackbarApp.swift; sourceTree = "<group>"; };
+		E936AA0AACF808F737658518 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,74 +136,81 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01B9F6FA780238D25885B6C6 /* Utils */ = {
+		0F55EBA468259AA0C7E8AD4A /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				8867C9E92E399B784F90C7F1 /* ConfigManager.swift */,
+				8B0017CD1E066303DD869164 /* ContentView.swift */,
+				DD781801CF730493F97209FC /* SnackbarApp.swift */,
 			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
-		085E7A3C42230CE742E99FF2 /* Snackbar */ = {
-			isa = PBXGroup;
-			children = (
-				4518971FEB5ECF66A4A1CF0B /* Core */,
-				84D310BC27F08FD6FF6ADE24 /* Models */,
-				01B9F6FA780238D25885B6C6 /* Utils */,
-			);
-			path = Snackbar;
+			path = UI;
 			sourceTree = "<group>";
 		};
 		20DDD14720BECE2E5B0F3A90 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				085E7A3C42230CE742E99FF2 /* Snackbar */,
+				4AE366B8D821973A3A075E77 /* Models */,
+				A0D2C1829598BBF123A299E0 /* Services */,
 			);
 			name = Core;
-			path = Sources;
-			sourceTree = "<group>";
-		};
-		4518971FEB5ECF66A4A1CF0B /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				81F19467A5416C3E5596D122 /* AppDelegate.swift */,
-				571B387D96E7A8DBB9A7B932 /* FeedManager.swift */,
-				A83A5C3A5EB66A611E988DA5 /* MenuBuilder.swift */,
-				F1659427147513712B86C77A /* PermissionsManager.swift */,
-				1B074C7F428726C287192E82 /* SnackExecutor.swift */,
-				FBB3287B099304B90FF73CF5 /* SnackScheduler.swift */,
-			);
-			path = Core;
+			path = Sources/Core;
 			sourceTree = "<group>";
 		};
 		4855FD4ABFC3E926CDBE394F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				3E474C7509B883E7EB7861FA /* ABOUT.md */,
+				046F882B7476E815A2978AD8 /* AppIcon.icns */,
 				6529F8C11A4C16741D7B60D9 /* categories.json */,
+				B708B728956CE65026EC3E50 /* Info.plist */,
+				9501D9034920B64E2BFE1168 /* Snackbar.entitlements */,
+				664935C1BCF9C344C4CD6F8C /* Snackbar.sdef */,
+				1D8D097614984ADEE38ABC82 /* SnackbarCore-Info.plist */,
 				AF9DC8017087B387DC34904E /* snacks.json */,
 			);
 			name = Resources;
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		4AE366B8D821973A3A075E77 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D7B8CFCF7AC6169760232BD5 /* DevToolsConfig.swift */,
+				E936AA0AACF808F737658518 /* Note.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		4CEF7385129DB9A5F430F163 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				AF679F0EAB7C6499385A5723 /* Automations */,
+				0F55EBA468259AA0C7E8AD4A /* UI */,
+			);
+			name = macOS;
+			path = Sources/macOS;
+			sourceTree = "<group>";
+		};
 		5E9A3A6537F9947893ABF31A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				69C792D099F3198D5023D132 /* NoteManagerTests.swift */,
 			);
 			name = Tests;
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		84D310BC27F08FD6FF6ADE24 /* Models */ = {
+		A0D2C1829598BBF123A299E0 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				59248036695851F96B4A3E99 /* Category.swift */,
-				E3F744D0E5716178E7C45352 /* FeedEntry.swift */,
-				328CA76673E769125041F65C /* Schedule.swift */,
-				D0DD9AEE96770E2D3C0236EB /* Snack.swift */,
+				13EA1F1E989A3AC01489C814 /* DevStudioConfigManager.swift */,
+				293780B3F9204A1667B8A09D /* DevStudioSkillTrigger.swift */,
+				5608F8084FCF935EF4284FEA /* DevToolsManager.swift */,
+				8C68A86C20F2F59599973484 /* iCloudSyncManager.swift */,
+				6EC6A9038F7E2A8D771A8C5D /* MCPClient.swift */,
+				5032ED8ACB45A3EA112BA38A /* NoteManager.swift */,
+				75A2C7A205CF71AC8B097B02 /* SyncStatusMonitor.swift */,
 			);
-			path = Models;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		A5368839D3D262A0BCAF1F37 /* Products */ = {
@@ -196,30 +223,27 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		AF679F0EAB7C6499385A5723 /* Automations */ = {
+			isa = PBXGroup;
+			children = (
+				5D8AC390D80EF1C05F005044 /* CreateNoteIntent.swift */,
+				3AAB5DEF19672314CF843DEC /* SnackbarAppleScriptHandler.swift */,
+				196CDB7A4810499C25492EEE /* SnackbarShortcuts.swift */,
+				87F1B19BB561E2AA7973AB52 /* SyncNotesIntent.swift */,
+				622E355B6301BF5EC301F790 /* TriggerDevStudioSkillIntent.swift */,
+			);
+			path = Automations;
+			sourceTree = "<group>";
+		};
 		F309DE3A67F5AEE676C6C956 = {
 			isa = PBXGroup;
 			children = (
 				20DDD14720BECE2E5B0F3A90 /* Core */,
+				4CEF7385129DB9A5F430F163 /* macOS */,
 				4855FD4ABFC3E926CDBE394F /* Resources */,
 				5E9A3A6537F9947893ABF31A /* Tests */,
 				A5368839D3D262A0BCAF1F37 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		"TEMP_01BF0A29-5D5A-4919-9B7D-F424ED14B766" /* macOS */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = macOS;
-			path = macOS;
-			sourceTree = "<group>";
-		};
-		"TEMP_61DE8CC0-2BAD-4165-9A35-EE5808D55DBC" /* Core */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Core;
-			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -322,6 +346,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				17A7E19D4C650025356748E4 /* ABOUT.md in Resources */,
+				1640700EE5A233F986F766C6 /* AppIcon.icns in Resources */,
+				67F7B4DFA3EA4DD9B9556133 /* Snackbar.sdef in Resources */,
+				3265BF91A86E2BB4E13156FE /* SnackbarCore-Info.plist in Resources */,
 				BD9FA62ABF8F066D4F56C47A /* categories.json in Resources */,
 				47D3D7A6DC04ED047C79C910 /* snacks.json in Resources */,
 			);
@@ -334,17 +361,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				776825675A75A40F46501372 /* AppDelegate.swift in Sources */,
-				E568E3FAC77438A083B68201 /* Category.swift in Sources */,
-				5A3552AA9F2A3693BA8A772A /* ConfigManager.swift in Sources */,
-				0219FBF093AF258FA7D4F237 /* FeedEntry.swift in Sources */,
-				1BF39342B8172C7E4B919D38 /* FeedManager.swift in Sources */,
-				D06B42E92CDC57EDCEA20CF4 /* MenuBuilder.swift in Sources */,
-				5D0407609986E653DEC88C23 /* PermissionsManager.swift in Sources */,
-				9900E300445A2DFF263A298C /* Schedule.swift in Sources */,
-				9AA9E530174C0D5BD07D88D0 /* Snack.swift in Sources */,
-				222D7856B669D1A26C2AFC49 /* SnackExecutor.swift in Sources */,
-				C26E8B8D7FBADE8577615D46 /* SnackScheduler.swift in Sources */,
+				1DE0342A97666CA81C8F351D /* ContentView.swift in Sources */,
+				A685782D5A9EC55E6E27E076 /* CreateNoteIntent.swift in Sources */,
+				61C467F96FB815BE95D84118 /* SnackbarApp.swift in Sources */,
+				E8F23DDEF4FAE5D866ABBEAD /* SnackbarAppleScriptHandler.swift in Sources */,
+				C692FE241AC11C99BD2FABC9 /* SnackbarShortcuts.swift in Sources */,
+				B3ECD966AE93A2320E38E957 /* SyncNotesIntent.swift in Sources */,
+				079A273324F49C894DDF1EA6 /* TriggerDevStudioSkillIntent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,6 +375,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D31C738876466EA5E4DBFE31 /* DevStudioConfigManager.swift in Sources */,
+				EFF0EC87FA06155859FCC107 /* DevStudioSkillTrigger.swift in Sources */,
+				EF844B9EBAC1A4E0F44DF0DE /* DevToolsConfig.swift in Sources */,
+				6C6B86889F28478F74F5848C /* DevToolsManager.swift in Sources */,
+				580B1D7C7251235D905DF567 /* MCPClient.swift in Sources */,
+				94FC81690D27C67326A494C4 /* Note.swift in Sources */,
+				6DC2BA67332FCEB456E8984D /* NoteManager.swift in Sources */,
+				78ED8556FC5A54044DCE6BF6 /* SyncStatusMonitor.swift in Sources */,
+				3BAB8E57A05F1D95DBB5F09F /* iCloudSyncManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +391,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F34A6C2B193A54C1FC385B2 /* NoteManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,6 +469,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -499,6 +533,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -522,12 +557,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Resources/Snackbar.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
 				INFOPLIST_FILE = Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.udos.Snackbar;
 				PRODUCT_NAME = Snackbar;
 				SDKROOT = macosx;
@@ -544,6 +582,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Resources/SnackbarCore-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -583,6 +622,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Resources/SnackbarCore-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -600,12 +640,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Resources/Snackbar.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
 				INFOPLIST_FILE = Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.udos.Snackbar;
 				PRODUCT_NAME = Snackbar;
 				SDKROOT = macosx;
