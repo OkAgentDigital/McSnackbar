@@ -3,13 +3,13 @@ client:
   file-system: device-agnostic
 tools: {}
 targets:
+  "McSnackbar-arm64-apple-macosx-release.exe": ["<McSnackbar-arm64-apple-macosx-release.exe>"]
   "PackageStructure": ["<PackageStructure>"]
   "SimpleSnackbar-arm64-apple-macosx-release.exe": ["<SimpleSnackbar-arm64-apple-macosx-release.exe>"]
   "SimpleSnackbar-arm64-apple-macosx-release.module": ["<SimpleSnackbar-arm64-apple-macosx-release.module>"]
-  "Snackbar-arm64-apple-macosx-release.exe": ["<Snackbar-arm64-apple-macosx-release.exe>"]
   "Snackbar-arm64-apple-macosx-release.module": ["<Snackbar-arm64-apple-macosx-release.module>"]
-  "main": ["<SimpleSnackbar-arm64-apple-macosx-release.exe>","<SimpleSnackbar-arm64-apple-macosx-release.module>","<Snackbar-arm64-apple-macosx-release.exe>","<Snackbar-arm64-apple-macosx-release.module>"]
-  "test": ["<SimpleSnackbar-arm64-apple-macosx-release.exe>","<SimpleSnackbar-arm64-apple-macosx-release.module>","<Snackbar-arm64-apple-macosx-release.exe>","<Snackbar-arm64-apple-macosx-release.module>"]
+  "main": ["<McSnackbar-arm64-apple-macosx-release.exe>","<SimpleSnackbar-arm64-apple-macosx-release.exe>","<SimpleSnackbar-arm64-apple-macosx-release.module>","<Snackbar-arm64-apple-macosx-release.module>"]
+  "test": ["<McSnackbar-arm64-apple-macosx-release.exe>","<SimpleSnackbar-arm64-apple-macosx-release.exe>","<SimpleSnackbar-arm64-apple-macosx-release.module>","<Snackbar-arm64-apple-macosx-release.module>"]
 default: "main"
 nodes:
   "/Users/fredbook/Code/Apps/Snackbar/":
@@ -19,6 +19,30 @@ nodes:
     is-directory-structure: true
     content-exclusion-patterns: [".git",".build"]
 commands:
+  "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/AppDelegate.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Category.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/ConfigManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/FeedEntry.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/FeedManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/MenuBuilder.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/PermissionsManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Schedule.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Snack.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/SnackExecutor.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/SnackScheduler.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/UpdateChecker.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/resource_bundle_accessor.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/uDosComponent.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/uDosComponentView.swift.o"]
+    outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar.product/Objects.LinkFileList"
+
+  "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar_Snackbar.bundle/ABOUT.md":
+    tool: copy-tool
+    inputs: ["/Users/fredbook/Code/Apps/Snackbar/Resources/ABOUT.md"]
+    outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar_Snackbar.bundle/ABOUT.md"]
+    description: "Copying /Users/fredbook/Code/Apps/Snackbar/Resources/ABOUT.md"
+
+  "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar_Snackbar.bundle/categories.json":
+    tool: copy-tool
+    inputs: ["/Users/fredbook/Code/Apps/Snackbar/Resources/categories.json"]
+    outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar_Snackbar.bundle/categories.json"]
+    description: "Copying /Users/fredbook/Code/Apps/Snackbar/Resources/categories.json"
+
+  "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar_Snackbar.bundle/snacks.json":
+    tool: copy-tool
+    inputs: ["/Users/fredbook/Code/Apps/Snackbar/Resources/snacks.json"]
+    outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar_Snackbar.bundle/snacks.json"]
+    description: "Copying /Users/fredbook/Code/Apps/Snackbar/Resources/snacks.json"
+
   "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/SimpleSnackbar.build/sources":
     tool: write-auxiliary-file
     inputs: ["<sources-file-list>","/Users/fredbook/Code/Apps/Snackbar/Sources/SimpleSnackbar/main.swift"]
@@ -37,36 +61,17 @@ commands:
     outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/sources"]
     description: "Write auxiliary file /Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/sources"
 
-  "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.product/Objects.LinkFileList":
-    tool: write-auxiliary-file
-    inputs: ["<link-file-list>","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/AppDelegate.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Category.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/ConfigManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/FeedEntry.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/FeedManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/MenuBuilder.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/PermissionsManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Schedule.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Snack.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/SnackExecutor.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/SnackScheduler.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/UpdateChecker.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/resource_bundle_accessor.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/uDosComponent.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/uDosComponentView.swift.o"]
-    outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.product/Objects.LinkFileList"]
-    description: "Write auxiliary file /Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.product/Objects.LinkFileList"
-
-  "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar_Snackbar.bundle/ABOUT.md":
-    tool: copy-tool
-    inputs: ["/Users/fredbook/Code/Apps/Snackbar/Resources/ABOUT.md"]
-    outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar_Snackbar.bundle/ABOUT.md"]
-    description: "Copying /Users/fredbook/Code/Apps/Snackbar/Resources/ABOUT.md"
-
-  "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar_Snackbar.bundle/categories.json":
-    tool: copy-tool
-    inputs: ["/Users/fredbook/Code/Apps/Snackbar/Resources/categories.json"]
-    outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar_Snackbar.bundle/categories.json"]
-    description: "Copying /Users/fredbook/Code/Apps/Snackbar/Resources/categories.json"
-
-  "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar_Snackbar.bundle/snacks.json":
-    tool: copy-tool
-    inputs: ["/Users/fredbook/Code/Apps/Snackbar/Resources/snacks.json"]
-    outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar_Snackbar.bundle/snacks.json"]
-    description: "Copying /Users/fredbook/Code/Apps/Snackbar/Resources/snacks.json"
-
   "/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/swift-version--1AB21518FC5DEDBE.txt":
     tool: write-auxiliary-file
     inputs: ["<swift-get-version>","/Library/Developer/CommandLineTools/usr/bin/swiftc"]
     outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/swift-version--1AB21518FC5DEDBE.txt"]
     always-out-of-date: "true"
     description: "Write auxiliary file /Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/swift-version--1AB21518FC5DEDBE.txt"
+
+  "<McSnackbar-arm64-apple-macosx-release.exe>":
+    tool: phony
+    inputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar"]
+    outputs: ["<McSnackbar-arm64-apple-macosx-release.exe>"]
 
   "<SimpleSnackbar-arm64-apple-macosx-release.exe>":
     tool: phony
@@ -78,15 +83,17 @@ commands:
     inputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/SimpleSnackbar.build/main.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Modules/SimpleSnackbar.swiftmodule"]
     outputs: ["<SimpleSnackbar-arm64-apple-macosx-release.module>"]
 
-  "<Snackbar-arm64-apple-macosx-release.exe>":
-    tool: phony
-    inputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar"]
-    outputs: ["<Snackbar-arm64-apple-macosx-release.exe>"]
-
   "<Snackbar-arm64-apple-macosx-release.module>":
     tool: phony
     inputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/AppDelegate.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/FeedManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/MenuBuilder.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/PermissionsManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/SnackExecutor.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/SnackScheduler.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/UpdateChecker.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Category.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/FeedEntry.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Schedule.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Snack.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/uDosComponent.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/ConfigManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/uDosComponentView.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/resource_bundle_accessor.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Modules/Snackbar.swiftmodule"]
     outputs: ["<Snackbar-arm64-apple-macosx-release.module>"]
+
+  "C.McSnackbar-arm64-apple-macosx-release.exe":
+    tool: shell
+    inputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/AppDelegate.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Category.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/ConfigManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/FeedEntry.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/FeedManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/MenuBuilder.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/PermissionsManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Schedule.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Snack.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/SnackExecutor.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/SnackScheduler.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/UpdateChecker.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/resource_bundle_accessor.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/uDosComponent.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/uDosComponentView.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar.product/Objects.LinkFileList"]
+    outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar"]
+    description: "Linking ./.build/arm64-apple-macosx/release/McSnackbar"
+    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-L","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release","-o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar","-module-name","McSnackbar","-Xlinker","-no_warn_duplicate_libraries","-emit-executable","-Xlinker","-dead_strip","-Xlinker","-alias","-Xlinker","_Snackbar_main","-Xlinker","_main","-Xlinker","-rpath","-Xlinker","@loader_path","@/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar.product/Objects.LinkFileList","-Xlinker","-rpath","-Xlinker","/Library/Developer/CommandLineTools/usr/lib/swift-6.2/macosx","-target","arm64-apple-macosx12.0","-I","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-L","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-plugin-path","/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g"]
 
   "C.SimpleSnackbar-arm64-apple-macosx-release.exe":
     tool: shell
@@ -101,13 +108,6 @@ commands:
     outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/SimpleSnackbar.build/main.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Modules/SimpleSnackbar.swiftmodule"]
     description: "Compiling Swift Module 'SimpleSnackbar' (1 sources)"
     args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-module-name","SimpleSnackbar","-emit-dependencies","-emit-module","-emit-module-path","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Modules/SimpleSnackbar.swiftmodule","-output-file-map","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/SimpleSnackbar.build/output-file-map.json","-whole-module-optimization","-num-threads","8","-c","@/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/SimpleSnackbar.build/sources","-I","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Modules","-target","arm64-apple-macosx12.0","-whole-module-optimization","-num-threads","8","-serialize-diagnostics","-O","-j8","-DSWIFT_PACKAGE","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/ModuleCache","-parseable-output","-Xfrontend","-entry-point-function-name","-Xfrontend","SimpleSnackbar_main","-parse-as-library","-swift-version","5","-I","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-L","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-plugin-path","/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g","-Xcc","-isysroot","-Xcc","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-Xcc","-fPIC","-Xcc","-g"]
-
-  "C.Snackbar-arm64-apple-macosx-release.exe":
-    tool: shell
-    inputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/AppDelegate.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Category.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/ConfigManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/FeedEntry.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/FeedManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/MenuBuilder.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/PermissionsManager.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Schedule.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/Snack.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/SnackExecutor.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/SnackScheduler.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/UpdateChecker.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/resource_bundle_accessor.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/uDosComponent.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.build/uDosComponentView.swift.o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.product/Objects.LinkFileList"]
-    outputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar"]
-    description: "Linking ./.build/arm64-apple-macosx/release/Snackbar"
-    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-L","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release","-o","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar","-module-name","Snackbar","-Xlinker","-no_warn_duplicate_libraries","-emit-executable","-Xlinker","-dead_strip","-Xlinker","-alias","-Xlinker","_Snackbar_main","-Xlinker","_main","-Xlinker","-rpath","-Xlinker","@loader_path","@/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar.product/Objects.LinkFileList","-Xlinker","-rpath","-Xlinker","/Library/Developer/CommandLineTools/usr/lib/swift-6.2/macosx","-target","arm64-apple-macosx12.0","-I","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-L","/Library/Developer/CommandLineTools/Library/Developer/Frameworks","-plugin-path","/Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/testing","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g"]
 
   "C.Snackbar-arm64-apple-macosx-release.module":
     tool: shell
@@ -125,6 +125,6 @@ commands:
 
   "Snackbar-arm64-apple-macosx-release.module-resources":
     tool: phony
-    inputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar_Snackbar.bundle/ABOUT.md","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar_Snackbar.bundle/categories.json","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/Snackbar_Snackbar.bundle/snacks.json"]
+    inputs: ["/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar_Snackbar.bundle/ABOUT.md","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar_Snackbar.bundle/categories.json","/Users/fredbook/Code/Apps/Snackbar/.build/arm64-apple-macosx/release/McSnackbar_Snackbar.bundle/snacks.json"]
     outputs: ["<Snackbar-arm64-apple-macosx-release.module-resources>"]
 

@@ -2,11 +2,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "Snackbar",
+    name: "McSnackbar",
     platforms: [.macOS(.v12)],
     products: [
-        .executable(name: "SimpleSnackbar", targets: ["SimpleSnackbar"]),
-        .executable(name: "Snackbar", targets: ["Snackbar"]),
+        .executable(name: "McSnackbar", targets: ["Snackbar"]),
     ],
     targets: [
         .executableTarget(
