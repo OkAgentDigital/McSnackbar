@@ -2,56 +2,48 @@
 import PackageDescription
 
 let package = Package(
-    name: "McSnackbar",
+    name: "Snackbar",
     platforms: [.macOS(.v12)],
     products: [
         .executable(name: "Snackbar", targets: ["Snackbar"]),
-        .executable(name: "SimpleSnackbar", targets: ["SimpleSnackbar"]),
     ],
     targets: [
         .executableTarget(
-            name: "SimpleSnackbar",
-            path: "Sources/SimpleSnackbar"
-        ),
-        .executableTarget(
             name: "Snackbar",
-            dependencies: [],
             path: ".",
             exclude: [
-                "Sources/SimpleSnackbar",
-                "Sources/MainSpine",
-                "Sources/CompleteSnackbar",
-                "Sources/EnhancedSnackbar",
-                "Sources/Core",
-                "Sources/Shared",
-                "Sources/macOS",
-                "Snackbar.xcodeproj",
-                "DevStudio",
-                "Scripts",
-                "Tests",
                 "build",
                 ".build",
-                "Dev-Launch.command",
-                "Snackbar.code-workspace",
-                "Resources/Info.plist",
-                "Resources/Snackbar.entitlements",
-                "Resources/Snackbar.sdef",
-                "PROJECT_STRUCTURE.md",
-                "CONSOLIDATED_SUMMARY.md",
+                "dev",
+                "Dev",
+                "release",
+                "Scripts",
+                "Tests",
+                "DevStudio",
                 "LAUNCH_INSTRUCTIONS.md",
                 "ROADMAP.md",
-                "README.md",
+                "CONSOLIDATED_SUMMARY.md",
                 "SNACKBAR_SUMMARY.md",
-                "project.yml",
+                "README.md",
                 "config.yaml",
-                "Snackbar.app",
+                "project.yml",
+                "Snackbar.code-workspace",
                 "Snackbar.command",
+                "Dev-Launch.command",
+                "Resources/Snackbar.entitlements",
+                "Resources/Snackbar.sdef",
+                "Sources/Core",
+                "Sources/macOS",
+                "Sources/EnhancedSnackbar",
+                "Sources/CompleteSnackbar",
+                "Sources/SimpleSnackbar",
+                "Sources/MainSpine"
             ],
             sources: ["Sources/Snackbar"],
             resources: [
                 .process("Resources/categories.json"),
                 .process("Resources/snacks.json"),
-                .process("Resources/ABOUT.md"),
+                .process("Resources/ABOUT.md")
             ]
         ),
     ]

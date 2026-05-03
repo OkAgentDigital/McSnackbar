@@ -1,203 +1,321 @@
 import AppKit
+import Foundation
 
 class MenuBuilder {
-    private var builtInSnacks: [Snack] = []
-    private var customSnacks: [Snack] = []
-    private let defaults = UserDefaults.standard
-    private let customSnacksKey = "customSnacks"
-
-    init() {
-        loadBuiltInSnacks()
-        loadCustomSnacks()
-    }
-
-    private func loadBuiltInSnacks() {
-        // First try to load from bundle
-        if let url = Bundle.main.url(forResource: "snacks", withExtension: "json") {
-            print("📂 Found snacks.json at: \(url.path)")
-            if let data = try? Data(contentsOf: url),
-                let snacks = try? JSONDecoder().decode([Snack].self, from: data)
-            {
-                builtInSnacks = snacks
-                print("✅ Loaded \(snacks.count) snacks from bundle")
-                return
-            }
-        }
-
-        // Try to load from Resources directory
-        let resourcesURL = URL(
-            fileURLWithPath: "\(FileManager.default.currentDirectoryPath)/Resources")
-        let snacksURL = resourcesURL.appendingPathComponent("snacks.json")
-        if FileManager.default.fileExists(atPath: snacksURL.path),
-            let data = try? Data(contentsOf: snacksURL),
-            let snacks = try? JSONDecoder().decode([Snack].self, from: data)
-        {
-            builtInSnacks = snacks
-            print("✅ Loaded \(snacks.count) snacks from Resources directory")
-            return
-        }
-
-        // Fallback to hardcoded snacks if both methods fail
-        print("⚠️ Loading fallback snacks...")
-        builtInSnacks = [
-            Snack(
-                id: "reminders", name: "Reminders", emoji: "📋",
-                code: "tell application \"Reminders\" to activate", runtime: "appleScript",
-                categoryId: "productivity"),
-            Snack(
-                id: "notes", name: "Notes", emoji: "📓",
-                code: "tell application \"Notes\" to activate", runtime: "appleScript",
-                categoryId: "productivity"),
-            Snack(
-                id: "calendar", name: "Calendar", emoji: "📅",
-                code: "tell application \"Calendar\" to activate", runtime: "appleScript",
-                categoryId: "productivity"),
-            Snack(
-                id: "mail_vip", name: "Mail VIP", emoji: "✉️",
-                code:
-                    "tell application \"Mail\" to set vipCount to count of messages of inbox whose is VIP is true",
-                runtime: "appleScript", categoryId: "communication"),
-            Snack(
-                id: "contacts", name: "Contacts", emoji: "👥",
-                code:
-                    "tell application \"Contacts\" to set vipNames to name of people whose is VIP is true",
-                runtime: "appleScript", categoryId: "communication"),
-            Snack(
-                id: "permissions", name: "Permissions Helper", emoji: "🔐",
-                code:
-                    "open x-apple.systempreferences:com.apple.preference.security?Privacy_Automation",
-                runtime: "shell", categoryId: "system"),
-        ]
-    }
-
-    private func loadCustomSnacks() {
-        if let data = defaults.data(forKey: customSnacksKey),
-            let snacks = try? JSONDecoder().decode([Snack].self, from: data)
-        {
-            customSnacks = snacks
-        }
-    }
-
-    func getAllSnacks() -> [Snack] {
-        return builtInSnacks + customSnacks
-    }
+    private let snackManager = SnackManager.shared
+    private let hivemindClient = HivemindClient.shared
+    private let ubuntuProxy = UbuntuProxy.shared
+    private let xcodeBuildService = XcodeBuildService.shared
 
     func buildMenu() -> NSMenu {
-        let menu = NSMenu()
+        let menu = NSMenu(title: "Snackbar")
 
-        // Run All option
-        let runAllItem = NSMenuItem(
-            title: "⚡ Run All Enabled", action: #selector(runAllSnacks), keyEquivalent: "R")
-        runAllItem.keyEquivalentModifierMask = .command
-        menu.addItem(runAllItem)
+        // ─── Snacks Section ──────────────────────────────────────────────────
+        let snacksHeader = NSMenuItem(title: "🍔 Snacks", action: nil, keyEquivalent: "")
+        snacksHeader.isEnabled = false
+        menu.addItem(snacksHeader)
 
-        // Add Snack option
-        menu.addItem(NSMenuItem.separator())
-        let addItem = NSMenuItem(
-            title: "➕ Add New Snack...", action: #selector(addNewSnack), keyEquivalent: "N")
-        addItem.keyEquivalentModifierMask = .command
-        menu.addItem(addItem)
-
-        // Import/Export
-        let importExportItem = NSMenuItem(
-            title: "📁 Import/Export...", action: #selector(importExportSnacks), keyEquivalent: "E")
-        importExportItem.keyEquivalentModifierMask = [.command, .shift]
-        menu.addItem(importExportItem)
-
-        menu.addItem(NSMenuItem.separator())
-
-        // Organize snacks by category
-        let allSnacks = getAllSnacks()
-        let enabledSnackIds = defaults.stringArray(forKey: "enabledSnacks") ?? []
-
-        let categorizedSnacks = Dictionary(grouping: allSnacks) { snack -> String in
-            return snack.category?.id ?? "uncategorized"
-        }
-
-        for category in Category.allCategories {
-            if let snacksInCategory = categorizedSnacks[category.id], !snacksInCategory.isEmpty {
-                addSnacksMenu(
-                    for: snacksInCategory, enabledSnackIds: enabledSnackIds, to: menu,
-                    category: category)
+        let snacks = snackManager.getSnacks()
+        if snacks.isEmpty {
+            let emptyItem = NSMenuItem(title: "  No snacks configured", action: nil, keyEquivalent: "")
+            emptyItem.isEnabled = false
+            menu.addItem(emptyItem)
+        } else {
+            for snack in snacks {
+                let item = NSMenuItem(
+                    title: "  \(snack.emoji) \(snack.name)",
+                    action: #selector(runSnack(_:)),
+                    keyEquivalent: ""
+                )
+                item.target = self
+                item.representedObject = snack
+                item.toolTip = snack.description
+                menu.addItem(item)
             }
         }
 
-        // About, Settings, Close, and Quit
         menu.addItem(NSMenuItem.separator())
+
+        // ─── Hivemind Section ────────────────────────────────────────────────
+        let hivemindHeader = NSMenuItem(title: "🧠 Hivemind", action: nil, keyEquivalent: "")
+        hivemindHeader.isEnabled = false
+        menu.addItem(hivemindHeader)
+
+        // Hivemind status
+        let statusText = hivemindClient.isConnected
+            ? "  ✅ Connected (v\(hivemindClient.serverVersion))"
+            : "  ⏹️  Disconnected"
+        let statusItem = NSMenuItem(title: statusText, action: nil, keyEquivalent: "")
+        statusItem.isEnabled = false
+        menu.addItem(statusItem)
+
+        // Available tools submenu
+        if !hivemindClient.availableTools.isEmpty {
+            let toolsMenu = NSMenu()
+            for tool in hivemindClient.availableTools {
+                let toolItem = NSMenuItem(
+                    title: "  \(tool.name)",
+                    action: #selector(callMCPTool(_:)),
+                    keyEquivalent: ""
+                )
+                toolItem.target = self
+                toolItem.representedObject = tool
+                toolItem.toolTip = tool.description
+                toolsMenu.addItem(toolItem)
+            }
+            let toolsMenuItem = NSMenuItem(title: "  🛠️ MCP Tools", action: nil, keyEquivalent: "")
+            menu.setSubmenu(toolsMenu, for: toolsMenuItem)
+            menu.addItem(toolsMenuItem)
+        }
+
+        // Hivemind actions
+        let refreshItem = NSMenuItem(
+            title: "  🔄 Refresh Status",
+            action: #selector(refreshHivemindStatus),
+            keyEquivalent: ""
+        )
+        refreshItem.target = self
+        menu.addItem(refreshItem)
+
+        let restartItem = NSMenuItem(
+            title: "  🔄 Restart HivemindRust",
+            action: #selector(restartHivemindRust),
+            keyEquivalent: ""
+        )
+        restartItem.target = self
+        menu.addItem(restartItem)
+
+        menu.addItem(NSMenuItem.separator())
+
+        // ─── Ubuntu Backend Section ──────────────────────────────────────────
+        let ubuntuHeader = NSMenuItem(title: "🌐 Ubuntu Backend", action: nil, keyEquivalent: "")
+        ubuntuHeader.isEnabled = false
+        menu.addItem(ubuntuHeader)
+
+        // SSH status
+        let sshStatus = ubuntuProxy.isReachable ? "  ✅ SSH Connected" : "  ❌ SSH Disconnected"
+        let sshItem = NSMenuItem(title: sshStatus, action: nil, keyEquivalent: "")
+        sshItem.isEnabled = false
+        menu.addItem(sshItem)
+
+        // Ollama status
+        let ollamaItem = NSMenuItem(
+            title: "  Ollama: \(ubuntuProxy.ollamaStatus.displayText)",
+            action: nil,
+            keyEquivalent: ""
+        )
+        ollamaItem.isEnabled = false
+        menu.addItem(ollamaItem)
+
+        // Hivemind status
+        let hivemindRemoteItem = NSMenuItem(
+            title: "  Hivemind: \(ubuntuProxy.hivemindStatus.displayText)",
+            action: nil,
+            keyEquivalent: ""
+        )
+        hivemindRemoteItem.isEnabled = false
+        menu.addItem(hivemindRemoteItem)
+
+        // Ubuntu actions
+        let testUbuntuItem = NSMenuItem(
+            title: "  🔍 Test Connection",
+            action: #selector(testUbuntuConnection),
+            keyEquivalent: ""
+        )
+        testUbuntuItem.target = self
+        menu.addItem(testUbuntuItem)
+
+        let refreshUbuntuItem = NSMenuItem(
+            title: "  🔄 Refresh Status",
+            action: #selector(refreshUbuntuStatus),
+            keyEquivalent: ""
+        )
+        refreshUbuntuItem.target = self
+        menu.addItem(refreshUbuntuItem)
+
+        menu.addItem(NSMenuItem.separator())
+
+        // ─── Xcode Build Section ─────────────────────────────────────────────
+        let xcodeHeader = NSMenuItem(title: "⚡ Xcode Build", action: nil, keyEquivalent: "")
+        xcodeHeader.isEnabled = false
+        menu.addItem(xcodeHeader)
+
+        let xcodeAvailable = xcodeBuildService.xcServiceAvailable
+            ? "  ✅ Xcode CLI Available"
+            : "  ❌ Xcode CLI Not Available"
+        let xcodeAvailItem = NSMenuItem(title: xcodeAvailable, action: nil, keyEquivalent: "")
+        xcodeAvailItem.isEnabled = false
+        menu.addItem(xcodeAvailItem)
+
+        // Build project submenu
+        let buildMenu = NSMenu()
+        for project in xcodeBuildService.knownProjects {
+            let buildItem = NSMenuItem(
+                title: "  Build \(project.name)",
+                action: #selector(buildProject(_:)),
+                keyEquivalent: ""
+            )
+            buildItem.target = self
+            buildItem.representedObject = project
+            buildMenu.addItem(buildItem)
+        }
+        let buildMenuItem = NSMenuItem(title: "  🔨 Build Project", action: nil, keyEquivalent: "")
+        menu.setSubmenu(buildMenu, for: buildMenuItem)
+        menu.addItem(buildMenuItem)
+
+        // Build all
+        let buildAllItem = NSMenuItem(
+            title: "  🔨 Build All Projects",
+            action: #selector(buildAllProjects),
+            keyEquivalent: ""
+        )
+        buildAllItem.target = self
+        menu.addItem(buildAllItem)
+
+        // Last build result
+        if let lastResult = xcodeBuildService.lastBuildResult {
+            let resultItem = NSMenuItem(
+                title: "  \(lastResult.summary)",
+                action: nil,
+                keyEquivalent: ""
+            )
+            resultItem.isEnabled = false
+            menu.addItem(resultItem)
+        }
+
+        menu.addItem(NSMenuItem.separator())
+
+        // ─── Actions Section ─────────────────────────────────────────────────
+        let actionsHeader = NSMenuItem(title: "⚙️ Actions", action: nil, keyEquivalent: "")
+        actionsHeader.isEnabled = false
+        menu.addItem(actionsHeader)
+
+        let addSnackItem = NSMenuItem(
+            title: "  ➕ Add Snack",
+            action: #selector(showAddSnackView),
+            keyEquivalent: "n"
+        )
+        addSnackItem.target = self
+        menu.addItem(addSnackItem)
+
+        let importExportItem = NSMenuItem(
+            title: "  📁 Import/Export",
+            action: #selector(showImportExportView),
+            keyEquivalent: "i"
+        )
+        importExportItem.target = self
+        menu.addItem(importExportItem)
+
+        let preferencesItem = NSMenuItem(
+            title: "  ⚙️ Preferences",
+            action: #selector(showPreferencesView),
+            keyEquivalent: ","
+        )
+        preferencesItem.target = self
+        menu.addItem(preferencesItem)
+
+        menu.addItem(NSMenuItem.separator())
+
+        // ─── Info Section ────────────────────────────────────────────────────
         let aboutItem = NSMenuItem(
-            title: "ℹ️ About Snackbar", action: #selector(showAbout), keyEquivalent: "")
-        aboutItem.target = NSApp.delegate
+            title: "  ℹ️ About Snackbar",
+            action: #selector(showAboutView),
+            keyEquivalent: ""
+        )
+        aboutItem.target = self
         menu.addItem(aboutItem)
 
-        let settingsItem = NSMenuItem(
-            title: "⚙️ Settings...", action: #selector(openPreferences), keyEquivalent: ",")
-        settingsItem.target = NSApp.delegate
-        menu.addItem(settingsItem)
-
-        menu.addItem(NSMenuItem.separator())
-        let closeItem = NSMenuItem(
-            title: "🔒 Close", action: #selector(AppDelegate.closeMenu), keyEquivalent: "")
-        closeItem.target = NSApp.delegate
-        menu.addItem(closeItem)
-
-        menu.addItem(NSMenuItem.separator())
         let quitItem = NSMenuItem(
-            title: "✕ Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+            title: "  🚪 Quit",
+            action: #selector(NSApplication.terminate(_:)),
+            keyEquivalent: "q"
+        )
         menu.addItem(quitItem)
 
         return menu
     }
 
-    private func addSnacksMenu(
-        for snacks: [Snack], enabledSnackIds: [String], to menu: NSMenu, category: Category
-    ) {
-        let categoryMenu = NSMenu(title: "\(category.emoji) \(category.name)")
+    // MARK: - Actions
 
-        for snack in snacks {
-            let item = NSMenuItem(
-                title: "\(snack.emoji) \(snack.name)", action: #selector(executeSnack),
-                keyEquivalent: "")
-            item.representedObject = snack
-            item.target = self
-            categoryMenu.addItem(item)
-        }
-
-        let categoryItem = NSMenuItem(
-            title: "\(category.emoji) \(category.name)", action: nil, keyEquivalent: "")
-        categoryItem.submenu = categoryMenu
-        menu.addItem(categoryItem)
-    }
-
-    @objc private func executeSnack(_ sender: NSMenuItem) {
+    @objc private func runSnack(_ sender: NSMenuItem) {
         guard let snack = sender.representedObject as? Snack else { return }
         SnackExecutor.run(snack)
     }
 
-    @objc private func runAllSnacks() {
-        let allSnacks = getAllSnacks()
-        let enabledSnackIds = defaults.stringArray(forKey: "enabledSnacks") ?? []
-        let snacksToRun =
-            enabledSnackIds.isEmpty
-            ? allSnacks : allSnacks.filter { enabledSnackIds.contains($0.id) }
-
-        for snack in snacksToRun {
-            SnackExecutor.run(snack)
+    @objc private func callMCPTool(_ sender: NSMenuItem) {
+        guard let tool = sender.representedObject as? MCPTool else { return }
+        Task {
+            let result = await hivemindClient.callTool(name: tool.name)
+            switch result {
+            case .success(let response):
+                print("✅ MCP tool '\(tool.name)' response:\n\(response)")
+            case .failure(let error):
+                print("❌ MCP tool '\(tool.name)' failed: \(error.localizedDescription)")
+            }
         }
     }
 
-    @objc private func addNewSnack() {
-        (NSApp.delegate as? AppDelegate)?.showAddSnackView()
+    @objc private func refreshHivemindStatus() {
+        Task {
+            _ = await hivemindClient.listTools()
+            _ = await hivemindClient.getStatus()
+        }
     }
 
-    @objc private func importExportSnacks() {
-        (NSApp.delegate as? AppDelegate)?.showImportExportView()
+    @objc private func restartHivemindRust() {
+        guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else { return }
+        // Kill existing process
+        let killTask = Process()
+        killTask.executableURL = URL(fileURLWithPath: "/usr/bin/pkill")
+        killTask.arguments = ["-f", "hivemind-rust"]
+        try? killTask.run()
+        killTask.waitUntilExit()
+
+        // Restart
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            appDelegate.perform(#selector(AppDelegate.startHivemindRust), with: nil, afterDelay: 0)
+        }
     }
 
-    @objc private func showAbout() {
-        (NSApp.delegate as? AppDelegate)?.showAboutView()
+    @objc private func testUbuntuConnection() {
+        ubuntuProxy.performHealthCheck()
+        print(ubuntuProxy.getStatusSummary())
     }
 
-    @objc private func openPreferences() {
-        (NSApp.delegate as? AppDelegate)?.showPreferencesView()
+    @objc private func refreshUbuntuStatus() {
+        ubuntuProxy.performHealthCheck()
+    }
+
+    @objc private func buildProject(_ sender: NSMenuItem) {
+        guard let project = sender.representedObject as? XcodeProject else { return }
+        Task {
+            let result = await xcodeBuildService.buildProject(project)
+            print("Build result: \(result.summary)")
+        }
+    }
+
+    @objc private func buildAllProjects() {
+        Task {
+            let results = await xcodeBuildService.buildAll()
+            for result in results {
+                print(result.summary)
+            }
+        }
+    }
+
+    @objc private func showAddSnackView() {
+        (NSApplication.shared.delegate as? AppDelegate)?.showAddSnackView()
+    }
+
+    @objc private func showImportExportView() {
+        (NSApplication.shared.delegate as? AppDelegate)?.showImportExportView()
+    }
+
+    @objc private func showPreferencesView() {
+        (NSApplication.shared.delegate as? AppDelegate)?.showPreferencesView()
+    }
+
+    @objc private func showAboutView() {
+        (NSApplication.shared.delegate as? AppDelegate)?.showAboutView()
     }
 }

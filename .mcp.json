@@ -1,0 +1,6 @@
+{
+  "hivemind": {
+    "type": "http",
+    "url": "http://localhost:30000"
+  }
+}

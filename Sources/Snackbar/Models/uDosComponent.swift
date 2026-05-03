@@ -309,17 +309,17 @@ public class uDosProcessManager: ObservableObject {
             // Default components
             components = [
                 uDosComponent(
-                    id: "hivemind",
-                    displayName: "Hivemind",
-                    command: "/usr/local/bin/cargo",
-                    args: ["run", "--release"],
-                    workingDirectory: "~/uDos/core/hivemind",
+                    id: "hivemind-rust",
+                    displayName: "HivemindRust",
+                    command: "/usr/bin/env",
+                    args: ["cargo", "run", "--release"],
+                    workingDirectory: "\(NSHomeDirectory())/Code/OkAgentDigital/HivemindRust",
                     env: ["RUST_LOG": "info"],
-                    healthCheckURL: "http://localhost:3000/health",
+                    healthCheckURL: "http://localhost:30000/health",
                     icon: "🧠",
-                    port: 3000,
+                    port: 30000,
                     requiredComponents: [],
-                    description: "Core uDos intelligence engine",
+                    description: "Hivemind MCP Gateway — bridges Snackbar to Ubuntu LLM backend",
                     isEssential: true
                 ),
                 uDosComponent(
@@ -327,27 +327,13 @@ public class uDosProcessManager: ObservableObject {
                     displayName: "Re3Engine",
                     command: "/opt/homebrew/bin/python3.13",
                     args: ["-m", "re3engine.server"],
-                    workingDirectory: "~/uDos/core/re3engine",
-                    env: ["PYTHONPATH": "~/uDos/core/re3engine"],
-                    healthCheckURL: "http://localhost:30000/health",
+                    workingDirectory: "\(NSHomeDirectory())/uDos/core/re3engine",
+                    env: ["PYTHONPATH": "\(NSHomeDirectory())/uDos/core/re3engine"],
+                    healthCheckURL: "http://localhost:30001/health",
                     icon: "⚙️",
-                    port: 30000,
+                    port: 30001,
                     requiredComponents: [],
                     description: "Re3Engine server for processing",
-                    isEssential: true
-                ),
-                uDosComponent(
-                    id: "mcp-gateway",
-                    displayName: "MCP Gateway",
-                    command: "~/uDos/core/mcp-gateway/target/release/mcp-gateway",
-                    args: [],
-                    workingDirectory: "~/uDos/core/mcp-gateway",
-                    env: ["UDOS_VAULT": "~/vault"],
-                    healthCheckURL: "http://localhost:30000/health",
-                    icon: "🌐",
-                    port: 30000,
-                    requiredComponents: ["hivemind"],
-                    description: "MCP communication gateway",
                     isEssential: true
                 ),
                 uDosComponent(
@@ -355,7 +341,7 @@ public class uDosProcessManager: ObservableObject {
                     displayName: "Sonic-Screwdriver",
                     command: "/usr/local/bin/sonic",
                     args: ["server"],
-                    workingDirectory: "~",
+                    workingDirectory: "\(NSHomeDirectory())",
                     env: [:],
                     healthCheckURL: "http://localhost:8080/health",
                     icon: "🔊",
@@ -369,41 +355,13 @@ public class uDosProcessManager: ObservableObject {
                     displayName: "ThinUi",
                     command: "/usr/local/bin/thinui",
                     args: ["server"],
-                    workingDirectory: "~/uDos/core/thinui",
+                    workingDirectory: "\(NSHomeDirectory())/uDos/core/thinui",
                     env: ["RUST_LOG": "info"],
                     healthCheckURL: "http://localhost:3001/health",
                     icon: "🖥️",
                     port: 3001,
-                    requiredComponents: ["hivemind"],
+                    requiredComponents: ["hivemind-rust"],
                     description: "ThinUi interface server",
-                    isEssential: true
-                ),
-                uDosComponent(
-                    id: "mcp-server",
-                    displayName: "MCP Server",
-                    command: "/usr/local/bin/python3",
-                    args: ["-m", "mcp_server"],
-                    workingDirectory: "~/uDos/core/mcp_server",
-                    env: ["PYTHONPATH": "~/uDos/core/mcp_server"],
-                    healthCheckURL: "http://localhost:3002/health",
-                    icon: "🌐",
-                    port: 3002,
-                    requiredComponents: ["hivemind"],
-                    description: "MCP communication server",
-                    isEssential: true
-                ),
-                uDosComponent(
-                    id: "mcp-client-rs",
-                    displayName: "MCP Client (Rust)",
-                    command: "/usr/local/bin/cargo",
-                    args: ["run", "--release"],
-                    workingDirectory: "~/uDos/core/mcp-client-rs",
-                    env: ["RUST_LOG": "info"],
-                    healthCheckURL: "http://localhost:3003/health",
-                    icon: "🔗",
-                    port: 3003,
-                    requiredComponents: ["mcp-server"],
-                    description: "Rust MCP client for communication",
                     isEssential: true
                 )
             ]
@@ -461,17 +419,17 @@ public extension uDosProcessManager {
     static var defaultComponents: [uDosComponent] {
         [
             uDosComponent(
-                id: "hivemind",
-                displayName: "Hivemind",
-                command: "/usr/local/bin/cargo",
-                args: ["run", "--release"],
-                workingDirectory: "~/uDos/core/hivemind",
+                id: "hivemind-rust",
+                displayName: "HivemindRust",
+                command: "/usr/bin/env",
+                args: ["cargo", "run", "--release"],
+                workingDirectory: "\(NSHomeDirectory())/Code/OkAgentDigital/HivemindRust",
                 env: ["RUST_LOG": "info"],
-                healthCheckURL: "http://localhost:3000/health",
+                healthCheckURL: "http://localhost:30000/health",
                 icon: "🧠",
-                port: 3000,
+                port: 30000,
                 requiredComponents: [],
-                description: "Core uDos intelligence engine",
+                description: "Hivemind MCP Gateway — bridges Snackbar to Ubuntu LLM backend",
                 isEssential: true
             ),
             uDosComponent(
@@ -479,27 +437,13 @@ public extension uDosProcessManager {
                 displayName: "Re3Engine",
                 command: "/opt/homebrew/bin/python3.13",
                 args: ["-m", "re3engine.server"],
-                workingDirectory: "~/uDos/core/re3engine",
-                env: ["PYTHONPATH": "~/uDos/core/re3engine"],
-                healthCheckURL: "http://localhost:30000/health",
+                workingDirectory: "\(NSHomeDirectory())/uDos/core/re3engine",
+                env: ["PYTHONPATH": "\(NSHomeDirectory())/uDos/core/re3engine"],
+                healthCheckURL: "http://localhost:30001/health",
                 icon: "⚙️",
-                port: 30000,
+                port: 30001,
                 requiredComponents: [],
                 description: "Re3Engine server for processing",
-                isEssential: true
-            ),
-            uDosComponent(
-                id: "mcp-gateway",
-                displayName: "MCP Gateway",
-                command: "~/uDos/core/mcp-gateway/target/release/mcp-gateway",
-                args: [],
-                workingDirectory: "~/uDos/core/mcp-gateway",
-                env: ["UDOS_VAULT": "~/vault"],
-                healthCheckURL: "http://localhost:30000/health",
-                icon: "🌐",
-                port: 30000,
-                requiredComponents: ["hivemind"],
-                description: "MCP communication gateway",
                 isEssential: true
             ),
             uDosComponent(
@@ -507,7 +451,7 @@ public extension uDosProcessManager {
                 displayName: "Sonic-Screwdriver",
                 command: "/usr/local/bin/sonic",
                 args: ["server"],
-                workingDirectory: "~",
+                workingDirectory: "\(NSHomeDirectory())",
                 env: [:],
                 healthCheckURL: "http://localhost:8080/health",
                 icon: "🔊",
@@ -515,7 +459,22 @@ public extension uDosProcessManager {
                 requiredComponents: [],
                 description: "Utility server for various tasks",
                 isEssential: false
+            ),
+            uDosComponent(
+                id: "thinui",
+                displayName: "ThinUi",
+                command: "/usr/local/bin/thinui",
+                args: ["server"],
+                workingDirectory: "\(NSHomeDirectory())/uDos/core/thinui",
+                env: ["RUST_LOG": "info"],
+                healthCheckURL: "http://localhost:3001/health",
+                icon: "🖥️",
+                port: 3001,
+                requiredComponents: ["hivemind-rust"],
+                description: "ThinUi interface server",
+                isEssential: true
             )
         ]
     }
 }
+

@@ -2,6 +2,7 @@
 .build/
 build/
 *.log
+build_output.txt
 
 # Xcode
 *.xcworkspace/
@@ -12,3 +13,11 @@ build/
 
 # Editor files
 *.code-workspace
+
+# App bundles
+dev/
+release/
+
+# Air
+.air/
+

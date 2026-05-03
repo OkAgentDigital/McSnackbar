@@ -64,7 +64,7 @@
         "name": "Start uDos",
         "description": "Start Hivemind MCP Gateway, ThinUI, and related services",
         "emoji": "🚀",
-        "code": "~/Code/start-udos.sh",
+        "code": "$UDOS_CODE/start-udos.sh",
         "runtime": "shell",
         "categoryId": "udos",
         "isEnabled": true

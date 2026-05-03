@@ -27,5 +27,13 @@
     <true/>
     <key>com.apple.security.files.bookmarks.app-scope</key>
     <true/>
+    
+    <!-- Xcode External Agent Entitlements -->
+    <key>com.apple.security.xcservice</key>
+    <true/>
+    
+    <!-- Automation Entitlement (for AppleScript control) -->
+    <key>com.apple.security.automation.apple-events</key>
+    <true/>
 </dict>
 </plist>

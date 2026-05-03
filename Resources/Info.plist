@@ -67,5 +67,37 @@
     <array>
         <string>iCloud.com.udos.McSnackbar</string>
     </array>
+    
+    <!-- Xcode External Agent Configuration -->
+    <key>XCServices</key>
+    <array>
+        <dict>
+            <key>XCSBuildService</key>
+            <dict>
+                <key>ServiceName</key>
+                <string>com.udos.Snackbar.XCSBuildService</string>
+                <key>ServiceType</key>
+                <string>ExternalAgent</string>
+                <key>ServiceDescription</key>
+                <string>Snackbar Xcode Build Service — builds HivemindRust and other projects</string>
+            </dict>
+        </dict>
+    </array>
+    
+    <!-- Hivemind MCP Configuration -->
+    <key>MCPConfiguration</key>
+    <dict>
+        <key>HivemindRust</key>
+        <dict>
+            <key>ServerURL</key>
+            <string>http://localhost:30000</string>
+            <key>MCPEndpoint</key>
+            <string>/mcp</string>
+            <key>HealthEndpoint</key>
+            <string>/health</string>
+            <key>Protocol</key>
+            <string>json-rpc-2.0</string>
+        </dict>
+    </dict>
 </dict>
 </plist>

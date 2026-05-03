@@ -4,6 +4,8 @@ import UserNotifications
 
 struct uDosComponentView: View {
     @StateObject private var manager = uDosProcessManager()
+    @StateObject private var hivemindClient = HivemindClient.shared
+    @StateObject private var ubuntuProxy = UbuntuProxy.shared
     @State private var selectedComponent: uDosComponent?
     @State private var showingLogs = false
     @State private var showingSettings = false
@@ -25,6 +27,14 @@ struct uDosComponentView: View {
                     }
                 }
             }
+            
+            Divider()
+            
+            // ─── Hivemind Status Panel ──────────────────────────────────────
+            HivemindStatusPanel(hivemindClient: hivemindClient)
+            
+            // ─── Ubuntu Backend Status Panel ────────────────────────────────
+            UbuntuStatusPanel(ubuntuProxy: ubuntuProxy)
             
             Divider()
             
@@ -77,7 +87,7 @@ struct uDosComponentView: View {
             Spacer()
         }
         .padding()
-        .frame(width: 400)
+        .frame(width: 500)
         .onAppear {
             // Request notification permissions
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
@@ -86,6 +96,13 @@ struct uDosComponentView: View {
                 } else if let error = error {
                     print("❌ Notification permission error: \(error.localizedDescription)")
                 }
+            }
+            
+            // Refresh Hivemind status on appear
+            Task {
+                _ = await hivemindClient.listTools()
+                _ = await hivemindClient.getStatus()
+                ubuntuProxy.performHealthCheck()
             }
         }
     }
@@ -234,6 +251,103 @@ struct uDosComponentView: View {
                 print("❌ Failed to export logs: \(error.localizedDescription)")
             }
         }
+    }
+}
+
+// MARK: - Hivemind Status Panel
+
+struct HivemindStatusPanel: View {
+    @ObservedObject var hivemindClient: HivemindClient
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack {
+                Text("🧠 HivemindRust")
+                    .font(.subheadline).bold()
+                Spacer()
+                Text(hivemindClient.isConnected ? "✅ Connected" : "⏹️ Disconnected")
+                    .foregroundColor(hivemindClient.isConnected ? .green : .gray)
+            }
+            
+            if hivemindClient.isConnected {
+                HStack {
+                    Text("Version: \(hivemindClient.serverVersion)")
+                        .font(.caption)
+                    Spacer()
+                    Text("Tools: \(hivemindClient.availableTools.count) available")
+                        .font(.caption)
+                }
+                
+                if !hivemindClient.availableTools.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 4) {
+                            ForEach(hivemindClient.availableTools.prefix(5)) { tool in
+                                Text(tool.name)
+                                    .font(.caption2)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(Color.blue.opacity(0.1))
+                                    .cornerRadius(4)
+                            }
+                            if hivemindClient.availableTools.count > 5 {
+                                Text("+\(hivemindClient.availableTools.count - 5) more")
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .padding(8)
+        .background(Color.gray.opacity(0.05))
+        .cornerRadius(8)
+    }
+}
+
+// MARK: - Ubuntu Backend Status Panel
+
+struct UbuntuStatusPanel: View {
+    @ObservedObject var ubuntuProxy: UbuntuProxy
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack {
+                Text("🌐 Ubuntu Backend")
+                    .font(.subheadline).bold()
+                Spacer()
+                Text(ubuntuProxy.isReachable ? "✅ SSH Connected" : "❌ SSH Disconnected")
+                    .foregroundColor(ubuntuProxy.isReachable ? .green : .red)
+            }
+            
+            HStack(spacing: 16) {
+                Label(
+                    title: { Text("Ollama: \(ubuntuProxy.ollamaStatus.displayText)").font(.caption) },
+                    icon: { Image(systemName: "cpu") }
+                )
+                Label(
+                    title: { Text("Hivemind: \(ubuntuProxy.hivemindStatus.displayText)").font(.caption) },
+                    icon: { Image(systemName: "network") }
+                )
+            }
+            
+            HStack {
+                Button("🔄 Refresh") {
+                    ubuntuProxy.performHealthCheck()
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                
+                Button("🔍 Test Connection") {
+                    print(ubuntuProxy.getStatusSummary())
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+            }
+        }
+        .padding(8)
+        .background(Color.gray.opacity(0.05))
+        .cornerRadius(8)
     }
 }
 

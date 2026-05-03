@@ -5,17 +5,6 @@
 import AppKit
 import SwiftUI
 
-@main
-struct SimpleSnackbarApp: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
-    var body: some Scene {
-        Settings {
-            EmptyView()
-        }
-    }
-}
-
 class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem?
     var popover: NSPopover?
@@ -58,3 +47,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 }
+
+let app = NSApplication.shared
+let delegate = AppDelegate()
+app.delegate = delegate
+app.run()
