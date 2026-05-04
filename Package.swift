@@ -1,50 +1,40 @@
-// swift-tools-version:5.7
+// swift-tools-version: 5.9
 import PackageDescription
 
 let package = Package(
     name: "Snackbar",
-    platforms: [.macOS(.v12)],
-    products: [
-        .executable(name: "Snackbar", targets: ["Snackbar"]),
+    platforms: [
+        .macOS(.v14)
     ],
+    products: [
+        .executable(name: "Snackbar", targets: ["Snackbar"])
+    ],
+    dependencies: [],
     targets: [
         .executableTarget(
             name: "Snackbar",
-            path: ".",
+            dependencies: [],
+            path: "Sources/Snackbar",
             exclude: [
-                "build",
-                ".build",
-                "dev",
-                "Dev",
-                "release",
-                "Scripts",
-                "Tests",
-                "DevStudio",
-                "LAUNCH_INSTRUCTIONS.md",
-                "ROADMAP.md",
-                "CONSOLIDATED_SUMMARY.md",
-                "SNACKBAR_SUMMARY.md",
-                "README.md",
-                "config.yaml",
-                "project.yml",
-                "Snackbar.code-workspace",
-                "Snackbar.command",
-                "Dev-Launch.command",
-                "Resources/Snackbar.entitlements",
-                "Resources/Snackbar.sdef",
-                "Sources/Core",
-                "Sources/macOS",
-                "Sources/EnhancedSnackbar",
-                "Sources/CompleteSnackbar",
-                "Sources/SimpleSnackbar",
-                "Sources/MainSpine"
-            ],
-            sources: ["Sources/Snackbar"],
-            resources: [
-                .process("Resources/categories.json"),
-                .process("Resources/snacks.json"),
-                .process("Resources/ABOUT.md")
+                "Core/AppDelegate.swift",
+                "Core/FeedManager.swift",
+                "Core/HivemindClient.swift",
+                "Core/MenuBuilder.swift",
+                "Core/PermissionsManager.swift",
+                "Core/SnackExecutor.swift",
+                "Core/SnackScheduler.swift",
+                "Core/UbuntuProxy.swift",
+                "Core/UpdateChecker.swift",
+                "Core/XcodeBuildService.swift",
+                "Managers/",
+                "Models/Category.swift",
+                "Models/FeedEntry.swift",
+                "Models/Schedule.swift",
+                "Models/Snack.swift",
+                "Models/uDosComponent.swift",
+                "Utils/",
+                "Views/"
             ]
-        ),
+        )
     ]
 )
