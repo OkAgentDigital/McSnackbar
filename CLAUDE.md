@@ -75,6 +75,7 @@ Package.swift — 4 targets:
 ```bash
 cd ~/Code/Apps/Snackbar
 swift build
+swift test
 swift run
 # Or: ./build_and_run.sh
 ```
