@@ -27,10 +27,8 @@ public class HivemindClient: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     public init(baseURL: String? = nil) {
-        // Try to load from ConfigManager first
-        let configManager = ConfigManager.shared
-        let hivemindConfig = configManager.getHivemindConfig()
-        self.baseURL = baseURL ?? "http://localhost:\(hivemindConfig.port)"
+        // Default: localhost:30000 (HivemindRust default port)
+        self.baseURL = baseURL ?? "http://localhost:30000"
 
         let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 10
@@ -306,8 +304,11 @@ public struct MCPTool: Codable, Identifiable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(description, forKey: .description)
-        if let schema = inputSchema {
-            try container.encode(schema, forKey: .inputSchema)
+        // inputSchema is [String: Any]? — encode as JSON data string
+        if let schema = inputSchema,
+           let data = try? JSONSerialization.data(withJSONObject: schema),
+           let jsonString = String(data: data, encoding: .utf8) {
+            try container.encode(jsonString, forKey: .inputSchema)
         }
     }
 }
@@ -395,14 +396,14 @@ extension Result {
 extension KeyedDecodingContainer {
     func decode(_ type: [String: Any].Type, forKey key: KeyedDecodingContainer.Key) throws -> [String: Any] {
         let container = try self.nestedContainer(keyedBy: AnyCodingKey.self, forKey: key)
-        return try container.decode([String: Any].self)
+        return try container.decodeAnyDict()
     }
 }
 
 extension UnkeyedDecodingContainer {
     mutating func decode(_ type: [String: Any].Type) throws -> [String: Any] {
         let container = try self.nestedContainer(keyedBy: AnyCodingKey.self)
-        return try container.decode([String: Any].self)
+        return try container.decodeAnyDict()
     }
 }
 
@@ -417,7 +418,8 @@ struct AnyCodingKey: CodingKey {
 }
 
 extension KeyedDecodingContainer where Key == AnyCodingKey {
-    func decode(_ type: [String: Any].Type) throws -> [String: Any] {
+    /// Decode a [String: Any] dictionary by iterating all keys and trying each type.
+    func decodeAnyDict() throws -> [String: Any] {
         var dict = [String: Any]()
         for key in self.allKeys {
             if let boolVal = try? self.decode(Bool.self, forKey: key) {
@@ -428,20 +430,25 @@ extension KeyedDecodingContainer where Key == AnyCodingKey {
                 dict[key.stringValue] = doubleVal
             } else if let stringVal = try? self.decode(String.self, forKey: key) {
                 dict[key.stringValue] = stringVal
-            } else if let nestedDict = try? self.decode([String: Any].self, forKey: key) {
+            } else if let nestedDict = try? self.decodeAnyDict(forKey: key) {
                 dict[key.stringValue] = nestedDict
-            } else if let nestedArray = try? self.decode([Any].self, forKey: key) {
+            } else if let nestedArray = try? self.decodeAnyArray(forKey: key) {
                 dict[key.stringValue] = nestedArray
             }
         }
         return dict
     }
-}
 
-extension KeyedDecodingContainer where Key == AnyCodingKey {
-    func decode(_ type: [Any].Type) throws -> [Any] {
+    /// Decode a nested [String: Any] dictionary for a specific key.
+    func decodeAnyDict(forKey key: Key) throws -> [String: Any] {
+        let nested = try self.nestedContainer(keyedBy: AnyCodingKey.self, forKey: key)
+        return try nested.decodeAnyDict()
+    }
+
+    /// Decode a [Any] array for a specific key.
+    func decodeAnyArray(forKey key: Key) throws -> [Any] {
+        var container = try self.nestedUnkeyedContainer(forKey: key)
         var array = [Any]()
-        var container = try self.nestedUnkeyedContainer(forKey: AnyCodingKey("_"))
         while !container.isAtEnd {
             if let boolVal = try? container.decode(Bool.self) {
                 array.append(boolVal)
@@ -451,10 +458,18 @@ extension KeyedDecodingContainer where Key == AnyCodingKey {
                 array.append(doubleVal)
             } else if let stringVal = try? container.decode(String.self) {
                 array.append(stringVal)
-            } else if let nestedDict = try? container.decode([String: Any].self) {
+            } else if let nestedDict = try? container.decodeAnyDict() {
                 array.append(nestedDict)
             }
         }
         return array
+    }
+}
+
+extension UnkeyedDecodingContainer {
+    /// Decode a [String: Any] dictionary from an unkeyed container.
+    mutating func decodeAnyDict() throws -> [String: Any] {
+        let container = try self.nestedContainer(keyedBy: AnyCodingKey.self)
+        return try container.decodeAnyDict()
     }
 }

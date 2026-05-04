@@ -35,17 +35,13 @@ public class UbuntuProxy: ObservableObject {
         ollamaPort: Int? = nil,
         hivemindPort: Int? = nil
     ) {
-        // Try to load from ConfigManager first
-        let configManager = ConfigManager.shared
-        let sshConfig = configManager.getUbuntuSSHConfig()
-        let hivemindConfig = configManager.getHivemindConfig()
-
-        self.sshHost = sshHost ?? sshConfig.host
-        self.sshUser = sshUser ?? sshConfig.user
-        self.sshPort = sshPort ?? sshConfig.port
-        self.sshIdentityFile = (sshIdentityFile ?? sshConfig.identityFile as NSString).expandingTildeInPath
+        // Defaults: wizard@192.168.20.11:22
+        self.sshHost = sshHost ?? "192.168.20.11"
+        self.sshUser = sshUser ?? "wizard"
+        self.sshPort = sshPort ?? 22
+        self.sshIdentityFile = (sshIdentityFile as NSString? ?? "~/.ssh/id_rsa" as NSString).expandingTildeInPath
         self.ollamaPort = ollamaPort ?? 11434
-        self.hivemindPort = hivemindPort ?? hivemindConfig.port
+        self.hivemindPort = hivemindPort ?? 30000
 
 
         let config = URLSessionConfiguration.default

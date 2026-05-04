@@ -1,129 +1,106 @@
-# 🍔 Snackbar - Project Structure
-
-## 📁 Simplified Structure
+# Snackbar Project Structure
 
 ```
 Snackbar/
-├── Package.swift            # Swift Package Manager configuration
+├── Package.swift                          # Swift Package Manager (3 targets + tests)
+├── config.yaml                            # Runtime configuration
+├── project.yml                            # XcodeGen project spec
+│
 ├── Sources/
-│   └── Snackbar/           # Main application source code
-│       ├── Models/        # Data models
-│       │   ├── Category.swift
-│       │   ├── FeedEntry.swift
-│       │   ├── Schedule.swift
-│       │   └── Snack.swift
-│       ├── Core/           # Core components
-│       │   ├── AppDelegate.swift
-│       │   ├── FeedManager.swift
-│       │   ├── MenuBuilder.swift
-│       │   ├── PermissionsManager.swift
-│       │   ├── SnackExecutor.swift
-│       │   └── SnackScheduler.swift
-│       └── main.swift      # Entry point (empty - uses @main)
-├── Resources/              # Application resources
-│   ├── ABOUT.md           # About information
-│   ├── categories.json    # Snack categories
-│   └── snacks.json        # Built-in snacks
-├── Snackbar.command       # Double-clickable launcher
-├── launch.sh             # Original launch script
-├── LAUNCH_INSTRUCTIONS.md # Launch instructions
-├── PROJECT_STRUCTURE.md  # This file
-├── README.md             # Project overview
-└── SNACKBAR_SUMMARY.md    # Complete summary
+│   ├── Snackbar/                          # 🍔 macOS Menu Bar App (executable)
+│   │   ├── main.swift                     # Entry point: NSApplication.run()
+│   │   ├── Core/
+│   │   │   ├── AppDelegateV2.swift        # App lifecycle, menu bar setup, preferences
+│   │   │   ├── FeedManager.swift          # Execution logging + LeChat Pro API
+│   │   │   ├── HivemindClient.swift       # HTTP JSON-RPC MCP client → HivemindRust:30000
+│   │   │   ├── MCPServer.swift            # Native MCP server (port 8765, Apple 2024-11-05)
+│   │   │   ├── MenuBuilder.swift          # Menu bar construction
+│   │   │   ├── NuggetManager.swift        # .nug archive pack/unpack
+│   │   │   ├── RulesManager.swift         # Automation rules CRUD + triggers
+│   │   │   ├── SnackExecutorV2.swift      # AppleScript + shell runtime
+│   │   │   ├── SnackManager.swift         # Snack CRUD, .snack YAML parsing
+│   │   │   ├── SpoolManager.swift         # Append-only JSONL ledger
+│   │   │   ├── TaskManager.swift          # Ordered task scheduling + retry
+│   │   │   ├── UbuntuProxy.swift          # SSH proxy → wizard@192.168.20.11
+│   │   │   ├── UpdateChecker.swift        # GitHub release version check
+│   │   │   └── XcodeBuildService.swift    # Build Xcode/Rust projects
+│   │   └── Models/
+│   │       ├── SpoolEntry.swift           # Spool ledger entry model
+│   │       └── uDosComponent.swift        # (deprecated — kept for reference)
+│   │
+│   ├── Core/                              # 📚 SnackbarCore Library
+│   │   ├── Models/
+│   │   │   ├── DevToolsConfig.swift       # DevStudio configuration model
+│   │   │   └── Note.swift                 # Note model for iCloud sync
+│   │   └── Services/
+│   │       ├── DevStudioConfigManager.swift  # DevStudio config management
+│   │       ├── DevStudioSkillTrigger.swift   # Trigger DevStudio skills
+│   │       ├── DevToolsManager.swift         # DevTools orchestration
+│   │       ├── MCPClient.swift               # MCP client for DevStudio
+│   │       ├── NoteManager.swift             # Note CRUD + iCloud sync
+│   │       ├── SyncStatusMonitor.swift       # iCloud sync status tracking
+│   │       └── iCloudSyncManager.swift       # iCloud sync orchestration
+│   │
+│   └── macOS/                            # 🎯 SnackbarAutomations
+│       ├── Automations/
+│       │   ├── CreateNoteIntent.swift         # Shortcuts intent
+│       │   ├── SnackbarAppleScriptHandler.swift # AppleScript handler
+│       │   ├── SnackbarShortcuts.swift        # Shortcuts integration
+│       │   ├── SyncNotesIntent.swift          # Shortcuts intent
+│       │   └── TriggerDevStudioSkillIntent.swift # Shortcuts intent
+│       └── UI/
+│           ├── ContentView.swift              # SwiftUI preferences view
+│           └── SnackbarApp.swift              # SwiftUI app entry
+│
+├── Resources/
+│   ├── Info.plist                         # App info
+│   ├── Snackbar.entitlements              # Sandbox entitlements
+│   ├── Snackbar.sdef                      # Scripting definition
+│   ├── SnackbarCore-Info.plist            # Core library info
+│   ├── categories.json                    # Snack categories
+│   ├── snacks.json                        # Default snacks
+│   ├── ABOUT.md                           # About content
+│   ├── AppIcon.icns                       # App icon
+│   └── XcodeExternalAgent.plist           # Xcode agent config
+│
+├── Scripts/
+│   ├── build-snackbar.sh                  # Build script
+│   ├── bump-version.sh                    # Version bump
+│   ├── create-dmg.sh                      # DMG packaging
+│   └── deploy.sh                          # Deployment script
+│
+├── Tests/
+│   └── NoteManagerTests.swift             # Unit tests
+│
+├── Snackbar.xcodeproj/                    # Xcode project (XcodeGen generated)
+│
+├── ROADMAP.md                             # 🗺️ Project roadmap
+├── V2_UPGRADE_PLAN.md                     # ✅ V2 consolidation plan
+├── CONSOLIDATED_SUMMARY.md                # 📋 Architecture summary
+├── SNACKBAR_SUMMARY.md                    # 📝 Feature summary
+├── CLAUDE.md                              # 🤖 AI assistant context
+├── LAUNCH_INSTRUCTIONS.md                 # 🚀 Launch guide
+└── README.md                              # 📖 Project readme
 ```
 
-## 🎯 Design Philosophy
+## Target Dependencies
 
-**"One product with multiple 'snacks'"** - This structure reflects the core concept:
+```
+Snackbar (executable)
+  └── SnackbarCore (library)
+       └── (none — pure Swift)
 
-- **Snackbar** = The main application (menu bar app)
-- **Snacks** = Individual automation scripts (AppleScript/shell)
-- **Categories** = Organization system for snacks
+SnackbarAutomations (library)
+  └── SnackbarCore (library)
 
-## 🔧 Key Components
-
-### Models
-- **Snack**: Represents an individual automation script
-- **Category**: Organizes snacks by type (Productivity, Communication, etc.)
-- **Schedule**: Time-based execution rules
-- **FeedEntry**: Execution logging and history
-
-### Core Systems
-- **AppDelegate**: Main application lifecycle manager
-- **MenuBuilder**: Constructs the dynamic menu bar menu
-- **SnackExecutor**: Executes AppleScript and shell scripts
-- **FeedManager**: Logs execution history
-- **SnackScheduler**: Handles scheduled execution
-- **PermissionsManager**: Manages macOS permissions
-
-### Resources
-- **snacks.json**: Built-in automation scripts
-- **categories.json**: Category definitions with emojis and colors
-- **ABOUT.md**: Application information
-
-## 🚀 Launch Methods
-
-### 1. Double-Click (Recommended)
-Double-click `Snackbar.command` in Finder
-
-### 2. Terminal
-```bash
-cd /Users/fredbook/Code/Apps/Snackbar
-./Snackbar.command
+SnackbarTests (test)
+  └── SnackbarCore (library)
 ```
 
-### 3. Direct Swift
-```bash
-cd /Users/fredbook/Code/Apps/Snackbar
-swift run
-```
+## Key Ports
 
-## 📋 Development Workflow
-
-### Build
-```bash
-swift build
-```
-
-### Run
-```bash
-swift run
-```
-
-### Clean
-```bash
-swift package clean
-```
-
-### Test
-```bash
-swift test
-```
-
-## 🎨 Architecture Principles
-
-1. **Single Responsibility**: Each component has one clear purpose
-2. **Modular Design**: Easy to add/remove features
-3. **Resource Fallback**: Graceful degradation if resources missing
-4. **Error Handling**: Comprehensive error management
-5. **Extensibility**: Designed for future growth
-
-## 🔮 Future Expansion
-
-The structure supports adding:
-- **New Snack Types**: Add to snacks.json or create programmatically
-- **New Categories**: Add to categories.json
-- **New Features**: Add new Core components
-- **New Views**: Add SwiftUI windows as needed
-
-## 📚 File Purpose Guide
-
-- **Package.swift**: Swift Package Manager configuration
-- **Snackbar.command**: User-friendly double-click launcher
-- **launch.sh**: Original bash launch script
-- **LAUNCH_INSTRUCTIONS.md**: Step-by-step launch guide
-- **PROJECT_STRUCTURE.md**: This file - structure documentation
-- **README.md**: Project overview and status
-- **SNACKBAR_SUMMARY.md**: Complete feature summary
-
-**Everything is organized, clean, and ready for expansion!** 🍔🚀
+| Service | Port | Protocol |
+|---------|------|----------|
+| MCP Server (native Swift) | 8765 | HTTP SSE (Apple 2024-11-05) |
+| Hivemind (Rust MCP gateway) | 30000 | HTTP JSON-RPC |
+| Ubuntu backend (SSH) | 22 | SSH |

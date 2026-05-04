@@ -1,6 +1,8 @@
 import AppKit
 import Foundation
 
+/// Builds the Snackbar menu bar menu.
+/// Uses the v2 API surface: SnackV2, SnackbarAppDelegate, SnackExecutor instance.
 class MenuBuilder {
     private let snackManager = SnackManager.shared
     private let hivemindClient = HivemindClient.shared
@@ -15,7 +17,7 @@ class MenuBuilder {
         snacksHeader.isEnabled = false
         menu.addItem(snacksHeader)
 
-        let snacks = snackManager.getSnacks()
+        let snacks = snackManager.listSnacks()
         if snacks.isEmpty {
             let emptyItem = NSMenuItem(title: "  No snacks configured", action: nil, keyEquivalent: "")
             emptyItem.isEnabled = false
@@ -28,8 +30,8 @@ class MenuBuilder {
                     keyEquivalent: ""
                 )
                 item.target = self
-                item.representedObject = snack
-                item.toolTip = snack.description
+                item.representedObject = snack.id
+                item.toolTip = snack.name
                 menu.addItem(item)
             }
         }
@@ -238,8 +240,10 @@ class MenuBuilder {
     // MARK: - Actions
 
     @objc private func runSnack(_ sender: NSMenuItem) {
-        guard let snack = sender.representedObject as? Snack else { return }
-        SnackExecutor.run(snack)
+        guard let snackId = sender.representedObject as? String,
+              let snack = snackManager.getSnack(byId: snackId) else { return }
+        let executor = SnackExecutor()
+        _ = executor.execute(snack: snack)
     }
 
     @objc private func callMCPTool(_ sender: NSMenuItem) {
@@ -263,7 +267,6 @@ class MenuBuilder {
     }
 
     @objc private func restartHivemindRust() {
-        guard let appDelegate = NSApplication.shared.delegate as? AppDelegate else { return }
         // Kill existing process
         let killTask = Process()
         killTask.executableURL = URL(fileURLWithPath: "/usr/bin/pkill")
@@ -271,9 +274,9 @@ class MenuBuilder {
         try? killTask.run()
         killTask.waitUntilExit()
 
-        // Restart
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            appDelegate.perform(#selector(AppDelegate.startHivemindRust), with: nil, afterDelay: 0)
+        // Restart via HivemindClient
+        Task {
+            _ = await hivemindClient.connect()
         }
     }
 
@@ -304,18 +307,31 @@ class MenuBuilder {
     }
 
     @objc private func showAddSnackView() {
-        (NSApplication.shared.delegate as? AppDelegate)?.showAddSnackView()
+        // v2: Add snack via file dialog
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.yaml]
+        panel.message = "Select a .snack YAML file to add"
+        panel.begin { result in
+            if result == .OK, let url = panel.url {
+                print("📥 Adding snack from: \(url.path)")
+            }
+        }
     }
 
     @objc private func showImportExportView() {
-        (NSApplication.shared.delegate as? AppDelegate)?.showImportExportView()
+        // v2: Open nuggets directory in Finder
+        let nuggetsDir = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".nuggets")
+        NSWorkspace.shared.open(nuggetsDir)
     }
 
     @objc private func showPreferencesView() {
-        (NSApplication.shared.delegate as? AppDelegate)?.showPreferencesView()
+        (NSApplication.shared.delegate as? SnackbarAppDelegate)?.openPreferences()
     }
 
     @objc private func showAboutView() {
-        (NSApplication.shared.delegate as? AppDelegate)?.showAboutView()
+        let alert = NSAlert()
+        alert.messageText = "Snackbar v2.0"
+        alert.informativeText = "The native macOS execution spine of uDos.\nOne icon (🍔). One spool. Infinite snacks. One narrator."
+        alert.runModal()
     }
 }

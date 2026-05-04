@@ -89,7 +89,7 @@ class MCPServer: ObservableObject {
     private func handleRequest(_ data: Data, on connection: NWConnection) {
         guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               let method = json["method"] as? String else {
-            sendError(connection, code: -32700, message: "Parse error")
+            sendError(connection, id: "0", code: -32700, message: "Parse error")
             return
         }
         

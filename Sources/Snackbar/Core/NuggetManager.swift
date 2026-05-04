@@ -1,4 +1,5 @@
 import Foundation
+import CommonCrypto
 
 /// Manages Nugget archives (.nug) — compressed, restorable snack archives.
 /// Format: gzipped tarball containing snack.yaml, manifest.json, code/, checksum.sha256

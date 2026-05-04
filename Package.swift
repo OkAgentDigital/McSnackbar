@@ -7,34 +7,42 @@ let package = Package(
         .macOS(.v14)
     ],
     products: [
-        .executable(name: "Snackbar", targets: ["Snackbar"])
+        .executable(name: "Snackbar", targets: ["Snackbar"]),
+        .library(name: "SnackbarCore", targets: ["SnackbarCore"])
     ],
     dependencies: [],
     targets: [
+        // ─── SnackbarCore Library ────────────────────────────────────────────
+        // DevStudio integration: iCloud sync, note management, MCP client, skill triggering
+        .target(
+            name: "SnackbarCore",
+            dependencies: [],
+            path: "Sources/Core",
+            exclude: []
+        ),
+
+        // ─── Snackbar Executable ─────────────────────────────────────────────
+        // The native macOS runtime for uDos — menu bar app with MCP server, spool, scheduler
         .executableTarget(
             name: "Snackbar",
-            dependencies: [],
+            dependencies: ["SnackbarCore"],
             path: "Sources/Snackbar",
-            exclude: [
-                "Core/AppDelegate.swift",
-                "Core/FeedManager.swift",
-                "Core/HivemindClient.swift",
-                "Core/MenuBuilder.swift",
-                "Core/PermissionsManager.swift",
-                "Core/SnackExecutor.swift",
-                "Core/SnackScheduler.swift",
-                "Core/UbuntuProxy.swift",
-                "Core/UpdateChecker.swift",
-                "Core/XcodeBuildService.swift",
-                "Managers/",
-                "Models/Category.swift",
-                "Models/FeedEntry.swift",
-                "Models/Schedule.swift",
-                "Models/Snack.swift",
-                "Models/uDosComponent.swift",
-                "Utils/",
-                "Views/"
-            ]
+            exclude: []
+        ),
+
+        // ─── macOS Shortcuts & Automations ───────────────────────────────────
+        .target(
+            name: "SnackbarAutomations",
+            dependencies: ["SnackbarCore"],
+            path: "Sources/macOS",
+            exclude: []
+        ),
+
+        // ─── Tests ───────────────────────────────────────────────────────────
+        .testTarget(
+            name: "SnackbarTests",
+            dependencies: ["SnackbarCore"],
+            path: "Tests"
         )
     ]
 )

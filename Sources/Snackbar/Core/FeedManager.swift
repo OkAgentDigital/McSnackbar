@@ -1,33 +1,31 @@
 import Foundation
 
+/// Manages execution feed logging and external API integration.
+/// v2: Uses SpoolManager for local logging, supports LeChat Pro API for remote logging.
 class FeedManager {
-    private let configManager = ConfigManager.shared
+    static let shared = FeedManager()
     
-    func logExecution(_ entry: FeedEntry) {
-        // Log to local feed
-        print("📝 Logging execution: \(entry.snackName) - \(entry.success ? "Success" : "Failed")")
+    private init() {}
+    
+    /// Log a snack execution to the feed.
+    /// - Parameters:
+    ///   - snackName: Name of the executed snack
+    ///   - success: Whether execution succeeded
+    ///   - output: Execution output text
+    func logExecution(snackName: String, success: Bool, output: String) {
+        print("📝 Feed: \(snackName) - \(success ? "✅ Success" : "❌ Failed")")
         
-        // Send to LeChat Pro API if enabled
-        if configManager.isLeChatEnabled() {
-            sendToLeChatAPI(entry: entry)
+        // Send to LeChat Pro API if configured
+        if let apiKey = ProcessInfo.processInfo.environment["LECHAT_API_KEY"],
+           let apiURL = ProcessInfo.processInfo.environment["LECHAT_API_URL"] {
+            sendToLeChatAPI(apiKey: apiKey, apiURL: apiURL, snackName: snackName, success: success, output: output)
         }
-        
-        // In a full implementation, this would:
-        // 1. Save to local feed file
-        // 2. Send to uDos MCP server if enabled
-        // 3. Handle errors gracefully
     }
     
-    private func sendToLeChatAPI(entry: FeedEntry) {
-        guard let apiKey = configManager.getLeChatAPIKey(),
-              let apiURL = configManager.getLeChatAPIURL() else {
-            print("❌ LeChat API not configured")
-            return
-        }
-        
+    private func sendToLeChatAPI(apiKey: String, apiURL: String, snackName: String, success: Bool, output: String) {
         let urlString = "\(apiURL)/log"
         guard let url = URL(string: urlString) else {
-            print("❌ Invalid LeChat API URL")
+            print("❌ FeedManager: Invalid LeChat API URL")
             return
         }
         
@@ -37,8 +35,9 @@ class FeedManager {
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         
         let payload: [String: Any] = [
-            "snackName": entry.snackName,
-            "success": entry.success,
+            "snackName": snackName,
+            "success": success,
+            "output": output,
             "timestamp": ISO8601DateFormatter().string(from: Date())
         ]
         
@@ -48,22 +47,19 @@ class FeedManager {
             
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
                 if let error = error {
-                    print("❌ LeChat API error: \(error.localizedDescription)")
+                    print("❌ FeedManager: LeChat API error: \(error.localizedDescription)")
                     return
                 }
-                
                 if let httpResponse = response as? HTTPURLResponse,
                    !(200...299).contains(httpResponse.statusCode) {
-                    print("❌ LeChat API response error: \(httpResponse.statusCode)")
+                    print("❌ FeedManager: LeChat API response error: \(httpResponse.statusCode)")
                     return
                 }
-                
-                print("✅ LeChat API log sent successfully")
+                print("✅ FeedManager: LeChat API log sent successfully")
             }
-            
             task.resume()
         } catch {
-            print("❌ Failed to serialize LeChat API payload: \(error.localizedDescription)")
+            print("❌ FeedManager: Failed to serialize payload: \(error.localizedDescription)")
         }
     }
 }

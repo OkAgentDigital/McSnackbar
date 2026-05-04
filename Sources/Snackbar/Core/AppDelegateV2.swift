@@ -172,7 +172,7 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
         rebuildMenu()
     }
     
-    @objc private func openPreferences() {
+    @objc func openPreferences() {
         if preferencesWindow == nil {
             let prefsView = PreferencesView()
             preferencesWindow = NSWindow(

@@ -229,6 +229,7 @@ struct ScheduledTask: Codable, Identifiable {
     var retry: TaskRetry
     var onComplete: [TaskCompletion]
     var params: [String: String]?
+    var retryCount: Int = 0
     
     enum CodingKeys: String, CodingKey {
         case id, name, description, status, priority, created, updated, due
@@ -237,6 +238,7 @@ struct ScheduledTask: Codable, Identifiable {
         case skillName = "skill_name"
         case executionOrder = "execution_order"
         case onComplete = "on_complete"
+        case retryCount = "retry_count"
     }
 }
 
