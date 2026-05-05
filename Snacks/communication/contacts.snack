@@ -1,0 +1,11 @@
+# Snack: Contacts
+id: contacts
+name: Contacts
+description: Open the Contacts app.
+emoji: "👥"
+runtime: appleScript
+categoryId: communication
+isEnabled: true
+
+code: |
+  tell application "Contacts" to activate

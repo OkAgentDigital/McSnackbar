@@ -1,0 +1,105 @@
+{
+  "folders": [
+    {
+      "name": "Snackbar",
+      "path": "/Users/fredbook/Code/Apps/Snackbar"
+    },
+    {
+      "path": "/Users/fredbook/Vault"
+    },
+    {
+      "path": "/Users/fredbook/Code/DevStudio",
+      "name": "DevStudio"
+    },
+    {
+      "path": "/Users/fredbook/Code/uDosGo"
+    },
+    {
+      "path": "/Users/fredbook/Code/OkAgentDigital"
+    }
+  ],
+  "settings": {
+    "files.associations": {
+      "*.snack": "yaml"
+    }
+  },
+  "launch": {
+    "configurations": [
+      {
+        "type": "swift",
+        "request": "launch",
+        "args": [],
+        "cwd": "${workspaceFolder:Snackbar}",
+        "name": "Debug Snackbar (Snackbar)",
+        "target": "Snackbar",
+        "configuration": "debug",
+        "preLaunchTask": "swift: Build Debug Snackbar (Snackbar)"
+      },
+      {
+        "type": "swift",
+        "request": "launch",
+        "args": [],
+        "cwd": "${workspaceFolder:Snackbar}",
+        "name": "Release Snackbar (Snackbar)",
+        "target": "Snackbar",
+        "configuration": "release",
+        "preLaunchTask": "swift: Build Release Snackbar (Snackbar)"
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "type": "shell",
+        "label": "\ud83c\udf54 Dev Launch",
+        "command": "cd ${workspaceFolder:Snackbar} && ./Dev-Launch.command",
+        "group": "test",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        }
+      },
+      {
+        "type": "shell",
+        "label": "\ud83c\udf54 Dev Stop",
+        "command": "cd ${workspaceFolder:Snackbar} && ./Dev-Launch.command --stop",
+        "group": "test"
+      },
+      {
+        "type": "shell",
+        "label": "\ud83c\udf54 Dev Rebuild & Launch",
+        "command": "cd ${workspaceFolder:Snackbar} && ./Dev-Launch.command --rebuild",
+        "group": "build"
+      },
+      {
+        "type": "shell",
+        "label": "\ud83c\udf54 Build Snacks Library",
+        "command": "cd ${workspaceFolder:Snackbar} && ./Scripts/build-snacks-library.sh",
+        "group": "build"
+      },
+      {
+        "type": "shell",
+        "label": "\ud83c\udf54 Dev Status",
+        "command": "cd ${workspaceFolder:Snackbar} && ./Dev-Launch.command --status",
+        "group": "test"
+      },
+      {
+        "type": "shell",
+        "label": "\ud83c\udf54 Install Login Agent",
+        "command": "cd ${workspaceFolder:Snackbar} && ./Dev-Launch.command install-agent",
+        "group": "none"
+      },
+      {
+        "type": "shell",
+        "label": "\ud83c\udf54 View Dev Logs",
+        "command": "cd ${workspaceFolder:Snackbar} && ./Dev-Launch.command --logs",
+        "group": "test",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+# Snack: Open MCP Gateway
+id: open_mcp_gateway
+name: Open MCP Gateway
+description: Open/check the local Hivemind MCP Gateway
+emoji: "🧠"
+runtime: shell
+categoryId: udos
+isEnabled: true
+
+code: |
+  open http://localhost:30000

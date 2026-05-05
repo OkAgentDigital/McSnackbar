@@ -1,0 +1,11 @@
+# Snack: Mail VIP
+id: mail_vip
+name: Mail VIP
+description: Count VIP emails in your inbox.
+emoji: "✉️"
+runtime: appleScript
+categoryId: communication
+isEnabled: true
+
+code: |
+  tell application "Mail" to set vipCount to count of messages of inbox whose is VIP is true

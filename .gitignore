@@ -11,13 +11,16 @@ build_output.txt
 # macOS
 .DS_Store
 
-# Editor files
-*.code-workspace
-
-# App bundles
-dev/
-release/
-
 # Air
 .air/
 
+# Dev mode temp files
+/tmp/snackbar-*.log
+/tmp/snackbar-*.pid
+
+# Menu bar icons (generated from snackbar-icon-outline.png)
+Resources/MenuBarIcon*.png
+Sources/Snackbar/Resources/
+
+# LaunchAgent (installed to ~/Library, not repo)
+com.udos.snackbar.dev.plist

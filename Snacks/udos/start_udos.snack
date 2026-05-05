@@ -1,0 +1,11 @@
+# Snack: Start uDos
+id: start_udos
+name: Start uDos
+description: Start Hivemind MCP Gateway, ThinUI, and related services
+emoji: "🚀"
+runtime: shell
+categoryId: udos
+isEnabled: true
+
+code: |
+  $UDOS_CODE/start-udos.sh

@@ -1,0 +1,11 @@
+# Snack: Calendar
+id: calendar
+name: Calendar
+description: Open the Calendar app.
+emoji: "📅"
+runtime: appleScript
+categoryId: productivity
+isEnabled: true
+
+code: |
+  tell application "Calendar" to activate

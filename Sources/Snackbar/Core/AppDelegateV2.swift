@@ -55,10 +55,28 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         
         if let button = statusItem.button {
-            button.title = "🍔"
+            // Use template image for native light/dark mode support
+            if let image = loadMenuBarIcon() {
+                button.image = image
+                button.image?.size = NSSize(width: 18, height: 18)
+            } else {
+                // Fallback to emoji if image not found
+                button.title = "🍔"
+            }
             button.action = #selector(menuBarClicked)
             button.target = self
         }
+    }
+    
+    /// Load the menu bar icon as a template image (adapts to light/dark mode)
+    private func loadMenuBarIcon() -> NSImage? {
+        // Try loading from main bundle Resources first, then fallback paths
+        let image = NSImage(named: "MenuBarIcon")
+            ?? NSImage(contentsOfFile: Bundle.main.path(forResource: "MenuBarIcon", ofType: "png") ?? "")
+            ?? NSImage(contentsOfFile: Bundle.main.path(forResource: "MenuBarIcon@2x", ofType: "png") ?? "")
+        
+        image?.isTemplate = true
+        return image
     }
     
     @objc private func menuBarClicked() {
