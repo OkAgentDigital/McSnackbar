@@ -1,6 +1,12 @@
 {
-  "hivemind": {
-    "type": "http",
-    "url": "http://localhost:30000"
+  "mcpServers": {
+    "snackbar": {
+      "type": "http",
+      "url": "http://localhost:8765"
+    },
+    "hivemind": {
+      "type": "http",
+      "url": "http://localhost:3010"
+    }
   }
 }

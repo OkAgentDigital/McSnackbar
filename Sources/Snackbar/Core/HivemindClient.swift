@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 /// HTTP MCP client for HivemindRust communication.
-/// Talks to the local HivemindRust server at http://localhost:30000/mcp
+/// Talks to the local HivemindRust server at http://localhost:3010/mcp
 /// using JSON-RPC 2.0 protocol.
 public class HivemindClient: ObservableObject {
     public static let shared = HivemindClient()
@@ -27,8 +27,8 @@ public class HivemindClient: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     public init(baseURL: String? = nil) {
-        // Default: localhost:30000 (HivemindRust default port)
-        self.baseURL = baseURL ?? "http://localhost:30000"
+        // Default: localhost:3010 (HivemindRust default port)
+        self.baseURL = baseURL ?? "http://localhost:3010"
 
         let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 10
@@ -63,7 +63,7 @@ public class HivemindClient: ObservableObject {
     /// Initialize an MCP session.
     public func initialize() async -> Result<MCPInitializeResponse, MCPError> {
         let request = MCPRequest(method: "initialize", params: [:])
-        return await sendRequest(request)
+        return await sendRequestAsync(request)
     }
 
     /// List all available tools from HivemindRust.
@@ -110,7 +110,7 @@ public class HivemindClient: ObservableObject {
     /// Ping the server to check connectivity.
     public func ping() async -> Bool {
         let request = MCPRequest(method: "ping", params: [:])
-        let result: Result<MCPEmptyResponse, MCPError> = await sendRequest(request)
+        let result: Result<MCPEmptyResponse, MCPError> = await sendRequestAsync(request)
         return result.isSuccess
     }
 
@@ -237,7 +237,7 @@ public class HivemindClient: ObservableObject {
     }
 
     /// Async wrapper for sendRequest.
-    private func sendRequest<T: Decodable>(_ request: MCPRequest) async -> Result<T, MCPError> {
+    private func sendRequestAsync<T: Decodable>(_ request: MCPRequest) async -> Result<T, MCPError> {
         return await withCheckedContinuation { continuation in
             sendRequest(request) { (result: Result<T, MCPError>) in
                 continuation.resume(returning: result)

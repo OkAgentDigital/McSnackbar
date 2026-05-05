@@ -140,7 +140,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc func openSettings() {
-        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        let settingsWindow = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 480, height: 360),
+            styleMask: [.titled, .closable, .miniaturizable],
+            backing: .buffered,
+            defer: true
+        )
+        settingsWindow.title = "Snackbar Settings"
+        settingsWindow.contentView = NSHostingView(rootView: SettingsView())
+        settingsWindow.center()
+        settingsWindow.makeKeyAndOrderFront(nil)
+        settingsWindow.isReleasedWhenClosed = false
+        NSApp.activate(ignoringOtherApps: true)
     }
     
     @objc func quitApp() {

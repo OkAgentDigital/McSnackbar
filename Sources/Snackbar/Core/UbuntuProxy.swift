@@ -39,9 +39,13 @@ public class UbuntuProxy: ObservableObject {
         self.sshHost = sshHost ?? "192.168.20.11"
         self.sshUser = sshUser ?? "wizard"
         self.sshPort = sshPort ?? 22
-        self.sshIdentityFile = (sshIdentityFile as NSString? ?? "~/.ssh/id_rsa" as NSString).expandingTildeInPath
+        // Try id_ed25519 first (modern macOS default), fall back to id_rsa
+        let defaultKey = FileManager.default.isExecutableFile(atPath: NSString(string: "~/.ssh/id_ed25519").expandingTildeInPath)
+            ? "~/.ssh/id_ed25519"
+            : "~/.ssh/id_rsa"
+        self.sshIdentityFile = (sshIdentityFile as NSString? ?? defaultKey as NSString).expandingTildeInPath
         self.ollamaPort = ollamaPort ?? 11434
-        self.hivemindPort = hivemindPort ?? 30000
+        self.hivemindPort = hivemindPort ?? 3010
 
 
         let config = URLSessionConfiguration.default

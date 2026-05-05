@@ -28,7 +28,7 @@ public class XcodeBuildService: ObservableObject {
     public let knownProjects: [XcodeProject] = [
         XcodeProject(
             name: "HivemindRust",
-            path: "~/Code/OkAgentDigital/HivemindRust",
+            path: "~/Code/OkAgentDigital/Hivemind",
             scheme: "hivemind-rust",
             type: .rust
         ),

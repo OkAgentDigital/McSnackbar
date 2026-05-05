@@ -1,26 +1,24 @@
-# Build artifacts
-.build/
-build/
-*.log
-build_output.txt
-
-# Xcode
-*.xcworkspace/
-*.xcodeproj/xcuserdata/
-
-# macOS
-.DS_Store
 
 # Air
-.air/
-
+# Build artifacts
 # Dev mode temp files
+# LaunchAgent (installed to ~/Library, not repo)
+# Menu bar icons (generated from snackbar-icon-outline.png)
+# Xcode
+# macOS
+*.log
+*.xcodeproj/xcuserdata/
+*.xcworkspace/
+.DS_Store
+.air/
+.build/
 /tmp/snackbar-*.log
 /tmp/snackbar-*.pid
-
-# Menu bar icons (generated from snackbar-icon-outline.png)
 Resources/MenuBarIcon*.png
+SnackbarSilent.app/Contents/MacOS/
+SnackbarSilent.app/Contents/MacOS/SnackbarLauncher
 Sources/Snackbar/Resources/
-
-# LaunchAgent (installed to ~/Library, not repo)
+Users/
+build/
+build_output.txt
 com.udos.snackbar.dev.plist
