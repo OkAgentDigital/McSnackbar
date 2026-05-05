@@ -98,7 +98,7 @@ class SurfaceManager: ObservableObject {
                 // Extract description from first line or USXD metadata
                 let description = extractDescription(from: content) ?? name
 
-                let isEnabled = savedStates[id] ?? false
+                let isEnabled = savedStates.isEmpty || savedStates[id] ?? true
 
                 return Surface(
                     id: id,
@@ -139,7 +139,7 @@ class SurfaceManager: ObservableObject {
                     description = "DevStudio config: \(name)"
                 }
 
-                let isEnabled = savedStates[id] ?? false
+                let isEnabled = savedStates.isEmpty || savedStates[id] ?? true
 
                 return Surface(
                     id: id,

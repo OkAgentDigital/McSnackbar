@@ -39,11 +39,14 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
         hivemindClient.connect()
         ubuntuProxy.startMonitoring()
         
+        // Auto-discover surfaces
+        surfaceManager.discoverSurfaces()
+        
         if vaultProvider.isAccessible {
             print("Vault: accessible at \(vaultProvider.vaultPath)")
         }
         
-        print("Snackmachine ready — \(snackManager.listSnacks().count) snacks loaded")
+        print("Snackmachine ready — \(snackManager.listSnacks().count) snacks loaded, \(surfaceManager.enabledSurfaces.count) surfaces enabled")
     }
     
     func applicationWillTerminate(_ notification: Notification) {
@@ -139,7 +142,7 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
                 // Submenu: Run / indicator light / last result
                 let sub = NSMenu(title: snack.name)
                 
-                // Run immediately
+                // Run immediately — ENABLED
                 let runItem = sub.addItem(withTitle: "Run Now", action: #selector(runSnack(_:)), keyEquivalent: "")
                 runItem.target = self
                 runItem.representedObject = snack.id
@@ -179,14 +182,6 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
         if !enabledSurfaces.isEmpty {
             menu.addItem(NSMenuItem.separator())
             
-            let surfacesItem = NSMenuItem(title: "Surfaces", action: nil, keyEquivalent: "")
-            surfacesItem.attributedTitle = NSAttributedString(
-                string: "Surfaces",
-                attributes: [.font: NSFont.systemFont(ofSize: 10, weight: .medium),
-                            .foregroundColor: NSColor.secondaryLabelColor])
-            surfacesItem.isEnabled = false
-            menu.addItem(surfacesItem)
-            
             let surfacesSub = NSMenu(title: "Surfaces")
             
             // Group by source
@@ -208,7 +203,7 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
                         keyEquivalent: ""
                     )
                     sItem.target = self
-                    sItem.representedObject = surface.fileURL.path
+                    sItem.representedObject = surface.id  // Pass the surface ID, not file path
                 }
             }
             
@@ -231,7 +226,7 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
                         keyEquivalent: ""
                     )
                     sItem.target = self
-                    sItem.representedObject = surface.fileURL.path
+                    sItem.representedObject = surface.id  // Pass the surface ID, not file path
                 }
             }
             
@@ -348,14 +343,21 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
     
     // MARK: - Surface Actions
     
+    /// Map a surface name to its ThinUI GiftWrapper URL.
+    /// Opens the GiftWrapper component instead of the raw .md file.
     @objc private func openSurface(_ sender: NSMenuItem) {
-        guard let path = sender.representedObject as? String else { return }
+        guard let surfaceId = sender.representedObject as? String else { return }
         
-        // Map surface filename to ThinUI GiftWrapper URL
-        let name = URL(fileURLWithPath: path).deletingPathExtension().lastPathComponent.lowercased()
+        // Find the surface by ID
+        let allSurfaces = surfaceManager.uDosGoSurfaces + surfaceManager.devStudioSurfaces
+        guard let surface = allSurfaces.first(where: { $0.id == surfaceId }) else {
+            print("⚠️ Surface not found: \(surfaceId)")
+            return
+        }
+        
         let thinuiPort = 4687
         
-        // Known surface-to-URL mappings for ThinUI GiftWrapper components
+        // Map surface name to a ThinUI GiftWrapper component URL
         let urlMappings: [String: String] = [
             "dashboard": "/",
             "chat": "/chat",
@@ -367,19 +369,29 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
             "launchpad": "/launchpad",
             "content": "/content",
             "packages": "/packages",
+            "media": "/media",
+            "devstudio": "/devstudio",
         ]
         
-        if let pathComponent = urlMappings[name] {
+        // Normalize the surface name: lowercase, strip spaces/special chars
+        let normalizedName = surface.name
+            .lowercased()
+            .trimmingCharacters(in: .whitespaces)
+            .replacingOccurrences(of: " ", with: "_")
+        
+        if let pathComponent = urlMappings[normalizedName] ?? urlMappings[surface.name.lowercased()] {
             // Open ThinUI GiftWrapper component URL
             let urlStr = "http://localhost:\(thinuiPort)\(pathComponent)"
             if let url = URL(string: urlStr) {
+                print("🎁 Opening GiftWrapper surface: \(surface.name) → \(urlStr)")
                 NSWorkspace.shared.open(url)
+                return
             }
-        } else {
-            // Fallback: open as local file (md, yaml, sh)
-            let url = URL(fileURLWithPath: path)
-            NSWorkspace.shared.open(url)
         }
+        
+        // Fallback: open the surface file directly
+        print("📄 Opening surface file: \(surface.fileURL.path)")
+        NSWorkspace.shared.open(surface.fileURL)
     }
     
     // MARK: - Actions
