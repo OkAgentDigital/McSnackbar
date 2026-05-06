@@ -21,7 +21,7 @@ public class HivemindClient: ObservableObject {
     @Published public private(set) var lastResponse: String = ""
     @Published public private(set) var serverVersion: String = ""
 
-    private let baseURL: String
+    public var baseURL: String
     private let session: URLSession
     private var healthCheckTimer: Timer?
     private var cancellables = Set<AnyCancellable>()

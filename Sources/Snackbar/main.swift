@@ -4,55 +4,59 @@ import Foundation
 // Snackbar v2.0 — Execution Spine of uDos
 // One icon (🍔). One spool. Infinite snacks. One narrator.
 
-// ── Singleton Port Lock ───────────────────────────────────────────────
-// Prevents multiple instances by binding a local TCP port.
-// If the port is already in use, another instance is running → quit.
+// ── Singleton Lock ────────────────────────────────────────────────────
+// Uses a lock file + advisory flock to prevent multiple instances.
+// More reliable than raw TCP sockets — survives crashes, no TIME_WAIT issues,
+// and works correctly with macOS app sandboxing.
 
-private let kSingletonPort: UInt16 = 6_587  // "SNCK" on phone keypad
+private let kSingletonLockFile = "com.udos.snackbar.lock"
 
 private func acquireSingletonLock() -> Bool {
-    let socketFD = socket(AF_INET, SOCK_STREAM, 0)
-    guard socketFD >= 0 else {
-        print("❌ Singleton: failed to create socket")
+    let lockDir = FileManager.default.temporaryDirectory
+    let lockURL = lockDir.appendingPathComponent(kSingletonLockFile)
+    
+    // Open (or create) the lock file
+    let fd = Darwin.open((lockURL.path as NSString).fileSystemRepresentation, O_RDWR | O_CREAT, 0o644)
+    guard fd >= 0 else {
+        print("❌ Singleton: failed to open lock file: \(errno)")
         return false
     }
     
-    // Allow immediate reuse after process death (avoids TIME_WAIT issues)
-    var reuse: Int32 = 1
-    setsockopt(socketFD, SOL_SOCKET, SO_REUSEADDR, &reuse, socklen_t(MemoryLayout<Int32>.size))
+    // Try to acquire an exclusive lock (non-blocking)
+    let result = flock(fd, LOCK_EX | LOCK_NB)
     
-    var addr = sockaddr_in()
-    addr.sin_family = sa_family_t(AF_INET)
-    addr.sin_port = CFSwapInt16HostToBig(kSingletonPort)
-    addr.sin_addr.s_addr = INADDR_LOOPBACK
-    
-    let addrSize = socklen_t(MemoryLayout<sockaddr_in>.size)
-    let bindResult = withUnsafePointer(to: &addr) {
-        $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
-            Darwin.bind(socketFD, $0, addrSize)
+    if result == 0 {
+        // Lock acquired — write our PID to the file for diagnostics
+        let pidStr = "\(ProcessInfo.processInfo.processIdentifier)\n"
+        pidStr.withCString { bytes in
+            Darwin.ftruncate(fd, 0)
+            Darwin.write(fd, bytes, strlen(bytes))
         }
-    }
-    
-    if bindResult == 0 {
-        // Successfully bound → we are the one true instance
-        // Keep the socket open for the lifetime of the process
-        listen(socketFD, 1)
+        // Keep fd open for the lifetime of the process (never close it)
         return true
     } else {
-        let err = errno
-        close(socketFD)
-        if err == EADDRINUSE {
-            // Port already in use → another instance is running
+        Darwin.close(fd)
+        
+        if errno == EWOULDBLOCK || errno == EAGAIN {
+            // Another instance holds the lock
+            if let lockData = try? Data(contentsOf: lockURL),
+               let lockStr = String(data: lockData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines),
+               let existingPID = Int32(lockStr) {
+                print("⚠️ Snackbar is already running (PID: \(existingPID)). Activating existing instance.")
+            } else {
+                print("⚠️ Snackbar is already running. Activating existing instance.")
+            }
+            
+            // Try to activate the existing instance
             let apps = NSWorkspace.shared.runningApplications
             if let existing = apps.first(where: { $0.bundleIdentifier == "com.udos.snackbar" }) {
                 existing.activate()
             }
-            print("⚠️ Snackbar is already running. Exiting.")
+            return false
         } else {
-            print("⚠️ Singleton lock error (\(err)). Proceeding anyway...")
-            return true  // Allow launch on non-EADDRINUSE errors
+            print("⚠️ Singleton lock error (\(errno)). Proceeding anyway...")
+            return true
         }
-        return false
     }
 }
 

@@ -11,6 +11,9 @@ class SnackbarSettings: ObservableObject {
         case autoUpdate      = "snackbar_autoUpdate"
         case lastUpdateCheck = "snackbar_lastUpdateCheck"
         case updateInterval  = "snackbar_updateInterval"
+        case networkDiscovery = "snackbar_networkDiscovery"
+        case mcpPort         = "snackbar_mcpPort"
+        case hivePort        = "snackbar_hivePort"
     }
 
     // MARK: - Published Properties

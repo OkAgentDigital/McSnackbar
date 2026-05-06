@@ -18,6 +18,7 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
     private let hivemindClient = HivemindClient.shared
     private let ubuntuProxy = UbuntuProxy.shared
     private let surfaceManager = SurfaceManager.shared
+    private let bonjourService = BonjourService.shared
     
     // MARK: - Lifecycle
     
@@ -42,11 +43,20 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
         // Auto-discover surfaces
         surfaceManager.discoverSurfaces()
         
+        // Start Bonjour service discovery for multi-machine networking
+        bonjourService.startAdvertising(
+            mcpPort: 8765,
+            hivePort: 3010,
+            instanceName: Host.current().localizedName ?? "Snackbar"
+        )
+        bonjourService.startBrowsing()
+        
         if vaultProvider.isAccessible {
             print("Vault: accessible at \(vaultProvider.vaultPath)")
         }
         
-        print("Snackmachine ready — \(snackManager.listSnacks().count) snacks loaded, \(surfaceManager.enabledSurfaces.count) surfaces enabled")
+        let peerCount = bonjourService.discoveredInstances.count
+        print("Snackmachine ready — \(snackManager.listSnacks().count) snacks loaded, \(surfaceManager.enabledSurfaces.count) surfaces enabled, \(peerCount) network peers")
     }
     
     func applicationWillTerminate(_ notification: Notification) {
@@ -257,6 +267,32 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
         
         addDisabled(" Spool: \(spoolManager.entryCount) entries")
         
+        // ── Network Peers ─────────────────────────────────────────────────
+        let peers = bonjourService.discoveredInstances
+        if !peers.isEmpty {
+            menu.addItem(NSMenuItem.separator())
+            let netItem = NSMenuItem(title: "Network", action: nil, keyEquivalent: "")
+            netItem.isEnabled = false
+            netItem.attributedTitle = NSAttributedString(
+                string: "Network",
+                attributes: [.font: NSFont.systemFont(ofSize: 10, weight: .medium),
+                            .foregroundColor: NSColor.secondaryLabelColor])
+            menu.addItem(netItem)
+            
+            for peer in peers {
+                let peerLED = "●"
+                let peerItem = NSMenuItem(
+                    title: " \(peerLED) \(peer.name)",
+                    action: #selector(openPeerURL(_:)),
+                    keyEquivalent: ""
+                )
+                peerItem.target = self
+                peerItem.representedObject = peer.mcpURL
+                peerItem.toolTip = "MCP: \(peer.mcpURL) | Hive: \(peer.hiveURL)"
+                menu.addItem(peerItem)
+            }
+        }
+        
         menu.addItem(NSMenuItem.separator())
         
         // ── Footer ────────────────────────────────────────────────────────
@@ -427,6 +463,12 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
         © OkAgentDigital
         """
         alert.runModal()
+    }
+    
+    @objc private func openPeerURL(_ sender: NSMenuItem) {
+        guard let urlStr = sender.representedObject as? String,
+              let url = URL(string: urlStr) else { return }
+        NSWorkspace.shared.open(url)
     }
     
     @objc private func openSettings() {

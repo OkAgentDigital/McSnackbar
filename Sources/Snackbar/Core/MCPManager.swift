@@ -37,6 +37,7 @@ class MCPManager: ObservableObject {
     private var hivemindProcess: Process?
     private var healthCheckTimer: Timer?
     private let fileManager = FileManager.default
+    private let hivemindClient = HivemindClient.shared
 
     private init() {
         checkXcodeBridgeAvailability()
@@ -353,6 +354,52 @@ class MCPManager: ObservableObject {
             print("❌ Failed to write Xcode MCP config: \(error.localizedDescription)")
             return false
         }
+    }
+
+    // MARK: - Remote Peer Connection
+    
+    /// Connect to a remote Snackbar peer's MCP server discovered via Bonjour.
+    /// - Parameter peer: The peer to connect to.
+    func connectToPeer(_ peer: SnackbarPeer) {
+        print("🔗 Connecting to remote Snackbar peer: \(peer.name) at \(peer.mcpURL)")
+        
+        // Update HivemindClient to point to the remote peer
+        if peer.hasMCPServer {
+            hivemindClient.baseURL = peer.mcpURL
+            hivemindClient.connect()
+            print("✅ Connected to remote MCP server: \(peer.mcpURL)")
+        }
+        
+        if peer.hasHivemindGateway {
+            print("ℹ️ Remote Hivemind gateway available at: \(peer.hiveURL)")
+        }
+    }
+    
+    /// Disconnect from a remote peer and revert to local.
+    func disconnectFromPeer() {
+        hivemindClient.baseURL = "http://localhost:3010"
+        hivemindClient.connect()
+        print("🔄 Reverted to local Hivemind gateway")
+    }
+    
+    /// Try to find an available port starting from the preferred port.
+    /// This allows multiple instances on the same machine to use different ports
+    /// if the default is taken (though the singleton lock should prevent this).
+    func findAvailablePort(preferred: UInt16) -> UInt16 {
+        var port = preferred
+        let maxAttempts = 100
+        for _ in 0..<maxAttempts {
+            let semaphore = DispatchSemaphore(value: 0)
+            var available = false
+            checkPort(port: port) { isListening in
+                available = !isListening
+                semaphore.signal()
+            }
+            _ = semaphore.wait(timeout: .now() + 2.0)
+            if available { return port }
+            port += 1
+        }
+        return preferred // fallback
     }
 
     // MARK: - Status Summary
