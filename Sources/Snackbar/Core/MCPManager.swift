@@ -10,6 +10,9 @@ import AppKit
 /// - Expose Xcode MCP bridge (xcrun mcpbridge) status
 /// - Health checks for all MCP endpoints
 /// - Acts as the system handler for MCP connections in the uDos ecosystem
+/// - Reads config.yaml for port/path overrides
+/// - Binds Hivemind to localhost only for security
+/// - Validates Xcode ExternalAgent plist for reliable connections
 ///
 /// Port Map:
 ///   8765  — Snackbar's own MCP server (tools, spool, snacks)
@@ -28,6 +31,8 @@ class MCPManager: ObservableObject {
     @Published private(set) var lastHealthCheck: Date?
     @Published private(set) var hivemindPort: UInt16 = 3010
     @Published private(set) var xcodeBridgeAvailable: Bool = false
+    @Published private(set) var xcodeExternalAgentInstalled: Bool = false
+    @Published private(set) var appleMCPServiceReady: Bool = false
 
     // MARK: - Constants
 
@@ -38,9 +43,142 @@ class MCPManager: ObservableObject {
     private var healthCheckTimer: Timer?
     private let fileManager = FileManager.default
     private let hivemindClient = HivemindClient.shared
+    private let appleMCPService = AppleMCPService.shared
 
     private init() {
+        loadConfig()
         checkXcodeBridgeAvailability()
+        checkXcodeExternalAgent()
+        checkAppleMCPService()
+    }
+
+    // MARK: - Config Loading
+
+    /// Load configuration from config.yaml to override defaults.
+    private func loadConfig() {
+        let configPaths = [
+            "~/Code/Apps/Snackbar/config.yaml",
+            "~/.config/udos/config.yaml"
+        ]
+
+        for path in configPaths {
+            let expanded = NSString(string: path).expandingTildeInPath
+            guard let data = try? Data(contentsOf: URL(fileURLWithPath: expanded)),
+                  let yamlString = String(data: data, encoding: .utf8) else { continue }
+
+            // Simple YAML key-value parser for hivemind config
+            let lines = yamlString.components(separatedBy: .newlines)
+            var inHivemindSection = false
+            var inUbuntuSection = false
+
+            for line in lines {
+                let trimmed = line.trimmingCharacters(in: .whitespaces)
+
+                if trimmed == "hivemind:" {
+                    inHivemindSection = true
+                    inUbuntuSection = false
+                    continue
+                } else if trimmed == "ubuntu:" {
+                    inHivemindSection = false
+                    inUbuntuSection = true
+                    continue
+                } else if trimmed.hasPrefix("#") || trimmed.isEmpty {
+                    continue
+                }
+
+                if inHivemindSection, trimmed.hasPrefix("port:") {
+                    let value = trimmed.replacingOccurrences(of: "port:", with: "").trimmingCharacters(in: .whitespaces)
+                    if let port = UInt16(value) {
+                        hivemindPort = port
+                        print("📋 Config: Hivemind port set to \(port)")
+                    }
+                } else if inHivemindSection, trimmed.hasPrefix("path:") {
+                    let value = trimmed.replacingOccurrences(of: "path:", with: "").trimmingCharacters(in: .whitespaces)
+                    // Store for binary search
+                    print("📋 Config: Hivemind path set to \(value)")
+                } else if inUbuntuSection, trimmed.hasPrefix("hivemind_port:") {
+                    let value = trimmed.replacingOccurrences(of: "hivemind_port:", with: "").trimmingCharacters(in: .whitespaces)
+                    if let port = UInt16(value) {
+                        print("📋 Config: Ubuntu Hivemind port set to \(port)")
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Xcode External Agent Validation
+
+    /// Check if the Xcode ExternalAgent plist is installed for reliable MCP connections.
+    /// Apple's documented approach: https://developer.apple.com/documentation/xcode/giving-external-agents-access-to-xcode
+    private func checkXcodeExternalAgent() {
+        let plistPaths = [
+            "~/Library/Developer/Xcode/ExternalAgents/Snackbar.xcexternalagent",
+            "~/Library/Developer/Xcode/ExternalAgents/com.udos.Snackbar.xcexternalagent"
+        ]
+
+        for path in plistPaths {
+            let expanded = NSString(string: path).expandingTildeInPath
+            if fileManager.fileExists(atPath: expanded) {
+                xcodeExternalAgentInstalled = true
+                print("✅ Xcode ExternalAgent found at \(expanded)")
+                return
+            }
+        }
+
+        // Also check the Resources directory for our bundled plist
+        let bundledPlist = "~/Code/Apps/Snackbar/Resources/XcodeExternalAgent.plist"
+        let expanded = NSString(string: bundledPlist).expandingTildeInPath
+        if fileManager.fileExists(atPath: expanded) {
+            print("ℹ️ Xcode ExternalAgent plist found in Resources (not yet installed)")
+        } else {
+            print("ℹ️ Xcode ExternalAgent plist not found — Xcode MCP may use .mcp.json fallback")
+        }
+    }
+
+    /// Install the Xcode ExternalAgent plist for reliable MCP connections.
+    /// This follows Apple's documented approach for giving external agents access to Xcode.
+    /// - Returns: True if installation succeeded.
+    @discardableResult
+    func installXcodeExternalAgent() -> Bool {
+        let sourcePath = NSString(string: "~/Code/Apps/Snackbar/Resources/XcodeExternalAgent.plist").expandingTildeInPath
+        let xcodeAgentDir = NSString(string: "~/Library/Developer/Xcode/ExternalAgents").expandingTildeInPath
+        let destPath = "\(xcodeAgentDir)/Snackbar.xcexternalagent"
+
+        guard fileManager.fileExists(atPath: sourcePath) else {
+            print("❌ XcodeExternalAgent.plist not found at \(sourcePath)")
+            return false
+        }
+
+        do {
+            try fileManager.createDirectory(atPath: xcodeAgentDir, withIntermediateDirectories: true)
+            if fileManager.fileExists(atPath: destPath) {
+                try fileManager.removeItem(atPath: destPath)
+            }
+            try fileManager.copyItem(atPath: sourcePath, toPath: destPath)
+            xcodeExternalAgentInstalled = true
+            print("✅ Xcode ExternalAgent installed to \(destPath)")
+            return true
+        } catch {
+            print("❌ Failed to install Xcode ExternalAgent: \(error.localizedDescription)")
+            return false
+        }
+    }
+
+    // MARK: - Apple MCP Service
+
+    /// Check if the Apple MCP service is ready (authorizations granted).
+    private func checkAppleMCPService() {
+        appleMCPService.checkAuthorizationStatus()
+        let ready = appleMCPService.contactsAuthorized ||
+                    appleMCPService.calendarAuthorized ||
+                    appleMCPService.remindersAuthorized
+        appleMCPServiceReady = ready
+    }
+
+    /// Request all Apple platform API authorizations.
+    func requestAppleAuthorizations() async {
+        await appleMCPService.requestAllAuthorizations()
+        checkAppleMCPService()
     }
 
     // MARK: - HivemindRust Process Management

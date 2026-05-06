@@ -195,9 +195,8 @@ extension BonjourService: NetServiceDelegate {
         var mcpPort: UInt16 = 8765
         var hivePort: UInt16 = 3010
         
-        // txtRecordData is an Objective-C nullable property that Swift sees as () -> Data?
-        let txtRecordFunc = sender.txtRecordData
-        if let txtData = txtRecordFunc() {
+        // txtRecordData is a function () -> Data? in some Swift/ObjC bridge versions
+        if let txtData = sender.txtRecordData() {
             let txt = NetService.dictionary(fromTXTRecord: txtData)
             if let mcpEntry = txt["mcp_port"], let portStr = String(data: mcpEntry, encoding: .utf8), let port = UInt16(portStr) {
                 mcpPort = port
@@ -206,7 +205,6 @@ extension BonjourService: NetServiceDelegate {
                 hivePort = port
             }
         }
-        
         let peerID = "\(sender.name).\(sender.type).\(sender.domain)"
         let peer = SnackbarPeer(
             id: peerID,

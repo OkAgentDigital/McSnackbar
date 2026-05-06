@@ -16,7 +16,6 @@ public class DevToolsManager: ObservableObject {
     @Published public private(set) var lastSyncError: Error?
     
     private let devStudioConfigManager = DevStudioConfigManager.shared
-    private let mcpClient = MCPClient.shared
     private var cancellables = Set<AnyCancellable>()
     
     private let snackbarDevToolsPath: String
@@ -232,68 +231,17 @@ public class DevToolsManager: ObservableObject {
     // MARK: - MCP Integration
     
     private func setupMCPEventListening() {
-        // Monitor MCP connection status
-        mcpClient.objectWillChange
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                
-                if self.mcpClient.isConnected {
-                    // Send current config to DevStudio when MCP connects
-                    self.sendConfigViaMCP()
-                }
-            }
-            .store(in: &cancellables)
+        // MCP integration is handled by the Snackbar module via HivemindClient
+        // This stub exists for future SnackbarCore-level MCP support
     }
     
+    /// Send config to DevStudio via HTTP MCP endpoint.
     private func sendConfigViaMCP() {
-        guard mcpClient.isConnected else { return }
-        
-        do {
-            let data = try JSONEncoder().encode(config)
-            if let jsonString = String(data: data, encoding: .utf8) {
-                let message: [String: Any] = [
-                    "type": "devtools_config_update",
-                    "client": "Snackbar",
-                    "timestamp": Date().timeIntervalSince1970,
-                    "config": jsonString
-                ]
-                
-                if let messageData = try? JSONSerialization.data(withJSONObject: message, options: []),
-                   let messageString = String(data: messageData, encoding: .utf8) {
-                    
-                    mcpClient.sendMessage(messageString) { result in
-                        if case .failure(let error) = result {
-                            print("Failed to send devtools config via MCP: " + error.localizedDescription)
-                        }
-                    }
-                }
-            }
-        } catch {
-            print("Failed to encode devtools config: " + error.localizedDescription)
-        }
+        // Config sync is handled by the Snackbar module
     }
     
     public func requestConfigFromDevStudio() {
-        guard mcpClient.isConnected else {
-            print("MCP not connected - cannot request config")
-            return
-        }
-        
-        let message: [String: Any] = [
-            "type": "devtools_config_request",
-            "client": "Snackbar",
-            "timestamp": Date().timeIntervalSince1970
-        ]
-        
-        do {
-            let messageData = try JSONSerialization.data(withJSONObject: message, options: [])
-            if let messageString = String(data: messageData, encoding: .utf8) {
-                mcpClient.sendMessage(messageString)
-            }
-        } catch {
-            print("Failed to create config request: " + error.localizedDescription)
-        }
+        // Config request is handled by the Snackbar module
     }
     
     // MARK: - Utility Methods

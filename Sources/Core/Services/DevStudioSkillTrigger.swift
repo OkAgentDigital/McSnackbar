@@ -49,14 +49,36 @@ public class DevStudioSkillTrigger {
 
     // MARK: - MCP Communication
     public func sendViaMCP(_ skillName: String, arguments: [String] = [], completion: ((Result<String, Error>) -> Void)? = nil) {
-        let mcpClient = MCPClient.shared
+        // MCP communication is handled by the Snackbar module via HivemindClient
+        // This method sends via HTTP to the local Hivemind gateway
+        let baseURL = "http://localhost:3010"
+        var urlComponents = URLComponents(string: "\(baseURL)/mcp/skill")!
+        var queryItems = [URLQueryItem(name: "name", value: skillName)]
+        for arg in arguments {
+            queryItems.append(URLQueryItem(name: "args", value: arg))
+        }
+        urlComponents.queryItems = queryItems
         
-        guard mcpClient.isConnected else {
-            completion?(.failure(NSError(domain: "MCP", code: -1, userInfo: [NSLocalizedDescriptionKey: "MCP not connected"])))
+        guard let url = urlComponents.url else {
+            completion?(.failure(NSError(domain: "MCP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
         }
         
-        mcpClient.sendSkillCommand(skillName, arguments: arguments, completion: completion)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.timeoutInterval = 30
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion?(.failure(error))
+                return
+            }
+            guard let data = data, let result = String(data: data, encoding: .utf8) else {
+                completion?(.failure(NSError(domain: "MCP", code: -1, userInfo: [NSLocalizedDescriptionKey: "Empty response"])))
+                return
+            }
+            completion?(.success(result))
+        }.resume()
     }
 
     public func sendMCPMessage(_ message: String, completion: @escaping (Result<String, Error>) -> Void) {
