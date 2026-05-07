@@ -39,7 +39,7 @@
     },
     "editor.formatOnSave": true,
     "editor.minimap.enabled": false,
-    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.colorTheme": "Dark Modern",
     "workbench.iconTheme": "material-icon-theme",
     "workbench.startupEditor": "none",
     "extensions.ignoreRecommendations": true,

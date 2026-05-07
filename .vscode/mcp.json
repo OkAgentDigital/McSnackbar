@@ -1,41 +1,14 @@
 {
   "mcpServers": {
     "snackbar": {
-      "type": "http",
-      "url": "http://localhost:8765",
-      "description": "Snackbar MCP: run snacks, manage spool, vault/secret access, automation rules",
-      "tools": [
-        "snack_run",
-        "snack_list",
-        "snack_show",
-        "feed_recent",
-        "feed_search",
-        "feed_stats",
-        "nugget_list",
-        "nugget_info",
-        "rules_list",
-        "mcp_start",
-        "mcp_stop",
-        "mcp_restart",
-        "mcp_status",
-        "mcp_generate_xcode_config",
-        "mcp_write_xcode_config",
-        "vault_read",
-        "vault_list",
-        "vault_secret_read"
-      ]
+      "type": "sse",
+      "url": "http://localhost:18765/sse",
+      "description": "Snackbar MCP: run snacks, manage spool, vault/secret access, automation rules"
     },
-    "hivemind": {
-      "type": "http",
-      "url": "http://localhost:3010/mcp",
-      "description": "Hivemind MCP: task management, binder feeds, chat",
-      "tools": [
-        "binder_feed",
-        "task_list",
-        "task_create",
-        "task_update",
-        "chat"
-      ]
+    "hivemind-ubuntu": {
+      "type": "sse",
+      "url": "http://localhost:30010/sse",
+      "description": "Hivemind MCP: Ollama AI models, task management, secrets, node registration"
     }
   }
 }
