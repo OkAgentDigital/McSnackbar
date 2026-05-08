@@ -453,6 +453,11 @@ class MCPManager: ObservableObject {
 
     /// Generate the Xcode MCP configuration JSON for connecting to Snackbar
     /// and HivemindRust.
+    ///
+    /// Protocol notes:
+    ///   - Snackbar uses HTTP JSON-RPC (type: "http") — direct POST requests
+    ///   - HivemindRust uses HTTP JSON-RPC (type: "http") at /mcp endpoint
+    ///     Routes: GET /health, POST /mcp (JSON-RPC), GET /status
     func generateXcodeMCPConfig() -> String {
         let config: [String: Any] = [
             "mcpServers": [
@@ -461,8 +466,8 @@ class MCPManager: ObservableObject {
                     "url": "http://localhost:8765"
                 ],
                 "hivemind": [
-                    "type": "http",
-                    "url": "http://localhost:\(hivemindPort)"
+                    "type": "sse",
+                    "url": "http://localhost:\(hivemindPort)/sse"
                 ]
             ]
         ]
@@ -559,6 +564,11 @@ class MCPManager: ObservableObject {
     }
 
     // MARK: - Helpers
+
+    /// Check if the HivemindRust binary is available (built and executable).
+    func isHivemindBinaryAvailable() -> Bool {
+        return findHivemindBinary() != nil
+    }
 
     /// Find the HivemindRust binary in likely locations.
     private func findHivemindBinary() -> String? {

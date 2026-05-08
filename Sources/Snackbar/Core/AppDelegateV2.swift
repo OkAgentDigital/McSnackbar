@@ -55,6 +55,19 @@ class SnackbarAppDelegate: NSObject, NSApplicationDelegate {
             print("Vault: accessible at \(vaultProvider.vaultPath)")
         }
         
+        // ── Xcode Integration ────────────────────────────────────────────
+        // Install Xcode ExternalAgent for reliable MCP connections
+        mcpManager.installXcodeExternalAgent()
+        
+        // Write MCP config for Xcode to discover Snackbar + Hivemind tools
+        mcpManager.writeXcodeMCPConfig()
+        
+        // Check if Hivemind binary is available; if not, log a helpful message
+        if !mcpManager.isHivemindBinaryAvailable() {
+            print("⚠️ HivemindRust binary not found. MCP gateway won't be available.")
+            print("   Build it: cd ~/Code/OkAgentDigital/Hivemind && cargo build --release")
+        }
+        
         let peerCount = bonjourService.discoveredInstances.count
         print("Snackmachine ready — \(snackManager.listSnacks().count) snacks loaded, \(surfaceManager.enabledSurfaces.count) surfaces enabled, \(peerCount) network peers")
     }

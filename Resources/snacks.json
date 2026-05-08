@@ -94,7 +94,7 @@
         "name": "Open MCP Gateway",
         "description": "Open/check the local Hivemind MCP Gateway",
         "emoji": "🧠",
-        "code": "open http://localhost:30000",
+        "code": "open http://localhost:3010",
         "runtime": "shell",
         "categoryId": "udos",
         "isEnabled": true

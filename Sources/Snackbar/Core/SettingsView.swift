@@ -219,6 +219,123 @@ struct SettingsView: View {
 
                 Divider()
 
+                // ── Section: Hivemind MCP ──
+                sectionHeader("Hivemind MCP", icon: "brain.head.profile")
+
+                VStack(alignment: .leading, spacing: 12) {
+                    HStack {
+                        Text("Status:")
+                            .font(.body)
+                        let status = MCPManager.shared.hivemindStatus
+                        switch status {
+                        case .running:
+                            Label("Running", systemImage: "circle.fill")
+                                .foregroundColor(.green)
+                                .font(.body)
+                        case .stopped:
+                            Label("Stopped", systemImage: "circle")
+                                .foregroundColor(.secondary)
+                                .font(.body)
+                        case .error(let msg):
+                            Label(msg, systemImage: "exclamationmark.triangle")
+                                .foregroundColor(.orange)
+                                .font(.body)
+                        case .unknown:
+                            Label("Unknown", systemImage: "questionmark")
+                                .foregroundColor(.secondary)
+                                .font(.body)
+                        }
+                    }
+
+                    HStack {
+                        Text("Binary:")
+                            .font(.body)
+                        if MCPManager.shared.isHivemindBinaryAvailable() {
+                            Label("Found", systemImage: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                                .font(.body)
+                        } else {
+                            Label("Not found", systemImage: "xmark.circle.fill")
+                                .foregroundColor(.red)
+                                .font(.body)
+                        }
+                    }
+
+                    HStack {
+                        Text("Port:")
+                            .font(.body)
+                        Text(":\(MCPManager.shared.hivemindPort)")
+                            .font(.body.monospaced())
+                            .foregroundColor(.secondary)
+                    }
+
+                    HStack(spacing: 12) {
+                        Button(action: {
+                            if MCPManager.shared.hivemindStatus == .running {
+                                MCPManager.shared.stopHivemind()
+                            } else {
+                                MCPManager.shared.startHivemind(port: 3010)
+                            }
+                        }) {
+                            if MCPManager.shared.hivemindStatus == .running {
+                                Label("Stop Hivemind", systemImage: "stop.fill")
+                            } else {
+                                Label("Start Hivemind", systemImage: "play.fill")
+                            }
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .disabled(!MCPManager.shared.isHivemindBinaryAvailable())
+
+                        Button(action: {
+                            MCPManager.shared.restartHivemind(port: 3010)
+                        }) {
+                            Label("Restart", systemImage: "arrow.clockwise")
+                        }
+                        .buttonStyle(.bordered)
+                        .disabled(!MCPManager.shared.isHivemindBinaryAvailable())
+                    }
+
+                    if let lastCheck = MCPManager.shared.lastHealthCheck {
+                        HStack(spacing: 4) {
+                            Text("Last health check:")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Text(lastCheck, style: .relative)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Text("ago")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+
+                    // Xcode MCP Config status
+                    HStack {
+                        Text("Xcode MCP Config:")
+                            .font(.body)
+                        if MCPManager.shared.xcodeExternalAgentInstalled {
+                            Label("ExternalAgent installed", systemImage: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                                .font(.body)
+                        } else {
+                            Label("Not installed", systemImage: "xmark.circle.fill")
+                                .foregroundColor(.orange)
+                                .font(.body)
+                        }
+                    }
+
+                    Button(action: {
+                        MCPManager.shared.installXcodeExternalAgent()
+                        MCPManager.shared.writeXcodeMCPConfig()
+                    }) {
+                        Label("Install Xcode MCP Config", systemImage: "arrow.down.doc")
+                    }
+                    .buttonStyle(.bordered)
+                }
+                .padding(.leading, 8)
+
+                Divider()
+
                 // ── Section: About ──
                 sectionHeader("About", icon: "info.circle")
 

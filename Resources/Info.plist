@@ -90,13 +90,19 @@
         <key>HivemindRust</key>
         <dict>
             <key>ServerURL</key>
-            <string>http://localhost:30000</string>
+            <string>http://localhost:3010</string>
             <key>MCPEndpoint</key>
             <string>/mcp</string>
+            <key>SSEEndpoint</key>
+            <string>/sse</string>
+            <key>MessagesEndpoint</key>
+            <string>/messages</string>
             <key>HealthEndpoint</key>
             <string>/health</string>
             <key>Protocol</key>
             <string>json-rpc-2.0</string>
+            <key>Transport</key>
+            <string>sse</string>
         </dict>
     </dict>
 </dict>

@@ -371,9 +371,26 @@ struct NoteRow: View {
 }
 
 struct SettingsView: View {
+    @State private var showingMCPResult = false
+    @State private var mcpResultMessage = ""
+    
     var body: some View {
-        Text("Settings")
-            .padding()
+        VStack {
+            Text("Settings")
+                .padding(.bottom)
+            
+            Button("Rewrite Xcode MCP Config") {
+                let success = MCPManager.shared.writeXcodeMCPConfig()
+                mcpResultMessage = success ? "MCP config written successfully!" : "Failed to write MCP config. See log for details."
+                showingMCPResult = true
+            }
+            .padding(.top)
+        }
+        .alert("MCP Config", isPresented: $showingMCPResult) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(mcpResultMessage)
+        }
     }
 }
 
