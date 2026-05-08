@@ -36,7 +36,7 @@ let package = Package(
         // ─── macOS Shortcuts & Automations ───────────────────────────────────
         .target(
             name: "SnackbarAutomations",
-            dependencies: ["SnackbarCore"],
+            dependencies: ["SnackbarCore", "Snackbar"],
             path: "Sources/macOS",
             exclude: []
         ),

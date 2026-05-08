@@ -11,7 +11,7 @@ import Snackbar
 struct ContentView: View {
     @StateObject private var noteManager = NoteManager.shared
     @StateObject private var syncMonitor = SyncStatusMonitor.shared
-    @StateObject private var mcpClient = MCPClient.shared
+    @StateObject private var hivemindClient = HivemindClient.shared
     @StateObject private var devToolsManager = DevToolsManager.shared
     @State private var newNoteTitle = ""
     @State private var newNoteContent = ""
@@ -57,7 +57,7 @@ struct ContentView: View {
                     }
                     
                     // MCP connection status
-                    if mcpClient.isConnected {
+                    if hivemindClient.isConnected {
                         Image(systemName: "bolt.fill")
                             .foregroundColor(.green)
                             .help("MCP Connected")
@@ -121,11 +121,11 @@ struct ContentView: View {
                         .help("Use MCP for real-time communication")
                 }
                 
-                if !mcpClient.isConnected {
+                if !hivemindClient.isConnected {
                     Button("Connect to MCP") {
-                        mcpClient.connect()
+                        hivemindClient.connect()
                     }
-                    .disabled(mcpClient.isConnected)
+                    .disabled(hivemindClient.isConnected)
                 }
                 
                 if showingDevStudioSkill {
@@ -258,7 +258,7 @@ struct ContentView: View {
     private func triggerDevStudioSkill() {
         let args = skillArgs.isEmpty ? [] : skillArgs.components(separatedBy: " ")
         
-        if useMCP && mcpClient.isConnected {
+        if useMCP && hivemindClient.isConnected {
             DevStudioSkillTrigger.shared.sendViaMCP(skillName, arguments: args) { result in
                 switch result {
                 case .success(let output):
@@ -370,29 +370,7 @@ struct NoteRow: View {
     }
 }
 
-struct SettingsView: View {
-    @State private var showingMCPResult = false
-    @State private var mcpResultMessage = ""
-    
-    var body: some View {
-        VStack {
-            Text("Settings")
-                .padding(.bottom)
-            
-            Button("Rewrite Xcode MCP Config") {
-                let success = MCPManager.shared.writeXcodeMCPConfig()
-                mcpResultMessage = success ? "MCP config written successfully!" : "Failed to write MCP config. See log for details."
-                showingMCPResult = true
-            }
-            .padding(.top)
-        }
-        .alert("MCP Config", isPresented: $showingMCPResult) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(mcpResultMessage)
-        }
-    }
-}
+// SettingsView is defined in Sources/Snackbar/Core/SettingsView.swift
 
 #Preview {
     ContentView()

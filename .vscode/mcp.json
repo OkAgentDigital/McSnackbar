@@ -1,14 +1,14 @@
 {
   "mcpServers": {
     "snackbar": {
-      "type": "sse",
-      "url": "http://localhost:18765/sse",
+      "type": "http",
+      "url": "http://localhost:8765",
       "description": "Snackbar MCP: run snacks, manage spool, vault/secret access, automation rules"
     },
-    "hivemind-ubuntu": {
+    "hivemind": {
       "type": "sse",
-      "url": "http://localhost:30010/sse",
-      "description": "Hivemind MCP: Ollama AI models, task management, secrets, node registration"
+      "url": "http://localhost:3010/sse",
+      "description": "Hivemind MCP: Ollama AI models, task management, secrets, node registration, GitHub tools"
     }
   }
 }

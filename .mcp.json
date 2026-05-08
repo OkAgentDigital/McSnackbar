@@ -5,8 +5,8 @@
       "url": "http://localhost:8765"
     },
     "hivemind": {
-      "type": "http",
-      "url": "http://localhost:3010"
+      "type": "sse",
+      "url": "http://localhost:3010/sse"
     }
   }
 }

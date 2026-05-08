@@ -7,7 +7,7 @@
 // This file provides the Settings scene for SwiftUI and is NOT @main.
 
 import SwiftUI
-import AppKit
+import Snackbar
 
 struct SnackbarApp: App {
     var body: some Scene {
