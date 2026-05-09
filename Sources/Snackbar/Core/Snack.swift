@@ -37,7 +37,7 @@ extension Snack {
             iconName: "icon-mail",
             script: """
             tell application "Mail"
-                set vipCount to count of messages of inbox whose is VIP is true and read is false
+                set vipCount to count of messages of inbox whose VIP is true and read status is false
                 return vipCount
             end tell
             """
@@ -48,7 +48,7 @@ extension Snack {
             iconName: "icon-contacts",
             script: """
             tell application "Contacts"
-                set vipNames to name of people whose is VIP is true
+                set vipNames to name of people whose VIP is true
                 set AppleScript's text item delimiters to ", "
                 return vipNames as string
             end tell
