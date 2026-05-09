@@ -1,0 +1,25 @@
+#!/bin/bash
+# SnackbarSilent Launcher
+# This .app wrapper launches Snackbar without showing a Terminal window.
+# It uses LSUIElement=true (set in Info.plist) to hide the dock icon.
+
+DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
+LOG_DIR="$HOME/Library/Logs/Snackbar"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/snackbar.log"
+
+# Find the latest built binary
+BINARY=""
+if [ -f "$DIR/.build/arm64-apple-macosx/debug/Snackbar" ]; then
+    BINARY="$DIR/.build/arm64-apple-macosx/debug/Snackbar"
+elif [ -f "$DIR/.build/debug/Snackbar" ]; then
+    BINARY="$DIR/.build/debug/Snackbar"
+fi
+
+if [ -z "$BINARY" ]; then
+    echo "$(date): Snackbar binary not found at $DIR/.build/" >> "$LOG_FILE"
+    exit 1
+fi
+
+echo "$(date): Launching Snackbar from $BINARY" >> "$LOG_FILE"
+"$BINARY" >> "$LOG_FILE" 2>&1 &

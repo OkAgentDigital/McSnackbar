@@ -11,26 +11,9 @@
     {
       "name": "💻 DevStudio",
       "path": "/Users/fredbook/Code/DevStudio"
-    },
-    {
-      "name": "🌐 uDosGo",
-      "path": "/Users/fredbook/Code/uDosGo"
-    },
-    {
-      "name": "🎁 GiftWrapper",
-      "path": "/Users/fredbook/Code/OkAgentDigital/Thinui"
-    },
-    {
-      "name": "🤖 HivemindRust",
-      "path": "/Users/fredbook/Code/HivemindRust"
     }
   ],
   "settings": {
-    "files.associations": {
-      "*.snack": "yaml",
-      "*.udx": "json",
-      "*.usxd": "markdown"
-    },
     "files.exclude": {
       "**/.build": true,
       "**/.derivedData": true,
@@ -42,18 +25,7 @@
     "workbench.colorTheme": "Dark Modern",
     "workbench.iconTheme": "material-icon-theme",
     "workbench.startupEditor": "none",
-    "extensions.ignoreRecommendations": true,
-    "Cline.mcpEnabled": true,
-    "cline.mcpServers": {
-      "snackbar": {
-        "type": "http",
-        "url": "http://localhost:8765"
-      },
-      "hivemind": {
-        "type": "http",
-        "url": "http://localhost:3010/mcp"
-      }
-    }
+    "extensions.ignoreRecommendations": true
   },
   "launch": {
     "configurations": [
@@ -76,32 +48,6 @@
         "target": "Snackbar",
         "configuration": "release",
         "preLaunchTask": "swift: Build Release Snackbar"
-      },
-      {
-        "type": "lldb",
-        "request": "attach",
-        "name": "Attach to Running Snackbar",
-        "pid": 0
-      },
-      {
-        "type": "swift",
-        "request": "launch",
-        "args": [],
-        "cwd": "${workspaceFolder:🍔 Snackbar}",
-        "name": "Debug Snackbar (🍔 Snackbar)",
-        "target": "Snackbar",
-        "configuration": "debug",
-        "preLaunchTask": "swift: Build Debug Snackbar (🍔 Snackbar)"
-      },
-      {
-        "type": "swift",
-        "request": "launch",
-        "args": [],
-        "cwd": "${workspaceFolder:🍔 Snackbar}",
-        "name": "Release Snackbar (🍔 Snackbar)",
-        "target": "Snackbar",
-        "configuration": "release",
-        "preLaunchTask": "swift: Build Release Snackbar (🍔 Snackbar)"
       }
     ]
   },
@@ -110,63 +56,35 @@
     "tasks": [
       {
         "type": "shell",
-        "label": "🍔 Launch (Silent)",
-        "command": "cd ${workspaceFolder:🍔 Snackbar} && ./run_snackbar_silent.sh",
+        "label": "🍔 Build",
+        "command": "cd ${workspaceFolder:🍔 Snackbar} && swift build",
+        "group": "build",
+        "presentation": { "reveal": "always", "panel": "new" }
+      },
+      {
+        "type": "shell",
+        "label": "🍔 Run",
+        "command": "cd ${workspaceFolder:🍔 Snackbar} && swift run &",
         "group": "test",
         "presentation": { "reveal": "always", "panel": "new" }
       },
       {
         "type": "shell",
         "label": "🍔 Stop",
-        "command": "cd ${workspaceFolder:🍔 Snackbar} && ./run_snackbar_silent.sh --stop",
+        "command": "pkill -f Snackbar 2>/dev/null; echo 'Stopped'",
         "group": "test"
       },
       {
         "type": "shell",
-        "label": "🍔 Rebuild & Launch",
-        "command": "cd ${workspaceFolder:🍔 Snackbar} && swift build --product Snackbar && ./run_snackbar_silent.sh --raw",
+        "label": "🍔 Rebuild & Run",
+        "command": "cd ${workspaceFolder:🍔 Snackbar} && swift build && swift run &",
         "group": "build"
       },
       {
         "type": "shell",
-        "label": "🍔 Dev Status",
-        "command": "cd ${workspaceFolder:🍔 Snackbar} && pgrep -f Snackbar | grep -v grep && echo 'Running' || echo 'Not running'",
+        "label": "🍔 Status",
+        "command": "pgrep -f Snackbar | grep -v grep && echo 'Running' || echo 'Not running'",
         "group": "test"
-      },
-      {
-        "type": "shell",
-        "label": "🎁 Build GiftWrapper",
-        "command": "cd ${workspaceFolder:🎁 GiftWrapper} && cargo tauri build --bundles dmg",
-        "group": "build",
-        "presentation": { "reveal": "always", "panel": "new" }
-      },
-      {
-        "type": "shell",
-        "label": "🎁 Launch GiftWrapper (Dev)",
-        "command": "cd ${workspaceFolder:🎁 GiftWrapper} && ./Dev-Launch.command",
-        "group": "test",
-        "presentation": { "reveal": "always", "panel": "new" }
-      },
-      {
-        "type": "shell",
-        "label": "🧠 Start Hivemind",
-        "command": "cd ${workspaceFolder:🤖 HivemindRust} && cargo run --release",
-        "group": "build",
-        "presentation": { "reveal": "always", "panel": "new" }
-      },
-      {
-        "type": "shell",
-        "label": "📋 View Snackbar Log",
-        "command": "tail -30 ~/Library/Logs/Snackbar/snackbar.log",
-        "group": "test",
-        "presentation": { "reveal": "always", "panel": "new" }
-      },
-      {
-        "type": "shell",
-        "label": "🔌 Test MCP Connection",
-        "command": "echo '--- Snackbar ---' && curl -s -X POST http://localhost:8765/ -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\",\"params\":{}}' | python3 -c \"import sys,json;d=json.load(sys.stdin);print(f'{len(d[\\\"result\\\"][\\\"tools\\\"])} tools')\" && echo '--- Hivemind ---' && curl -s -X POST http://localhost:3010/mcp -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\",\"params\":{}}' | python3 -c \"import sys,json;d=json.load(sys.stdin);print(f'{len(d[\\\"result\\\"][\\\"tools\\\"])} tools')\"",
-        "group": "test",
-        "presentation": { "reveal": "always", "panel": "new" }
       }
     ]
   }
