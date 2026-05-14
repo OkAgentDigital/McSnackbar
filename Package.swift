@@ -1,4 +1,5 @@
 // swift-tools-version: 6.3
+// Code signing for macOS apps is managed via Xcode or external tools, not via SwiftPM.
 import PackageDescription
 
 let package = Package(
@@ -14,7 +15,7 @@ let package = Package(
             ],
             resources: [
                 .process("Assets.xcassets")
-            ],
+            ], // Bundling asset catalogs
             linkerSettings: [
                 .linkedFramework("ServiceManagement")
             ]

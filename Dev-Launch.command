@@ -1,15 +1,11 @@
 #!/bin/zsh
 
 # =============================================================================
-# 🍔 Snackbar Dev Launcher
+# 🍔 Snackbar Dev Launcher (v2)
 # =============================================================================
 #
-# Builds Snackbar from source and runs it silently (no .app bundle).
-# Uses `swift run` so there's no Dock icon, no window popup.
-#
-# Auto-start on login:
-#   ./Dev-Launch.command install-agent
-#   (installs a LaunchAgent so Snackbar starts when you log in)
+# Builds Snackbar from source and runs it as a menu bar app.
+# Creates a proper .app bundle wrapper for clean launching.
 #
 # Commands:
 #   ./Dev-Launch.command           # Build (if needed) and launch
@@ -17,8 +13,7 @@
 #   ./Dev-Launch.command --status  # Check if running
 #   ./Dev-Launch.command --rebuild # Force rebuild and relaunch
 #   ./Dev-Launch.command --logs    # Tail the log file
-#   ./Dev-Launch.command install-agent   # Install login auto-start
-#   ./Dev-Launch.command uninstall-agent # Remove login auto-start
+#   ./Dev-Launch.command --xcode   # Open in Xcode for archiving
 #
 # =============================================================================
 
@@ -26,6 +21,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$SCRIPT_DIR"
 LOG_FILE="/tmp/snackbar-dev.log"
 PID_FILE="/tmp/snackbar-dev.pid"
+BUNDLE_ID="com.udos.snackbar"
 
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; NC='\033[0m'
 info()  { echo -e "${CYAN}ℹ️${NC}  $*"; }
@@ -47,27 +43,83 @@ build() {
     fi
 }
 
+create_app_bundle() {
+    local binary="$PROJECT_DIR/.build/arm64-apple-macosx/debug/Snackbar"
+    local app_dir="$PROJECT_DIR/.build/Snackbar.app"
+
+    if [ ! -f "$binary" ]; then
+        err "Binary not found. Run build first."
+        return 1
+    fi
+
+    # Create .app bundle structure
+    mkdir -p "$app_dir/Contents/MacOS"
+    mkdir -p "$app_dir/Contents/Resources"
+
+    # Copy binary
+    cp "$binary" "$app_dir/Contents/MacOS/Snackbar"
+
+    # Convert SVG icons to PNG and copy to Resources
+    # NSImage(contentsOf:) doesn't reliably load SVGs, so we use sips to render PNGs
+    local icon_dir="$PROJECT_DIR/Sources/Snackbar/Assets.xcassets/Mono Icons"
+    for svg in "$icon_dir"/*.imageset/*.svg; do
+        local name=$(basename "$svg" .svg)
+        local png_out="$app_dir/Contents/Resources/${name}.png"
+        # sips can convert SVG to PNG on macOS
+        sips -s format png "$svg" --out "$png_out" 2>/dev/null || {
+            # Fallback: just copy the SVG
+            cp "$svg" "$app_dir/Contents/Resources/"
+        }
+    done
+
+    # Create Info.plist for the .app bundle
+    cat > "$app_dir/Contents/Info.plist" << 'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleExecutable</key>
+    <string>Snackbar</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.udos.snackbar</string>
+    <key>CFBundleName</key>
+    <string>Snackbar</string>
+    <key>CFBundleShortVersionString</key>
+    <string>2.0.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>Snackbar needs to control Reminders, Mail, Contacts, Notes, and Calendar to show your data.</string>
+</dict>
+</plist>
+PLIST
+
+    ok "App bundle created at $app_dir"
+    echo "$app_dir"
+}
+
 launch() {
     build || return 1
-    # Run the compiled binary directly — no .app bundle, no Dock icon, no window popup
-    # Using swift run can leave a swift-build process hanging, so we use the binary directly
-    local binary="$PROJECT_DIR/.build/arm64-apple-macosx/debug/Snackbar"
-    if [ ! -f "$binary" ]; then
-        err "Binary not found at $binary. Run build first."
-        return 1
-    fi
-    cd "$PROJECT_DIR" && "$binary" &
-    local pid=$!
-    echo "$pid" > "$PID_FILE"
+    create_app_bundle || return 1
+
+    local app_dir="$PROJECT_DIR/.build/Snackbar.app"
+
+    # Launch via .app bundle (silent, no Dock icon, no terminal)
+    open "$app_dir" -g
+
     sleep 2
-    # Verify it's actually running
-    if kill -0 "$pid" 2>/dev/null; then
+    local pid=$(pgrep -f "Snackbar" 2>/dev/null | grep -v "Dev-Launch\|grep" | head -1)
+    if [ -n "$pid" ]; then
+        echo "$pid" > "$PID_FILE"
         ok "Snackbar running (PID: $pid) — menu bar icon should appear."
     else
-        err "Snackbar failed to start."
+        err "Snackbar failed to start. Check logs: $LOG_FILE"
         return 1
     fi
-    return 0
 }
 
 start() {
@@ -99,51 +151,14 @@ logs() { [ -f "$LOG_FILE" ] && tail -f "$LOG_FILE" || warn "No log file."; }
 
 rebuild() { stop; sleep 1; build "true"; launch; }
 
-install_agent() {
-    local user_home="$HOME"
-    local agent_path="$HOME/Library/LaunchAgents/com.udos.snackbar.dev.plist"
-    cat > "$agent_path" << PLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0"><dict>
-    <key>Label</key><string>com.udos.snackbar.dev</string>
-    <key>ProgramArguments</key>
-    <array>
-        <string>/bin/zsh</string>
-        <string>-c</string>
-        <string>${user_home}/Code/Apps/Snackbar/Dev-Launch.command start 2>&amp;1 &gt;/tmp/snackbar-launchagent.log</string>
-    </array>
-    <key>RunAtLoad</key><true/>
-    <key>KeepAlive</key><false/>
-    <key>StandardOutPath</key><string>/tmp/snackbar-launchagent.log</string>
-    <key>StandardErrorPath</key><string>/tmp/snackbar-launchagent.log</string>
-    <key>WorkingDirectory</key><string>${user_home}/Code/Apps/Snackbar</string>
-    <key>EnvironmentVariables</key>
-    <dict>
-        <key>PATH</key><string>/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/homebrew/bin</string>
-        <key>HOME</key><string>${user_home}</string>
-    </dict>
-</dict></plist>
-PLIST
-    chmod 644 "$agent_path"
-    launchctl load "$agent_path" 2>/dev/null
-    ok "LaunchAgent installed at $agent_path"
-    ok "Snackbar will auto-start on login (silent, no Dock icon)."
-}
-
-uninstall_agent() {
-    local p="$HOME/Library/LaunchAgents/com.udos.snackbar.dev.plist"
-    if [ -f "$p" ]; then
-        launchctl unload "$p" 2>/dev/null
-        rm "$p"
-        ok "LaunchAgent removed."
-    else
-        warn "No LaunchAgent found."
-    fi
+open_xcode() {
+    info "Opening Snackbar in Xcode..."
+    open "$PROJECT_DIR/Snackbar.xcodeproj"
+    ok "Xcode opened. Use Product → Archive to build a distributable .app"
 }
 
 echo ""; echo -e "${CYAN}┌─────────────────────────────────┐${NC}"
-echo -e "${CYAN}│  🍔  ${NC}Snackbar Dev Mode${CYAN}               │${NC}"
+echo -e "${CYAN}│  🍔  ${NC}Snackbar Dev Launcher${CYAN}            │${NC}"
 echo -e "${CYAN}└─────────────────────────────────┘${NC}"; echo ""
 
 case "${1:-start}" in
@@ -153,8 +168,7 @@ case "${1:-start}" in
     status|--status) status ;;
     logs|--logs) logs ;;
     rebuild|--rebuild) rebuild ;;
-    install-agent) install_agent ;;
-    uninstall-agent) uninstall_agent ;;
-    *) echo "Usage: $0 {start|stop|restart|status|logs|rebuild|install-agent|uninstall-agent}"; exit 1 ;;
+    xcode|--xcode) open_xcode ;;
+    *) echo "Usage: $0 {start|stop|restart|status|logs|rebuild|xcode}"; exit 1 ;;
 esac
 echo ""; exit 0

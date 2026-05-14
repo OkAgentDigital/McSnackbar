@@ -25,15 +25,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// Load an icon from the app bundle's Resources directory.
     /// SwiftPM does not compile .xcassets into Assets.car, so we try multiple
-    /// paths to find SVG files in the Resources directory.
+    /// paths to find PNG/SVG files in the Resources directory.
     private func loadIcon(_ name: String) -> NSImage? {
         // 1. Standard named image (works if xcassets compiled into Assets.car)
         if let image = NSImage(named: name) {
             return image
         }
-        // 2. SVG in Resources/icons/ subdirectory
-        if let url = Bundle.main.url(forResource: name, withExtension: "svg", subdirectory: "icons")
-        {
+        // 2. PNG directly in Resources/ (converted by Dev-Launch.command via sips)
+        if let url = Bundle.main.url(forResource: name, withExtension: "png") {
             return NSImage(contentsOf: url)
         }
         // 3. SVG directly in Resources/
@@ -62,41 +61,57 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    /// Load the app's status bar icon with multiple fallback strategies.
-    /// SwiftPM does not compile .xcassets into a .car file, so we search
-    /// for the SVG directly in the bundle's Resources folder.
+    /// Render the box/archive icon programmatically using Core Graphics.
+    /// This is the most reliable approach — no file loading dependencies.
+    private func renderArchiveBoxIcon(size: NSSize = NSSize(width: 18, height: 18)) -> NSImage {
+        let image = NSImage(size: size)
+        image.lockFocus()
+
+        guard let ctx = NSGraphicsContext.current?.cgContext else {
+            image.unlockFocus()
+            return NSImage(systemSymbolName: "archivebox", accessibilityDescription: "Snackbar") ?? image
+        }
+
+        let w = size.width
+        let h = size.height
+        let inset: CGFloat = 1.0
+        let l: CGFloat = inset
+        let r: CGFloat = w - inset
+        let t: CGFloat = inset
+        let b: CGFloat = h - inset
+        let midX = w / 2
+        let midY = h / 2
+
+        // Set stroke color (will be treated as template)
+        ctx.setStrokeColor(NSColor.black.cgColor)
+        ctx.setLineWidth(1.5)
+        ctx.setLineJoin(.round)
+
+        // Draw the box body (bottom rectangle)
+        let bodyTop: CGFloat = midY - 1
+        let bodyRect = CGRect(x: l + 2, y: bodyTop, width: r - l - 4, height: b - bodyTop - 1)
+        ctx.stroke(bodyRect)
+
+        // Draw the lid (top rectangle)
+        let lidRect = CGRect(x: l, y: t, width: r - l, height: midY - t - 2)
+        ctx.stroke(lidRect)
+
+        // Draw the tab in the middle
+        ctx.move(to: NSPoint(x: midX - 3, y: midY))
+        ctx.addLine(to: NSPoint(x: midX - 3, y: midY + 2))
+        ctx.addLine(to: NSPoint(x: midX + 3, y: midY + 2))
+        ctx.addLine(to: NSPoint(x: midX + 3, y: midY))
+        ctx.strokePath()
+
+        image.unlockFocus()
+        return image
+    }
+
+    /// Load the app's status bar icon.
+    /// Uses a programmatically rendered icon for reliability.
     private func loadAppIcon() -> NSImage? {
-        // Try multiple strategies for loading the menu bar icon
-        let iconName = "icon-box-archive"
-
-        // 1. Compiled Assets.car (Xcode builds only)
-        if let image = NSImage(named: iconName) {
-            return image
-        }
-
-        // 2. SVG at Resources/icons/icon-box-archive.svg
-        if let url = Bundle.main.url(
-            forResource: iconName, withExtension: "svg", subdirectory: "icons")
-        {
-            return NSImage(contentsOf: url)
-        }
-
-        // 3. SVG at Resources/icon-box-archive.svg
-        if let url = Bundle.main.url(forResource: iconName, withExtension: "svg") {
-            return NSImage(contentsOf: url)
-        }
-
-        // 4. SVG at Resources/Assets.xcassets/Mono Icons/icon-box-archive.imageset/icon-box-archive.svg
-        if let url = Bundle.main.url(
-            forResource: iconName,
-            withExtension: "svg",
-            subdirectory: "Assets.xcassets/Mono Icons/icon-box-archive.imageset"
-        ) {
-            return NSImage(contentsOf: url)
-        }
-
-        // 5. Fall back to built-in SF symbol as last resort
-        return NSImage(systemSymbolName: "tray", accessibilityDescription: "Snackbar")
+        let icon = renderArchiveBoxIcon()
+        return icon
     }
 
     @objc private func menuBarClicked(_ sender: NSStatusBarButton) {
