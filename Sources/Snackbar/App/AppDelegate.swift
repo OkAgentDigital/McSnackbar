@@ -62,7 +62,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     /// Render the box/archive icon programmatically using Core Graphics.
-    /// This is the most reliable approach — no file loading dependencies.
+    /// Styled like SF Symbol's archivebox — a clean outline with a lid, body, and tab.
+    /// Note: NSImage lockFocus uses a flipped coordinate system (origin top-left),
+    /// so "top" means smaller Y values and "bottom" means larger Y values.
     private func renderArchiveBoxIcon(size: NSSize = NSSize(width: 18, height: 18)) -> NSImage {
         let image = NSImage(size: size)
         image.lockFocus()
@@ -74,7 +76,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         let w = size.width
         let h = size.height
-        let inset: CGFloat = 1.0
+        let inset: CGFloat = 1.5
         let l: CGFloat = inset
         let r: CGFloat = w - inset
         let t: CGFloat = inset
@@ -82,26 +84,39 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let midX = w / 2
         let midY = h / 2
 
-        // Set stroke color (will be treated as template)
+        // Set stroke attributes (template-friendly)
         ctx.setStrokeColor(NSColor.black.cgColor)
         ctx.setLineWidth(1.5)
         ctx.setLineJoin(.round)
+        ctx.setLineCap(.round)
 
-        // Draw the box body (bottom rectangle)
-        let bodyTop: CGFloat = midY - 1
-        let bodyRect = CGRect(x: l + 2, y: bodyTop, width: r - l - 4, height: b - bodyTop - 1)
-        ctx.stroke(bodyRect)
-
-        // Draw the lid (top rectangle)
-        let lidRect = CGRect(x: l, y: t, width: r - l, height: midY - t - 2)
+        // ── Lid (top portion) ──
+        // A slightly wider rectangle at the top of the icon
+        let lidLeft: CGFloat = l
+        let lidRight: CGFloat = r
+        let lidTop: CGFloat = t
+        let lidBottom: CGFloat = midY + 1.5
+        let lidRect = CGRect(x: lidLeft, y: lidTop, width: lidRight - lidLeft, height: lidBottom - lidTop)
         ctx.stroke(lidRect)
 
-        // Draw the tab in the middle
-        ctx.move(to: NSPoint(x: midX - 3, y: midY))
-        ctx.addLine(to: NSPoint(x: midX - 3, y: midY + 2))
-        ctx.addLine(to: NSPoint(x: midX + 3, y: midY + 2))
-        ctx.addLine(to: NSPoint(x: midX + 3, y: midY))
-        ctx.strokePath()
+        // ── Body (bottom portion) ──
+        // Slightly narrower than the lid, like a real box
+        let bodyInset: CGFloat = 2.0
+        let bodyLeft: CGFloat = l + bodyInset
+        let bodyRight: CGFloat = r - bodyInset
+        let bodyTop: CGFloat = midY + 1.5
+        let bodyBottom: CGFloat = b
+        let bodyRect = CGRect(x: bodyLeft, y: bodyTop, width: bodyRight - bodyLeft, height: bodyBottom - bodyTop)
+        ctx.stroke(bodyRect)
+
+        // ── Tab / handle on the lid ──
+        // A small rounded tab centered on the lid's bottom edge
+        let tabWidth: CGFloat = 5.0
+        let tabHeight: CGFloat = 2.5
+        let tabX = midX - tabWidth / 2
+        let tabY = lidBottom
+        let tabRect = CGRect(x: tabX, y: tabY, width: tabWidth, height: tabHeight)
+        ctx.stroke(tabRect)
 
         image.unlockFocus()
         return image
