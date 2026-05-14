@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import Combine
 
 @MainActor
 class SnackManager: ObservableObject {
@@ -171,12 +172,17 @@ class SnackManager: ObservableObject {
         let timer = Timer.scheduledTimer(
             withTimeInterval: TimeInterval(snack.refreshInterval), repeats: true
         ) { [weak self] _ in
-            self?.runSnack(snack)
+            guard let self = self else { return }
+            Task { @MainActor in
+                self.runSnack(snack)
+            }
         }
         timers[snack.id] = timer
 
         // Run immediately
-        runSnack(snack)
+        Task { @MainActor in
+            self.runSnack(snack)
+        }
     }
 
     private func stopTimer(for id: String) {

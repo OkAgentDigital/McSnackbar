@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @ObservedObject private var snackManager = SnackManager.shared
@@ -354,3 +355,4 @@ struct SnackSettingsRow: View {
         }
     }
 }
+

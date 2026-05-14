@@ -1,5 +1,7 @@
 import AppKit
+import Combine
 import Foundation
+import Combine
 
 struct GitHubRelease: Codable {
     let tag_name: String
@@ -61,76 +63,59 @@ class UpdateChecker: ObservableObject {
         guard !isChecking else { return }
         isChecking = true
 
-        let url = URL(
-            string: "https://api.github.com/repos/\(repoOwner)/\(repoName)/releases/latest")!
-        var request = URLRequest(url: url)
-        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
-        request.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
-        request.timeoutInterval = 15
-
-        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+        Task {
             defer {
                 Task { @MainActor [weak self] in
                     self?.isChecking = false
                 }
             }
 
-            guard let self = self else { return }
+            let url = URL(string: "https://api.github.com/repos/\(repoOwner)/\(repoName)/releases/latest")!
+            var request = URLRequest(url: url)
+            request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+            request.setValue("2022-11-28", forHTTPHeaderField: "X-GitHub-Api-Version")
+            request.timeoutInterval = 15
 
-            if let error = error {
+            do {
+                // Perform network call off the main actor
+                let (data, _) = try await URLSession.shared.data(for: request)
+
+                // Decode off the main actor to avoid main-actor isolated conformance issues
+                let release = try JSONDecoder().decode(GitHubRelease.self, from: data)
+
+                await MainActor.run {
+                    self.lastCheckDate = Date()
+
+                    let latestVersion = release.tag_name.replacingOccurrences(of: "v", with: "")
+                    guard let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+                        return
+                    }
+
+                    if self.isVersion(latestVersion, greaterThan: currentVersion) {
+                        self.updateAvailable = (
+                            version: latestVersion,
+                            url: release.html_url,
+                            body: release.body
+                        )
+                        if !silent {
+                            self.showUpdateNotification(version: latestVersion, url: release.html_url, body: release.body)
+                        }
+                    } else {
+                        self.updateAvailable = nil
+                        if !silent {
+                            self.showAlert(title: "Up to Date", message: "Snackbar \(currentVersion) is the latest version.")
+                        }
+                    }
+                }
+            } catch {
                 print("⚠️ Update check failed: \(error.localizedDescription)")
                 if !silent {
-                    Task { @MainActor in
-                        self.showAlert(
-                            title: "Update Check Failed",
-                            message: "Could not reach GitHub: \(error.localizedDescription)")
-                    }
-                }
-                return
-            }
-
-            guard let data = data,
-                let release = try? JSONDecoder().decode(GitHubRelease.self, from: data)
-            else {
-                print("⚠️ Update check failed or no release found")
-                if !silent {
-                    Task { @MainActor in
-                        self.showAlert(
-                            title: "Update Check Failed", message: "No release information found.")
-                    }
-                }
-                return
-            }
-
-            Task { @MainActor in
-                self.lastCheckDate = Date()
-
-                let latestVersion = release.tag_name.replacingOccurrences(of: "v", with: "")
-                guard
-                    let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"]
-                        as? String
-                else {
-                    return
-                }
-
-                if self.isVersion(latestVersion, greaterThan: currentVersion) {
-                    self.updateAvailable = (
-                        version: latestVersion, url: release.html_url, body: release.body
-                    )
-                    if !silent {
-                        self.showUpdateNotification(
-                            version: latestVersion, url: release.html_url, body: release.body)
-                    }
-                } else {
-                    self.updateAvailable = nil
-                    if !silent {
-                        self.showAlert(
-                            title: "Up to Date",
-                            message: "Snackbar \(currentVersion) is the latest version.")
+                    await MainActor.run {
+                        self.showAlert(title: "Update Check Failed", message: "Could not reach GitHub: \(error.localizedDescription)")
                     }
                 }
             }
-        }.resume()
+        }
     }
 
     // MARK: - Periodic Checks
@@ -207,3 +192,4 @@ class UpdateChecker: ObservableObject {
         }
     }
 }
+
