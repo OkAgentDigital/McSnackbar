@@ -11,27 +11,39 @@
 #   ./run_snackbar_silent.sh --stop    # Kill all Snackbar processes
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 BUNDLE_ID="com.udos.snackbar"
 LOG_DIR="$HOME/Library/Logs/Snackbar"
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/snackbar.log"
+APP_BUNDLE="$PROJECT_DIR/Snackbar.app"
 
 # ── Functions ──
 
-build_if_needed() {
-    local binary="./.build/arm64-apple-macosx/debug/Snackbar"
-    [ -f "$binary" ] && return 0
+build_and_bundle() {
     echo "Building Snackbar..."
+    cd "$PROJECT_DIR" || exit 1
     swift build --product Snackbar --configuration debug 2>&1 | tail -3
-    return $?
+    local exit_code=$?
+    [ $exit_code -ne 0 ] && return 1
+
+    # Update the .app bundle with the new binary and resources
+    echo "Updating .app bundle..."
+    mkdir -p "$APP_BUNDLE/Contents/MacOS"
+    mkdir -p "$APP_BUNDLE/Contents/Resources"
+    cp ".build/arm64-apple-macosx/debug/Snackbar" "$APP_BUNDLE/Contents/MacOS/Snackbar"
+    # Copy SVG icons into Resources
+    find "Sources/Snackbar/Assets.xcassets" -name "*.svg" -exec cp {} "$APP_BUNDLE/Contents/Resources/" \;
+    echo "✅ Bundle updated"
+    return 0
 }
 
 launch_raw() {
     # Launch the raw binary directly (will show Terminal)
-    local binary="./.build/arm64-apple-macosx/debug/Snackbar"
-    [ -f "$binary" ] || binary="./.build/debug/Snackbar"
+    local binary="$PROJECT_DIR/.build/arm64-apple-macosx/debug/Snackbar"
+    [ -f "$binary" ] || binary="$PROJECT_DIR/.build/debug/Snackbar"
     [ ! -f "$binary" ] && { echo "Binary not found. Run 'swift build' first."; exit 1; }
-    
+
     nohup "$binary" > "$LOG_FILE" 2>&1 &
     disown
     echo "✅ Snackbar launched (PID: $!) — raw mode (terminal visible)"
@@ -39,16 +51,15 @@ launch_raw() {
 }
 
 launch_app() {
-    # Use the SnackbarSilent.app wrapper (proper LSUIElement .app)
-    local app_path="$SCRIPT_DIR/SnackbarSilent.app"
-    
-    if [ -d "$app_path" ]; then
-        open "$app_path" -g  # -g = launch hidden (no activation)
+    # Use the Snackbar.app bundle (proper LSUIElement .app)
+    if [ -d "$APP_BUNDLE" ]; then
+        open "$APP_BUNDLE" -g  # -g = launch hidden (no activation)
         echo "✅ Snackbar launched via .app bundle (silent, no terminal)"
     else
-        echo "⚠️ SnackbarSilent.app not found. Building .app..."
-        # For now, use raw mode as fallback
-        launch_raw
+        echo "⚠️ Snackbar.app not found. Building .app..."
+        build_and_bundle || exit 1
+        open "$APP_BUNDLE" -g
+        echo "✅ Snackbar launched via .app bundle (silent, no terminal)"
     fi
 }
 
@@ -70,11 +81,11 @@ stop_snackbar() {
 
 case "${1:-start}" in
     start|--app)
-        build_if_needed || exit 1
+        build_and_bundle || exit 1
         launch_app
         ;;
     raw|--raw)
-        build_if_needed || exit 1
+        build_and_bundle || exit 1
         launch_raw
         ;;
     stop|--stop)

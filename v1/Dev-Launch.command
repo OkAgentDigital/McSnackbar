@@ -3,7 +3,7 @@
 # =============================================================================
 # 🍔 Snackbar Dev Launcher
 # =============================================================================
-# 
+#
 # Builds Snackbar from source and runs it in debug mode (no code signing).
 # Dogfooding tool for everyday development.
 #
@@ -27,6 +27,7 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$SCRIPT_DIR"
 SNACKBAR_BINARY="$PROJECT_DIR/.build/arm64-apple-macosx/debug/Snackbar"
+SNACKBAR_APP="$PROJECT_DIR/Snackbar.app"
 LOG_FILE="/tmp/snackbar-dev.log"
 PID_FILE="/tmp/snackbar-dev.pid"
 
@@ -51,24 +52,26 @@ build() {
 }
 
 launch() {
-    [ ! -f "$SNACKBAR_BINARY" ] && { err "Binary not found."; return 1; }
-    cd "$PROJECT_DIR" || exit 1
-    "$SNACKBAR_BINARY" >> "$LOG_FILE" 2>&1 &
-    local pid=$!; echo $pid > "$PID_FILE"
-    sleep 2
-    if kill -0 "$pid" 2>/dev/null; then
-        ok "Snackbar running (PID: $pid) — menu bar icon should appear."
-        return 0
-    else
-        err "Failed to start. Logs:"; tail -5 "$LOG_FILE"; return 1
-    fi
+    # Build and update the .app bundle
+    build || return 1
+    # Update the .app bundle with the new binary and resources
+    mkdir -p "$SNACKBAR_APP/Contents/MacOS"
+    mkdir -p "$SNACKBAR_APP/Contents/Resources"
+    cp "$SNACKBAR_BINARY" "$SNACKBAR_APP/Contents/MacOS/Snackbar"
+    find "$PROJECT_DIR/Sources/Snackbar/Assets.xcassets" -name "*.svg" -exec cp {} "$SNACKBAR_APP/Contents/Resources/" \;
+    # Launch via .app bundle (silent, no terminal)
+    open "$SNACKBAR_APP" -g
+    local pid=$(pgrep -f "Snackbar" 2>/dev/null | grep -v "Dev-Launch\|grep" | head -1)
+    echo "$pid" > "$PID_FILE"
+    ok "Snackbar running (PID: $pid) — menu bar icon should appear."
+    return 0
 }
 
 start() {
     [ -f "$PID_FILE" ] && { local pid=$(cat "$PID_FILE" 2>/dev/null); [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null && { ok "Already running (PID: $pid)"; return 0; }; rm -f "$PID_FILE"; }
     local pid=$(pgrep -f "Snackbar" 2>/dev/null | grep -v "Dev-Launch\|grep" | head -1)
     [ -n "$pid" ] && { echo "$pid" > "$PID_FILE"; ok "Already running (PID: $pid)"; return 0; }
-    build || return 1; launch
+    launch
 }
 
 stop() {
