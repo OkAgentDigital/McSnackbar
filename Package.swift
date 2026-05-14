@@ -9,8 +9,14 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "Snackbar",
+            exclude: [
+                "Info.plist"
+            ],
             resources: [
                 .process("Assets.xcassets")
+            ],
+            linkerSettings: [
+                .linkedFramework("ServiceManagement")
             ]
         ),
     ],

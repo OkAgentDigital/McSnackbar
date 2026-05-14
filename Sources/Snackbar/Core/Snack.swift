@@ -33,7 +33,7 @@ extension Snack {
                     return pendingCount
                 end tell
                 """,
-            isEnabled: true
+            isEnabled: false
         ),
         Snack(
             id: "mail-vip",
@@ -45,7 +45,7 @@ extension Snack {
                     return vipCount
                 end tell
                 """,
-            isEnabled: true
+            isEnabled: false
         ),
         Snack(
             id: "contacts",
@@ -58,7 +58,7 @@ extension Snack {
                     return vipNames as string
                 end tell
                 """,
-            isEnabled: true
+            isEnabled: false
         ),
         Snack(
             id: "notes",

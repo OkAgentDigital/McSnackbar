@@ -19,11 +19,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             object: nil
         )
 
-        // Delay initial snack execution to let the system settle
-        // and avoid a flurry of simultaneous permission prompts at launch
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-            self?.snackManager.startTimers()
-        }
+        // Start periodic update checks
+        UpdateChecker.shared.startPeriodicChecks()
     }
 
     /// Load an icon from the app bundle's Resources directory.

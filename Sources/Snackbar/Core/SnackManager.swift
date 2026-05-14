@@ -7,15 +7,27 @@ class SnackManager: ObservableObject {
 
     @Published var snacks: [Snack] = []
     @Published var badges: [String: String] = [:]
+    @Published var launchAtStartup: Bool = false
+
+    let updateChecker = UpdateChecker.shared
 
     private let userDefaultsKey = "SnackbarSnacks"
     private var timers: [String: Timer] = [:]
 
     private init() {
         loadSnacks()
+        launchAtStartup = LaunchAtStartupManager.shared.isEnabled
         // Timers are started by AppDelegate after a short delay on launch,
         // to avoid triggering a flurry of simultaneous permission prompts.
         // startTimers() is called from AppDelegate.applicationDidFinishLaunching()
+    }
+
+    // MARK: - Launch at Startup
+
+    func toggleLaunchAtStartup() {
+        launchAtStartup.toggle()
+        LaunchAtStartupManager.shared.isEnabled = launchAtStartup
+        objectWillChange.send()
     }
 
     // MARK: - Persistence
