@@ -49,12 +49,24 @@ build() {
 
 launch() {
     build || return 1
-    # Run directly — no .app bundle, no Dock icon, no window popup
-    cd "$PROJECT_DIR" && swift run &
+    # Run the compiled binary directly — no .app bundle, no Dock icon, no window popup
+    # Using swift run can leave a swift-build process hanging, so we use the binary directly
+    local binary="$PROJECT_DIR/.build/arm64-apple-macosx/debug/Snackbar"
+    if [ ! -f "$binary" ]; then
+        err "Binary not found at $binary. Run build first."
+        return 1
+    fi
+    cd "$PROJECT_DIR" && "$binary" &
     local pid=$!
     echo "$pid" > "$PID_FILE"
     sleep 2
-    ok "Snackbar running (PID: $pid) — menu bar icon should appear."
+    # Verify it's actually running
+    if kill -0 "$pid" 2>/dev/null; then
+        ok "Snackbar running (PID: $pid) — menu bar icon should appear."
+    else
+        err "Snackbar failed to start."
+        return 1
+    fi
     return 0
 }
 
@@ -88,8 +100,9 @@ logs() { [ -f "$LOG_FILE" ] && tail -f "$LOG_FILE" || warn "No log file."; }
 rebuild() { stop; sleep 1; build "true"; launch; }
 
 install_agent() {
+    local user_home="$HOME"
     local agent_path="$HOME/Library/LaunchAgents/com.udos.snackbar.dev.plist"
-    cat > "$agent_path" << 'PLIST'
+    cat > "$agent_path" << PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
@@ -98,17 +111,17 @@ install_agent() {
     <array>
         <string>/bin/zsh</string>
         <string>-c</string>
-        <string>~/Code/Apps/Snackbar/Dev-Launch.command start 2>&amp;1 &gt;/tmp/snackbar-launchagent.log</string>
+        <string>${user_home}/Code/Apps/Snackbar/Dev-Launch.command start 2>&amp;1 &gt;/tmp/snackbar-launchagent.log</string>
     </array>
     <key>RunAtLoad</key><true/>
     <key>KeepAlive</key><false/>
     <key>StandardOutPath</key><string>/tmp/snackbar-launchagent.log</string>
     <key>StandardErrorPath</key><string>/tmp/snackbar-launchagent.log</string>
-    <key>WorkingDirectory</key><string>~/Code/Apps/Snackbar</string>
+    <key>WorkingDirectory</key><string>${user_home}/Code/Apps/Snackbar</string>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key><string>/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/opt/homebrew/bin</string>
-        <key>HOME</key><string>~</string>
+        <key>HOME</key><string>${user_home}</string>
     </dict>
 </dict></plist>
 PLIST

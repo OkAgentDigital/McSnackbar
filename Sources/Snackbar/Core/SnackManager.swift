@@ -87,16 +87,36 @@ class SnackManager: ObservableObject {
     }
 
     private func executeAppleScript(_ script: String) -> String? {
-        let appleScript = NSAppleScript(source: script)
-        var error: NSDictionary?
-        let result = appleScript?.executeAndReturnError(&error)
+        // Use osascript subprocess instead of NSAppleScript to avoid
+        // stealing window focus from the user. NSAppleScript runs in-process
+        // and can cause macOS to activate/focus the target application.
+        let process = Process()
+        process.launchPath = "/usr/bin/osascript"
+        process.arguments = ["-e", script, "-e", "return"]
 
-        if let error = error {
-            print("AppleScript error: \(error)")
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        process.standardError = pipe
+
+        do {
+            try process.run()
+            process.waitUntilExit()
+
+            let data = pipe.fileHandleForReading.readDataToEndOfFile()
+            let output = String(data: data, encoding: .utf8)?.trimmingCharacters(
+                in: .whitespacesAndNewlines)
+
+            if process.terminationStatus != 0 {
+                print(
+                    "osascript error (status \(process.terminationStatus)): \(output ?? "unknown")")
+                return nil
+            }
+
+            return output?.isEmpty == true ? nil : output
+        } catch {
+            print("osascript execution error: \(error.localizedDescription)")
             return nil
         }
-
-        return result?.stringValue
     }
 
     // MARK: - Badge Formatting
