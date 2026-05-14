@@ -48,6 +48,26 @@
         "target": "Snackbar",
         "configuration": "release",
         "preLaunchTask": "swift: Build Release Snackbar"
+      },
+      {
+        "type": "swift",
+        "request": "launch",
+        "args": [],
+        "cwd": "${workspaceFolder:🍔 Snackbar}",
+        "name": "Debug Snackbar (🍔 Snackbar)",
+        "target": "Snackbar",
+        "configuration": "debug",
+        "preLaunchTask": "swift: Build Debug Snackbar (🍔 Snackbar)"
+      },
+      {
+        "type": "swift",
+        "request": "launch",
+        "args": [],
+        "cwd": "${workspaceFolder:🍔 Snackbar}",
+        "name": "Release Snackbar (🍔 Snackbar)",
+        "target": "Snackbar",
+        "configuration": "release",
+        "preLaunchTask": "swift: Build Release Snackbar (🍔 Snackbar)"
       }
     ]
   },

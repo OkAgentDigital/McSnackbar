@@ -18,21 +18,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             name: NSNotification.Name("SnackStateChanged"),
             object: nil
         )
+
+        // Delay initial snack execution to let the system settle
+        // and avoid a flurry of simultaneous permission prompts at launch
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            self?.snackManager.startTimers()
+        }
     }
 
     /// Load an icon from the app bundle's Resources directory.
-    /// Falls back to NSImage(named:) for system images.
+    /// SwiftPM does not compile .xcassets into Assets.car, so we try multiple
+    /// paths to find SVG files in the Resources directory.
     private func loadIcon(_ name: String) -> NSImage? {
-        // First try standard named image lookup (works inside .app bundle with Assets.car)
+        // 1. Standard named image (works if xcassets compiled into Assets.car)
         if let image = NSImage(named: name) {
             return image
         }
-        // Fallback: look for SVG in bundle's Resources
-        if let url = Bundle.main.url(forResource: name, withExtension: "svg", subdirectory: "icons") {
+        // 2. SVG in Resources/icons/ subdirectory
+        if let url = Bundle.main.url(forResource: name, withExtension: "svg", subdirectory: "icons")
+        {
             return NSImage(contentsOf: url)
         }
-        // Try direct resource lookup
+        // 3. SVG directly in Resources/
         if let url = Bundle.main.url(forResource: name, withExtension: "svg") {
+            return NSImage(contentsOf: url)
+        }
+        // 4. SVG inside xcassets structure (may be copied as-is by SwiftPM)
+        let imagesetDir = "Assets.xcassets/Mono Icons/\(name).imageset"
+        if let url = Bundle.main.url(
+            forResource: name, withExtension: "svg", subdirectory: imagesetDir)
+        {
             return NSImage(contentsOf: url)
         }
         return nil
@@ -42,7 +57,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         if let button = statusItem.button {
-            let icon = loadIcon("icon-box-archive")
+            let icon = loadAppIcon()
             icon?.isTemplate = true
             button.image = icon
             button.action = #selector(menuBarClicked)
@@ -50,10 +65,48 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    /// Load the app's status bar icon with multiple fallback strategies.
+    /// SwiftPM does not compile .xcassets into a .car file, so we search
+    /// for the SVG directly in the bundle's Resources folder.
+    private func loadAppIcon() -> NSImage? {
+        // Try multiple strategies for loading the menu bar icon
+        let iconName = "icon-box-archive"
+
+        // 1. Compiled Assets.car (Xcode builds only)
+        if let image = NSImage(named: iconName) {
+            return image
+        }
+
+        // 2. SVG at Resources/icons/icon-box-archive.svg
+        if let url = Bundle.main.url(
+            forResource: iconName, withExtension: "svg", subdirectory: "icons")
+        {
+            return NSImage(contentsOf: url)
+        }
+
+        // 3. SVG at Resources/icon-box-archive.svg
+        if let url = Bundle.main.url(forResource: iconName, withExtension: "svg") {
+            return NSImage(contentsOf: url)
+        }
+
+        // 4. SVG at Resources/Assets.xcassets/Mono Icons/icon-box-archive.imageset/icon-box-archive.svg
+        if let url = Bundle.main.url(
+            forResource: iconName,
+            withExtension: "svg",
+            subdirectory: "Assets.xcassets/Mono Icons/icon-box-archive.imageset"
+        ) {
+            return NSImage(contentsOf: url)
+        }
+
+        // 5. Fall back to built-in SF symbol as last resort
+        return NSImage(systemSymbolName: "tray", accessibilityDescription: "Snackbar")
+    }
+
     @objc private func menuBarClicked(_ sender: NSStatusBarButton) {
         // Rebuild menu each time to reflect latest badges
         buildMenu()
-        statusItem.menu?.popUp(positioning: nil, at: NSPoint(x: 0, y: sender.bounds.height + 5), in: sender)
+        statusItem.menu?.popUp(
+            positioning: nil, at: NSPoint(x: 0, y: sender.bounds.height + 5), in: sender)
     }
 
     @objc private func rebuildMenu() {
@@ -77,7 +130,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         for snack in snackManager.snacks {
             let badge = snackManager.formattedBadge(for: snack)
             let title = "\(snack.name) \(badge)".trimmingCharacters(in: .whitespaces)
-            let item = NSMenuItem(title: title, action: #selector(toggleSnack(_:)), keyEquivalent: "")
+            let item = NSMenuItem(
+                title: title, action: #selector(toggleSnack(_:)), keyEquivalent: "")
 
             let icon = loadIcon(snack.iconName)
             icon?.isTemplate = true
@@ -93,14 +147,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(NSMenuItem.separator())
 
         // Settings
-        let settingsItem = NSMenuItem(title: "Settings...", action: #selector(openSettings), keyEquivalent: ",")
+        let settingsItem = NSMenuItem(
+            title: "Settings...", action: #selector(openSettings), keyEquivalent: ",")
         let settingsIcon = loadIcon("icon-settings")
         settingsIcon?.isTemplate = true
         settingsItem.image = settingsIcon
         menu.addItem(settingsItem)
 
         // Quit
-        let quitItem = NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        let quitItem = NSMenuItem(
+            title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         menu.addItem(quitItem)
 
         statusItem.menu = menu
