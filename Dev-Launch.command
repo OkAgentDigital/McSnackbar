@@ -61,7 +61,8 @@ create_app_bundle() {
 
     # Convert SVG icons to PNG and copy to Resources
     # NSImage(contentsOf:) doesn't reliably load SVGs, so we use sips to render PNGs
-    local icon_dir="$PROJECT_DIR/Sources/Snackbar/Assets.xcassets/Mono Icons"
+    local icon_dir="$PROJECT_DIR/MacSnackbar/MacSnackbar/Assets.xcassets/Mono Icons"
+
     for svg in "$icon_dir"/*.imageset/*.svg; do
         local name=$(basename "$svg" .svg)
         local png_out="$app_dir/Contents/Resources/${name}.png"
@@ -153,9 +154,10 @@ rebuild() { stop; sleep 1; build "true"; launch; }
 
 open_xcode() {
     info "Opening Snackbar in Xcode..."
-    open "$PROJECT_DIR/Snackbar.xcodeproj"
+    open "$PROJECT_DIR/MacSnackbar/MacSnackbar.xcodeproj"
     ok "Xcode opened. Use Product → Archive to build a distributable .app"
 }
+
 
 echo ""; echo -e "${CYAN}┌─────────────────────────────────┐${NC}"
 echo -e "${CYAN}│  🍔  ${NC}Snackbar Dev Launcher${CYAN}            │${NC}"

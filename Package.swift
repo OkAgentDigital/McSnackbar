@@ -10,8 +10,10 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "Snackbar",
+            path: "MacSnackbar/MacSnackbar",
             exclude: [
-                "Info.plist"
+                "Assets.xcassets/AccentColor.colorset",
+                "Assets.xcassets/AppIcon.appiconset",
             ],
             resources: [
                 .process("Assets.xcassets")

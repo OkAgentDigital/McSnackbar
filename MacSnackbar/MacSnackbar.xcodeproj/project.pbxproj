@@ -1,0 +1,598 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		695F37022FB5F33D00EB25DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 695F36EC2FB5F33C00EB25DE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 695F36F32FB5F33C00EB25DE;
+			remoteInfo = MacSnackbar;
+		};
+		695F370C2FB5F33D00EB25DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 695F36EC2FB5F33C00EB25DE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 695F36F32FB5F33C00EB25DE;
+			remoteInfo = MacSnackbar;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		695F36F42FB5F33C00EB25DE /* MacSnackbar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacSnackbar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		695F37012FB5F33D00EB25DE /* MacSnackbarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacSnackbarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		695F370B2FB5F33D00EB25DE /* MacSnackbarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacSnackbarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		695F371E2FB5F33D00EB25DE /* Exceptions for "MacSnackbar" sync group */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				App/AppDelegate.swift,
+				Core/LaunchAtStartupManager.swift,
+				Core/Snack.swift,
+				Core/SnackManager.swift,
+				Core/SpoolWriter.swift,
+				Core/UpdateChecker.swift,
+				Views/SettingsView.swift,
+			);
+			target = 695F36F32FB5F33C00EB25DE /* MacSnackbar */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		695F36F62FB5F33C00EB25DE /* MacSnackbar */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MacSnackbar;
+			sourceTree = "<group>";
+		};
+		695F37042FB5F33D00EB25DE /* MacSnackbarTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MacSnackbarTests;
+			sourceTree = "<group>";
+		};
+		695F370E2FB5F33D00EB25DE /* MacSnackbarUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MacSnackbarUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		695F36F12FB5F33C00EB25DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		695F36FE2FB5F33D00EB25DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		695F37082FB5F33D00EB25DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		695F36EB2FB5F33C00EB25DE = {
+			isa = PBXGroup;
+			children = (
+				695F36F62FB5F33C00EB25DE /* MacSnackbar */,
+				695F37042FB5F33D00EB25DE /* MacSnackbarTests */,
+				695F370E2FB5F33D00EB25DE /* MacSnackbarUITests */,
+				695F36F52FB5F33C00EB25DE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		695F36F52FB5F33C00EB25DE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				695F36F42FB5F33C00EB25DE /* MacSnackbar.app */,
+				695F37012FB5F33D00EB25DE /* MacSnackbarTests.xctest */,
+				695F370B2FB5F33D00EB25DE /* MacSnackbarUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		695F36F32FB5F33C00EB25DE /* MacSnackbar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 695F37152FB5F33D00EB25DE /* Build configuration list for PBXNativeTarget "MacSnackbar" */;
+			buildPhases = (
+				695F36F02FB5F33C00EB25DE /* Sources */,
+				695F36F12FB5F33C00EB25DE /* Frameworks */,
+				695F36F22FB5F33C00EB25DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				695F36F62FB5F33C00EB25DE /* MacSnackbar */,
+			);
+			name = MacSnackbar;
+			packageProductDependencies = (
+			);
+			productName = MacSnackbar;
+			productReference = 695F36F42FB5F33C00EB25DE /* MacSnackbar.app */;
+			productType = "com.apple.product-type.application";
+		};
+		695F37002FB5F33D00EB25DE /* MacSnackbarTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 695F37182FB5F33D00EB25DE /* Build configuration list for PBXNativeTarget "MacSnackbarTests" */;
+			buildPhases = (
+				695F36FD2FB5F33D00EB25DE /* Sources */,
+				695F36FE2FB5F33D00EB25DE /* Frameworks */,
+				695F36FF2FB5F33D00EB25DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				695F37032FB5F33D00EB25DE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				695F37042FB5F33D00EB25DE /* MacSnackbarTests */,
+			);
+			name = MacSnackbarTests;
+			packageProductDependencies = (
+			);
+			productName = MacSnackbarTests;
+			productReference = 695F37012FB5F33D00EB25DE /* MacSnackbarTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		695F370A2FB5F33D00EB25DE /* MacSnackbarUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 695F371B2FB5F33D00EB25DE /* Build configuration list for PBXNativeTarget "MacSnackbarUITests" */;
+			buildPhases = (
+				695F37072FB5F33D00EB25DE /* Sources */,
+				695F37082FB5F33D00EB25DE /* Frameworks */,
+				695F37092FB5F33D00EB25DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				695F370D2FB5F33D00EB25DE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				695F370E2FB5F33D00EB25DE /* MacSnackbarUITests */,
+			);
+			name = MacSnackbarUITests;
+			packageProductDependencies = (
+			);
+			productName = MacSnackbarUITests;
+			productReference = 695F370B2FB5F33D00EB25DE /* MacSnackbarUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		695F36EC2FB5F33C00EB25DE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2640;
+				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+					695F36F32FB5F33C00EB25DE = {
+						CreatedOnToolsVersion = 26.4.1;
+					};
+					695F37002FB5F33D00EB25DE = {
+						CreatedOnToolsVersion = 26.4.1;
+						TestTargetID = 695F36F32FB5F33C00EB25DE;
+					};
+					695F370A2FB5F33D00EB25DE = {
+						CreatedOnToolsVersion = 26.4.1;
+						TestTargetID = 695F36F32FB5F33C00EB25DE;
+					};
+				};
+			};
+			buildConfigurationList = 695F36EF2FB5F33C00EB25DE /* Build configuration list for PBXProject "MacSnackbar" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 695F36EB2FB5F33C00EB25DE;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 695F36F52FB5F33C00EB25DE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				695F36F32FB5F33C00EB25DE /* MacSnackbar */,
+				695F37002FB5F33D00EB25DE /* MacSnackbarTests */,
+				695F370A2FB5F33D00EB25DE /* MacSnackbarUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		695F36F22FB5F33C00EB25DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		695F36FF2FB5F33D00EB25DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		695F37092FB5F33D00EB25DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		695F36F02FB5F33C00EB25DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		695F36FD2FB5F33D00EB25DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		695F37072FB5F33D00EB25DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		695F37032FB5F33D00EB25DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 695F36F32FB5F33C00EB25DE /* MacSnackbar */;
+			targetProxy = 695F37022FB5F33D00EB25DE /* PBXContainerItemProxy */;
+		};
+		695F370D2FB5F33D00EB25DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 695F36F32FB5F33C00EB25DE /* MacSnackbar */;
+			targetProxy = 695F370C2FB5F33D00EB25DE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		695F37132FB5F33D00EB25DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7C25G5K5Z4;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		695F37142FB5F33D00EB25DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7C25G5K5Z4;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		695F37162FB5F33D00EB25DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7C25G5K5Z4;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Snackbar needs to control Reminders, Mail, Contacts, Notes, and Calendar to show your data.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 uDos. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.udos.snackbar;
+				PRODUCT_NAME = "Snackbar";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		695F37172FB5F33D00EB25DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7C25G5K5Z4;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Snackbar needs to control Reminders, Mail, Contacts, Notes, and Calendar to show your data.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 uDos. All rights reserved.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 2.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.udos.snackbar;
+				PRODUCT_NAME = "Snackbar";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		695F37192FB5F33D00EB25DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7C25G5K5Z4;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = OkAgentDigital.MacSnackbarTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacSnackbar.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MacSnackbar";
+			};
+			name = Debug;
+		};
+		695F371A2FB5F33D00EB25DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7C25G5K5Z4;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = OkAgentDigital.MacSnackbarTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacSnackbar.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MacSnackbar";
+			};
+			name = Release;
+		};
+		695F371C2FB5F33D00EB25DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7C25G5K5Z4;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = OkAgentDigital.MacSnackbarUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = MacSnackbar;
+			};
+			name = Debug;
+		};
+		695F371D2FB5F33D00EB25DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7C25G5K5Z4;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = OkAgentDigital.MacSnackbarUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = MacSnackbar;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		695F36EF2FB5F33C00EB25DE /* Build configuration list for PBXProject "MacSnackbar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				695F37132FB5F33D00EB25DE /* Debug */,
+				695F37142FB5F33D00EB25DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		695F37152FB5F33D00EB25DE /* Build configuration list for PBXNativeTarget "MacSnackbar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				695F37162FB5F33D00EB25DE /* Debug */,
+				695F37172FB5F33D00EB25DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		695F37182FB5F33D00EB25DE /* Build configuration list for PBXNativeTarget "MacSnackbarTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				695F37192FB5F33D00EB25DE /* Debug */,
+				695F371A2FB5F33D00EB25DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		695F371B2FB5F33D00EB25DE /* Build configuration list for PBXNativeTarget "MacSnackbarUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				695F371C2FB5F33D00EB25DE /* Debug */,
+				695F371D2FB5F33D00EB25DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 695F36EC2FB5F33C00EB25DE /* Project object */;
+}
