@@ -47,23 +47,18 @@ function createOutputWindow() {
   mainWindow.on('closed', () => { mainWindow = null; });
 }
 
-// ========== 2. CREATE MENU BAR ICON (from SVG) ==========
+// ========== 2. CREATE MENU BAR ICON (from SVG - white on transparent) ==========
 function createTray() {
   const fs = require('fs');
   const svgPath = path.join(__dirname, 'icon.svg');
   let icon;
   try {
-    // Read SVG and set fill to black for template image compatibility
-    // macOS template images use black as the mask color and render it
-    // as white in dark menu bar, black in light menu bar automatically
-    let svgContent = fs.readFileSync(svgPath, 'utf-8');
-    // Set fill to black for proper template image rendering
-    svgContent = svgContent.replace(/ fill="[^"]*"/g, ' fill="#000000"');
+    // Use SVG as-is (white fill on transparent) for the menu bar icon
+    // macOS will render it as a white icon in the menu bar
+    const svgContent = fs.readFileSync(svgPath, 'utf-8');
     const dataUrl = 'data:image/svg+xml;base64,' + Buffer.from(svgContent).toString('base64');
     icon = nativeImage.createFromDataURL(dataUrl);
     icon = icon.resize({ width: 16, height: 16 });
-    // Set as template image so macOS renders it appropriately in light/dark menu bar
-    icon.setTemplateImage(true);
   } catch (e) {
     icon = nativeImage.createEmpty();
   }
@@ -128,21 +123,10 @@ ipcMain.handle('update-from-git', async () => {
 
 // ========== 4. APP LIFECYCLE ==========
 app.whenReady().then(() => {
-  // Set dock icon from SVG (white fill on transparent)
+  // Set dock icon from PNG (black shape on white background)
   if (app.dock) {
-    const fs = require('fs');
-    const svgPath = path.join(__dirname, 'icon.svg');
-    try {
-      let svgContent = fs.readFileSync(svgPath, 'utf-8');
-      // Keep the white fill for the dock icon
-      const dataUrl = 'data:image/svg+xml;base64,' + Buffer.from(svgContent).toString('base64');
-      const dockIcon = nativeImage.createFromDataURL(dataUrl);
-      app.dock.setIcon(dockIcon);
-    } catch (e) {
-      // Fallback to PNG
-      const dockIcon = nativeImage.createFromPath(path.join(__dirname, 'icon.png'));
-      app.dock.setIcon(dockIcon);
-    }
+    const dockIcon = nativeImage.createFromPath(path.join(__dirname, 'icon.png'));
+    app.dock.setIcon(dockIcon);
   }
   createOutputWindow();
   createTray();
