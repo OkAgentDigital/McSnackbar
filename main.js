@@ -7,6 +7,9 @@ const path = require('path');
 let mainWindow = null;      // Output window
 let tray = null;            // Menu bar icon
 
+const APP_ICON_PATH = path.join(__dirname, "app-icon.png");
+const TRAY_ICON_PATH = path.join(__dirname, "snack_tray-icon.png");
+
 
 // ========== SINGLE INSTANCE LOCK ==========
 const gotTheLock = app.requestSingleInstanceLock();
@@ -40,7 +43,7 @@ function createOutputWindow() {
       contextIsolation: true
     },
     title: 'Snackbar',
-    icon: path.join(__dirname, 'icon.png')
+    icon: APP_ICON_PATH
   });
   mainWindow.loadFile('output.html');
 
@@ -49,7 +52,7 @@ function createOutputWindow() {
 
 // ========== 2. CREATE MENU BAR ICON (white on transparent PNG) ==========
 function createTray() {
-  const iconPath = path.join(__dirname, 'tray-icon.png');
+  const iconPath = TRAY_ICON_PATH;
   let icon;
   try {
     icon = nativeImage.createFromPath(iconPath);
@@ -120,7 +123,7 @@ ipcMain.handle('update-from-git', async () => {
 app.whenReady().then(() => {
   // Set dock icon from PNG (black shape on white background)
   if (app.dock) {
-    const dockIcon = nativeImage.createFromPath(path.join(__dirname, 'icon.png'));
+    const dockIcon = nativeImage.createFromPath(APP_ICON_PATH);
     app.dock.setIcon(dockIcon);
   }
   createOutputWindow();

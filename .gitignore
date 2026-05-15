@@ -26,6 +26,7 @@ build_output.txt
 
 # Node / Electron
 node_modules/
+electron-pkg/
 dist/
 out/
 *.dmg

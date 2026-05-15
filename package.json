@@ -1,34 +1,34 @@
 {
   "name": "snackbar",
-  "version": "1.0.0",
-  "description": "Snackbar by Marksmith – Electron App for Mac",
+  "version": "2.0.0",
+  "description": "Snackbar — Menu bar automations for macOS",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder --mac",
-    "pack": "electron-builder --dir"
+    "pack": "electron-builder --dir",
+    "postinstall": "if [ -d node_modules/electron ] && [ ! -d node_modules/electron-pkg ]; then mv node_modules/electron node_modules/electron-pkg && ln -sf ../electron-pkg/cli.js node_modules/.bin/electron && sed -i '' 's/\"name\": \"electron\"/\"name\": \"electron-pkg\"/' node_modules/electron-pkg/package.json; fi"
   },
   "build": {
-    "appId": "com.marksmith.snackbar",
+    "appId": "com.udos.snackbar",
     "productName": "Snackbar",
+    "electronVersion": "33.4.11",
     "mac": {
       "category": "public.app-category.utilities",
       "target": ["dmg", "zip"],
-      "icon": "icon.png"
+      "icon": "app-icon.png"
     },
     "files": [
       "main.js",
       "preload.js",
       "output.html",
-      "icon.png",
-      "snack_6903286.png",
-      "snack_6903342.png"
+      "app-icon.png",
+      "snack_tray-icon.png",
+      "tray-icon.svg"
     ]
   },
-  "keywords": ["snackbar", "marksmith", "mac", "menu-bar"],
-  "license": "MIT",
   "devDependencies": {
-    "electron": "^35.0.0",
+    "electron": "^33.0.0",
     "electron-builder": "^25.0.0"
   }
 }
