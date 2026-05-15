@@ -342,6 +342,51 @@
     .spool-action-btn:hover { background: var(--surface-hover); color: var(--text-secondary); }
     .spool-action-btn svg { width: 14px; height: 14px; }
 
+    /* Toggle switch for snacks */
+    .snack-toggle {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+      cursor: pointer;
+    }
+    .snack-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .snack-toggle .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--border);
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+    .snack-toggle .toggle-thumb {
+      position: absolute;
+      left: 2px;
+      bottom: 2px;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .snack-toggle input:checked + .toggle-track {
+      background: var(--primary);
+    }
+    .snack-toggle input:checked + .toggle-track .toggle-thumb {
+      transform: translateX(16px);
+    }
+    .spool-item.disabled {
+      opacity: 0.5;
+    }
+    .spool-item.disabled .spool-status {
+      background: var(--border);
+      color: var(--text-dim);
+    }
+
     /* ===== Log ===== */
     .log-section { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px; }
     .log-section h3 { font-size: var(--font-sm, 13px); font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
@@ -592,63 +637,10 @@
     <!-- Snacks Panel -->
     <div class="tab-panel" id="panel-snacks">
       <div class="snacks-header">
-        <h2>Snacks <span class="count">(3 active)</span></h2>
+        <h2>Snacks <span class="count">(6 active)</span></h2>
       </div>
 
-      <div class="spool-list">
-        <div class="spool-item">
-          <div class="spool-item-left">
-            <div class="spool-icon">
-              <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            </div>
-            <div class="spool-info">
-              <h4>Mail VIP Ingest</h4>
-              <p>Processing 2 unread VIP emails</p>
-            </div>
-          </div>
-          <div class="spool-item-right">
-            <span class="spool-status active">Active</span>
-            <button class="spool-action-btn" title="View details">
-              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="spool-item">
-          <div class="spool-item-left">
-            <div class="spool-icon">
-              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
-            </div>
-            <div class="spool-info">
-              <h4>Reminder Sync</h4>
-              <p>3 reminders pending</p>
-            </div>
-          </div>
-          <div class="spool-item-right">
-            <span class="spool-status pending">Pending</span>
-            <button class="spool-action-btn" title="View details">
-              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="spool-item">
-          <div class="spool-item-left">
-            <div class="spool-icon">
-              <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-            </div>
-            <div class="spool-info">
-              <h4>Calendar Events</h4>
-              <p>Last synced 2m ago</p>
-            </div>
-          </div>
-          <div class="spool-item-right">
-            <span class="spool-status completed">Completed</span>
-            <button class="spool-action-btn" title="View details">
-              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-        </div>
+      <div class="spool-list" id="spoolList">
       </div>
 
       <!-- Snackmachine Log -->
@@ -758,6 +750,45 @@
       entry.scrollIntoView({ behavior: 'smooth' });
     }
 
+    // ===== Settings Persistence =====
+    async function loadSavedSettings() {
+      try {
+        const settings = await window.electron.loadSettings();
+        if (settings.theme) {
+          setTheme(settings.theme);
+        }
+        if (settings.launchOnStartup) {
+          const checkbox = document.getElementById('launchOnStartup');
+          const thumb = document.getElementById('launchToggleThumb');
+          const track = thumb.parentElement.querySelector('span');
+          checkbox.checked = true;
+          track.style.background = 'var(--primary)';
+          thumb.style.transform = 'translateX(20px)';
+        }
+        if (settings.fontFamily) {
+          document.documentElement.setAttribute('data-font-family', settings.fontFamily);
+          const btn = document.getElementById('fontToggleBtn');
+          btn.innerHTML = FONT_ICONS[settings.fontFamily] || FONT_ICONS.system;
+          btn.setAttribute('data-tooltip', 'Font: ' + (FONT_LABELS[settings.fontFamily] || 'Sans'));
+        }
+        if (settings.fontSize) {
+          document.documentElement.setAttribute('data-font-size', settings.fontSize);
+        }
+      } catch (e) {
+        console.error('Failed to load settings:', e);
+      }
+    }
+
+    function saveSettings() {
+      const settings = {
+        theme: document.documentElement.getAttribute('data-theme') || 'light',
+        launchOnStartup: document.getElementById('launchOnStartup').checked,
+        fontFamily: document.documentElement.getAttribute('data-font-family') || 'system',
+        fontSize: document.documentElement.getAttribute('data-font-size') || 'medium'
+      };
+      window.electron.saveSettings(settings);
+    }
+
     // ===== Launch on Startup =====
 
     function toggleLaunchOnStartup() {
@@ -775,6 +806,7 @@
         window.electron.setLaunchOnStartup(false);
         addLog('info', 'Launch on startup disabled');
       }
+      saveSettings();
     }
 
     // ===== Update from Git =====
@@ -821,6 +853,7 @@
       btn.innerHTML = FONT_ICONS[next];
       btn.setAttribute('data-tooltip', 'Font: ' + FONT_LABELS[next]);
       window.electron.log(`Font switched to ${next}`);
+      saveSettings();
     }
 
     // ===== Font Size Switcher (+4 / -4 from base) =====
@@ -834,6 +867,7 @@
       const next = FONT_SIZES[nextIdx];
       document.documentElement.setAttribute('data-font-size', next);
       window.electron.log(`Font size switched to ${next} (${delta > 0 ? '+' : ''}${delta})`);
+      saveSettings();
     }
 
     // ===== Theme Switcher =====
@@ -856,6 +890,7 @@
       btn.innerHTML = THEME_ICONS[theme];
       btn.setAttribute('data-tooltip', 'Theme: ' + THEME_LABELS[theme] + ' (click to cycle)');
       window.electron.log(`Theme set to ${theme}`);
+      saveSettings();
     }
 
     function toggleTheme() {
@@ -866,10 +901,90 @@
     }
 
 
+    // ===== Snacks Data & Rendering =====
+    const SNACKS = [
+      { id: 'mail', name: 'Mail VIP Ingest', desc: 'Processing 2 unread VIP emails', status: 'active', icon: '<svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>' },
+      { id: 'reminders', name: 'Reminder Sync', desc: '3 reminders pending', status: 'pending', icon: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>' },
+      { id: 'calendar', name: 'Calendar Events', desc: 'Last synced 2m ago', status: 'completed', icon: '<svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>' },
+      { id: 'contacts', name: 'Contacts Sync', desc: 'Last synced 5m ago', status: 'active', icon: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>' },
+      { id: 'notes', name: 'Notes Index', desc: 'Indexing 12 notes', status: 'pending', icon: '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>' },
+      { id: 'permissions', name: 'Permissions Monitor', desc: 'Watching 4 system permissions', status: 'active', icon: '<svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>' }
+    ];
+
+    let snackStates = {};
+
+    async function loadSnackStates() {
+      try {
+        const settings = await window.electron.loadSettings();
+        snackStates = settings.snacks || {};
+      } catch (e) {
+        snackStates = {};
+      }
+      // Default all to enabled if not set
+      SNACKS.forEach(s => {
+        if (snackStates[s.id] === undefined) snackStates[s.id] = true;
+      });
+    }
+
+    function saveSnackStates() {
+      const settings = {
+        theme: document.documentElement.getAttribute('data-theme') || 'light',
+        launchOnStartup: document.getElementById('launchOnStartup').checked,
+        fontFamily: document.documentElement.getAttribute('data-font-family') || 'system',
+        fontSize: document.documentElement.getAttribute('data-font-size') || 'medium',
+        snacks: snackStates
+      };
+      window.electron.saveSettings(settings);
+    }
+
+    function toggleSnack(id) {
+      snackStates[id] = !snackStates[id];
+      saveSnackStates();
+      renderSnacks();
+      const snack = SNACKS.find(s => s.id === id);
+      const state = snackStates[id] ? 'enabled' : 'disabled';
+      addLog('info', `${snack.name} ${state}`);
+    }
+
+    function renderSnacks() {
+      const list = document.getElementById('spoolList');
+      list.innerHTML = '';
+      const activeCount = SNACKS.filter(s => snackStates[s.id]).length;
+      document.querySelector('.snacks-header .count').textContent = `(${activeCount} active)`;
+
+      SNACKS.forEach(snack => {
+        const enabled = snackStates[snack.id];
+        const item = document.createElement('div');
+        item.className = 'spool-item' + (enabled ? '' : ' disabled');
+
+        item.innerHTML = `
+          <div class="spool-item-left">
+            <div class="spool-icon">${snack.icon}</div>
+            <div class="spool-info">
+              <h4>${snack.name}</h4>
+              <p>${snack.desc}</p>
+            </div>
+          </div>
+          <div class="spool-item-right">
+            <span class="spool-status ${enabled ? snack.status : 'disabled'}">${enabled ? snack.status.charAt(0).toUpperCase() + snack.status.slice(1) : 'Off'}</span>
+            <label class="snack-toggle" title="${enabled ? 'Disable' : 'Enable'} ${snack.name}">
+              <input type="checkbox" ${enabled ? 'checked' : ''} onchange="toggleSnack('${snack.id}')">
+              <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            </label>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
     // ===== IPC Listeners =====
     window.electron.onLog((msg) => {
       addLog('info', msg);
     });
+
+    // Load saved settings on startup
+    loadSavedSettings();
+    loadSnackStates().then(() => renderSnacks());
 
     window.electron.log('Output window loaded');
   </script>

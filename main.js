@@ -3,12 +3,40 @@ const { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain } = require('electr
 
 const { exec } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 
 let mainWindow = null;      // Output window
 let tray = null;            // Menu bar icon
 
 const APP_ICON_PATH = path.join(__dirname, "app-icon.png");
 const TRAY_ICON_PATH = path.join(__dirname, "snack_tray-icon.png");
+const SETTINGS_PATH = path.join(app.getPath('userData'), 'settings.json');
+
+
+// ========== SETTINGS PERSISTENCE ==========
+function loadSettings() {
+  try {
+    if (fs.existsSync(SETTINGS_PATH)) {
+      const data = fs.readFileSync(SETTINGS_PATH, 'utf-8');
+      return JSON.parse(data);
+    }
+  } catch (e) {
+    console.error('Failed to load settings:', e);
+  }
+  return {};
+}
+
+function saveSettings(settings) {
+  try {
+    const dir = path.dirname(SETTINGS_PATH);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(SETTINGS_PATH, JSON.stringify(settings, null, 2), 'utf-8');
+  } catch (e) {
+    console.error('Failed to save settings:', e);
+  }
+}
 
 
 // ========== SINGLE INSTANCE LOCK ==========
@@ -98,21 +126,38 @@ ipcMain.on('window-close', () => {
 ipcMain.on('set-launch-on-startup', (event, enabled) => {
   app.setLoginItemSettings({
     openAtLogin: enabled,
+    openAsHidden: true,
     path: app.getPath('exe')
   });
+  // Persist the setting
+  const settings = loadSettings();
+  settings.launchOnStartup = enabled;
+  saveSettings(settings);
   if (mainWindow && !mainWindow.isDestroyed()) {
     mainWindow.webContents.send('log', `Launch on startup ${enabled ? 'enabled' : 'disabled'}`);
   }
 });
 
+ipcMain.on('save-settings', (event, settings) => {
+  const current = loadSettings();
+  Object.assign(current, settings);
+  saveSettings(current);
+});
+
+ipcMain.handle('load-settings', () => {
+  return loadSettings();
+});
+
 ipcMain.handle('update-from-git', async () => {
   return new Promise((resolve) => {
     const repoPath = __dirname;
-    exec('git pull', { cwd: repoPath }, (error, stdout, stderr) => {
+    // Stash any local changes, pull, then pop stash
+    exec('git stash push -m "snackbar-auto-stash" 2>/dev/null; git pull 2>&1; git stash pop 2>/dev/null', { cwd: repoPath, maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
       if (error) {
         resolve({ success: false, message: `Git pull failed: ${stderr || error.message}` });
       } else {
-        resolve({ success: true, message: stdout.trim() || 'Already up to date.' });
+        const msg = stdout.trim() || 'Already up to date.';
+        resolve({ success: true, message: msg });
       }
     });
   });
