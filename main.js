@@ -47,17 +47,12 @@ function createOutputWindow() {
   mainWindow.on('closed', () => { mainWindow = null; });
 }
 
-// ========== 2. CREATE MENU BAR ICON (from SVG - white on transparent) ==========
+// ========== 2. CREATE MENU BAR ICON (white on transparent PNG) ==========
 function createTray() {
-  const fs = require('fs');
-  const svgPath = path.join(__dirname, 'icon.svg');
+  const iconPath = path.join(__dirname, 'tray-icon.png');
   let icon;
   try {
-    // Use SVG as-is (white fill on transparent) for the menu bar icon
-    // macOS will render it as a white icon in the menu bar
-    const svgContent = fs.readFileSync(svgPath, 'utf-8');
-    const dataUrl = 'data:image/svg+xml;base64,' + Buffer.from(svgContent).toString('base64');
-    icon = nativeImage.createFromDataURL(dataUrl);
+    icon = nativeImage.createFromPath(iconPath);
     icon = icon.resize({ width: 16, height: 16 });
   } catch (e) {
     icon = nativeImage.createEmpty();
