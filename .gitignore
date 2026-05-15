@@ -23,3 +23,10 @@
 # Temp
 /tmp/
 build_output.txt
+
+# Node / Electron
+node_modules/
+dist/
+out/
+*.dmg
+*.zip

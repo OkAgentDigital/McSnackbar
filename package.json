@@ -1,0 +1,34 @@
+{
+  "name": "snackbar",
+  "version": "1.0.0",
+  "description": "Snackbar by Marksmith – Electron App for Mac",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac",
+    "pack": "electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.marksmith.snackbar",
+    "productName": "Snackbar",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": ["dmg", "zip"],
+      "icon": "icon.png"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "output.html",
+      "icon.png",
+      "snack_6903286.png",
+      "snack_6903342.png"
+    ]
+  },
+  "keywords": ["snackbar", "marksmith", "mac", "menu-bar"],
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^25.0.0"
+  }
+}
