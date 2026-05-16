@@ -1,15 +1,37 @@
-const { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain } = require('electron');
-
-
 const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
+// Require electron with fallback for the npm package behavior
+let app, BrowserWindow, Tray, Menu, nativeImage, ipcMain;
+try {
+  // In Electron runtime, require('electron') returns the module
+  const electron = require('electron');
+  app = electron.app;
+  BrowserWindow = electron.BrowserWindow;
+  Tray = electron.Tray;
+  Menu = electron.Menu;
+  nativeImage = electron.nativeImage;
+  ipcMain = electron.ipcMain;
+} catch (e1) {
+  try {
+    // Fallback: electron binary path from npm package
+    const electronPath = require('electron');
+    const electronModule = require(electronPath + '/../Resources/default_app/package.json');
+    // This won't work either, try direct electron binary
+    const { app: a, BrowserWindow: bw, Tray: t, Menu: m, nativeImage: ni, ipcMain: ipc } = require(electronPath.replace('/MacOS/Electron', '/Resources/app/node_modules/electron'));
+    app = a; BrowserWindow = bw; Tray = t; Menu = m; nativeImage = ni; ipcMain = ipc;
+  } catch(e2) {
+    console.error('Failed to load Electron modules:', e1.message, e2.message);
+    process.exit(1);
+  }
+}
+
 let mainWindow = null;      // Output window
 let tray = null;            // Menu bar icon
 
-const APP_ICON_PATH = path.join(__dirname, "app-icon.png");
-const TRAY_ICON_PATH = path.join(__dirname, "snack_tray-icon.png");
+const APP_ICON_PATH = path.join(__dirname, "dist/icons/ios/AppIcon~ios-marketing.png");
+const TRAY_ICON_PATH = path.join(__dirname, "tray-icon-white.svg");
 const SETTINGS_PATH = path.join(app.getPath('userData'), 'settings.json');
 
 
@@ -60,7 +82,8 @@ function createOutputWindow() {
     height: 680,
     minWidth: 700,
     minHeight: 500,
-    show: true,
+    show: false,
+    backgroundColor: '#f9fafb',
     titleBarStyle: 'hiddenInset',
     frame: true,
     trafficLightPosition: { x: 12, y: 12 },
@@ -74,6 +97,10 @@ function createOutputWindow() {
     icon: APP_ICON_PATH
   });
   mainWindow.loadFile('output.html');
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
 
   mainWindow.on('closed', () => { mainWindow = null; });
 }

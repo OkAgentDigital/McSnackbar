@@ -16,15 +16,15 @@
     "mac": {
       "category": "public.app-category.utilities",
       "target": ["dmg", "zip"],
-      "icon": "app-icon.png"
+      "icon": "dist/icons/ios/AppIcon~ios-marketing.png"
     },
     "files": [
       "main.js",
       "preload.js",
       "output.html",
-      "app-icon.png",
+      "dist/icons/ios/AppIcon~ios-marketing.png",
       "snack_tray-icon.png",
-      "tray-icon.svg"
+      "tray-icon-white.svg"
     ]
   },
   "devDependencies": {
