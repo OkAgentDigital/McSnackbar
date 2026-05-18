@@ -1,13 +1,12 @@
 {
   "name": "snackbar",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Snackbar — Menu bar automations for macOS",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder --mac",
-    "pack": "electron-builder --dir",
-    "postinstall": "if [ -d node_modules/electron ] && [ ! -d node_modules/electron-pkg ]; then mv node_modules/electron node_modules/electron-pkg && ln -sf ../electron-pkg/cli.js node_modules/.bin/electron && sed -i '' 's/\"name\": \"electron\"/\"name\": \"electron-pkg\"/' node_modules/electron-pkg/package.json; fi"
+    "pack": "electron-builder --dir"
   },
   "build": {
     "appId": "com.udos.snackbar",
@@ -15,20 +14,25 @@
     "electronVersion": "33.4.11",
     "mac": {
       "category": "public.app-category.utilities",
-      "target": ["dmg", "zip"],
-      "icon": "dist/icons/ios/AppIcon~ios-marketing.png"
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "icon.png"
     },
     "files": [
       "main.js",
       "preload.js",
       "output.html",
-      "dist/icons/ios/AppIcon~ios-marketing.png",
+      "icon.png",
+      "dist/icons/electron/icon-*.png",
       "snack_tray-icon.png",
-      "tray-icon-white.svg"
+      "tray-icon-white.svg",
+      "dist/.icon-icns/*"
     ]
   },
   "devDependencies": {
-    "electron": "^33.0.0",
-    "electron-builder": "^25.0.0"
+    "electron": "^42.1.0",
+    "electron-builder": "^26.8.1"
   }
 }

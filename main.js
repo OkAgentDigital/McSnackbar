@@ -3,7 +3,8 @@ const path = require('path');
 const fs = require('fs');
 
 // Require electron with fallback for the npm package behavior
-let app, BrowserWindow, Tray, Menu, nativeImage, ipcMain;
+let app, BrowserWindow, Tray, Menu, nativeImage;
+let ipcMain;
 try {
   // In Electron runtime, require('electron') returns the module
   const electron = require('electron');
@@ -30,8 +31,8 @@ try {
 let mainWindow = null;      // Output window
 let tray = null;            // Menu bar icon
 
-const APP_ICON_PATH = path.join(__dirname, "dist/icons/ios/AppIcon~ios-marketing.png");
-const TRAY_ICON_PATH = path.join(__dirname, "tray-icon-white.svg");
+const APP_ICON_PATH = path.join(__dirname, "dist/icons/electron/icon-512.png");
+const TRAY_ICON_PATH = path.join(__dirname, "tray-icon.png");
 const SETTINGS_PATH = path.join(app.getPath('userData'), 'settings.json');
 
 
@@ -77,6 +78,14 @@ if (!gotTheLock) {
 
 // ========== 1. CREATE OUTPUT WINDOW (on startup) ==========
 function createOutputWindow() {
+  try {
+    console.log(`Loading app icon from: ${APP_ICON_PATH}`);
+    const appIcon = nativeImage.createFromPath(APP_ICON_PATH);
+    console.log('App icon loaded successfully');
+  } catch (e) {
+    console.error('Failed to load app icon:', e.message, 'Will use default icon');
+  }
+
   mainWindow = new BrowserWindow({
     width: 900,
     height: 680,
@@ -110,9 +119,17 @@ function createTray() {
   const iconPath = TRAY_ICON_PATH;
   let icon;
   try {
+    console.log(`Loading tray icon from: ${iconPath}`);
     icon = nativeImage.createFromPath(iconPath);
-    icon = icon.resize({ width: 16, height: 16 });
+    try {
+      icon = icon.resize({ width: 16, height: 16 });
+      console.log('Tray icon resized successfully');
+    } catch (resizeError) {
+      console.error('Failed to resize tray icon:', resizeError.message, 'Using original size');
+    }
+    console.log('Tray icon loaded successfully');
   } catch (e) {
+    console.error('Failed to load tray icon:', e.message, 'Falling back to empty icon');
     icon = nativeImage.createEmpty();
   }
   tray = new Tray(icon);
@@ -195,8 +212,14 @@ ipcMain.handle('update-from-git', async () => {
 app.whenReady().then(() => {
   // Set dock icon from PNG (black shape on white background)
   if (app.dock) {
-    const dockIcon = nativeImage.createFromPath(APP_ICON_PATH);
-    app.dock.setIcon(dockIcon);
+    try {
+      console.log(`Loading dock icon from: ${APP_ICON_PATH}`);
+      const dockIcon = nativeImage.createFromPath(APP_ICON_PATH);
+      app.dock.setIcon(dockIcon);
+      console.log('Dock icon loaded successfully');
+    } catch (e) {
+      console.error('Failed to load dock icon:', e.message, 'Will use default icon');
+    }
   }
   createOutputWindow();
   createTray();

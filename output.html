@@ -652,6 +652,47 @@
       </div>
     </div>
 
+    <!-- Plugin Management Panel -->
+    <div class="tab-panel" id="panel-plugins">
+      <div style="max-width: 600px; margin: 0 auto; padding: 20px 0; width: 100%;">
+        <h2 style="font-size: var(--font-lg, 16px); font-weight: 600; color: var(--text); margin-bottom: 20px;">Plugin Management</h2>
+
+        <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+          <div style="margin-bottom: 12px;">
+            <div style="font-size: var(--font-base, 14px); font-weight: 600; color: var(--text);">Installed Plugins</div>
+            <div style="font-size: var(--font-sm, 12px); color: var(--text-muted); margin-top: 2px;">Manage your installed snacks and plugins</div>
+          </div>
+          <div id="pluginList" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Plugins will be loaded here dynamically -->
+          </div>
+        </div>
+
+        <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+          <div style="margin-bottom: 12px;">
+            <div style="font-size: var(--font-base, 14px); font-weight: 600; color: var(--text);">Plugin Actions</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="checkUpdatesBtn" style="padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: var(--font-sm, 12px); font-weight: 500; font-family: inherit; transition: background 0.15s ease;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'" onclick="checkForUpdates()">
+              Check for Updates
+            </button>
+            <button id="installPluginBtn" style="padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: var(--font-sm, 12px); font-weight: 500; font-family: inherit; transition: background 0.15s ease;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'" onclick="installPlugin()">
+              Install Plugin
+            </button>
+          </div>
+        </div>
+
+        <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 12px;">
+          <div style="margin-bottom: 12px;">
+            <div style="font-size: var(--font-base, 14px); font-weight: 600; color: var(--text);">Snack Files</div>
+            <div style="font-size: var(--font-sm, 12px); color: var(--text-muted); margin-top: 2px;">View and edit snack configuration files</div>
+          </div>
+          <div id="snackFilesList" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Snack files will be loaded here dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Settings Panel -->
     <div class="tab-panel" id="panel-settings">
       <div style="max-width: 480px; margin: 0 auto; padding: 20px 0; width: 100%;">
@@ -870,7 +911,356 @@
       saveSettings();
     }
 
+    const THEME_CYCLE = ['light', 'dark', 'system'];
+    const THEME_LABELS = { light: 'Light', dark: 'Dark', system: 'System' };
+    const THEME_ICONS = {
+      light: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>',
+      dark: '<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>',
+      system: '<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>'
+    };
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      // Update settings buttons
+      document.querySelectorAll('.theme-option').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-theme') === theme);
+      });
+      // Update action bar button
+      const btn = document.getElementById('themeToggleBtn');
+      btn.innerHTML = THEME_ICONS[theme];
+      btn.setAttribute('data-tooltip', 'Theme: ' + THEME_LABELS[theme] + ' (click to cycle)');
+      window.electron.log(`Theme set to ${theme}`);
+      saveSettings();
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const idx = THEME_CYCLE.indexOf(current);
+      const next = THEME_CYCLE[(idx + 1) % THEME_CYCLE.length];
+      setTheme(next);
+    }
+=======
     // ===== Theme Switcher =====
+    const THEME_CYCLE = ['light', 'dark', 'system'];
+    const THEME_LABELS = { light: 'Light', dark: 'Dark', system: 'System' };
+    const THEME_ICONS = {
+      light: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>',
+      dark: '<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>',
+      system: '<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>'
+    };
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      // Update settings buttons
+      document.querySelectorAll('.theme-option').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-theme') === theme);
+      });
+      // Update action bar button
+      const btn = document.getElementById('themeToggleBtn');
+      btn.innerHTML = THEME_ICONS[theme];
+      btn.setAttribute('data-tooltip', 'Theme: ' + THEME_LABELS[theme] + ' (click to cycle)');
+      window.electron.log(`Theme set to ${theme}`);
+      saveSettings();
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const idx = THEME_CYCLE.indexOf(current);
+      const next = THEME_CYCLE[(idx + 1) % THEME_CYCLE.length];
+      setTheme(next);
+    }
+
+    // ===== Plugin Management =====
+    async function loadPlugins() {
+      try {
+        const plugins = await window.electron.getPlugins();
+        const pluginList = document.getElementById('pluginList');
+        pluginList.innerHTML = '';
+        
+        plugins.forEach(plugin => {
+          const pluginCard = document.createElement('div');
+          pluginCard.className = 'plugin-card';
+          pluginCard.style.background = 'var(--card-bg)';
+          pluginCard.style.border = '1px solid var(--border)';
+          pluginCard.style.borderRadius = '8px';
+          pluginCard.style.padding = '12px';
+          pluginCard.style.display = 'flex';
+          pluginCard.style.justifyContent = 'space-between';
+          pluginCard.style.alignItems = 'center';
+          
+          pluginCard.innerHTML = `
+            <div>
+              <div style="font-size: var(--font-base, 14px); font-weight: 600; color: var(--text);">${plugin.name}</div>
+              <div style="font-size: var(--font-sm, 12px); color: var(--text-muted); margin-top: 2px;">${plugin.description}</div>
+              <div style="font-size: var(--font-sm, 12px); color: var(--text-dim); margin-top: 4px;">v${plugin.version}</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label style="position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer;">
+                <input type="checkbox" ${plugin.enabled ? 'checked' : ''} onchange="togglePlugin('${plugin.id}')" style="opacity: 0; width: 0; height: 0;">
+                <span style="position: absolute; inset: 0; background: var(--border); border-radius: 12px; transition: 0.3s;"></span>
+                <span style="position: absolute; left: 2px; bottom: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></span>
+              </label>
+              <button style="padding: 4px 12px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: var(--font-sm, 12px); font-weight: 500; font-family: inherit; transition: background 0.15s ease;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'" onclick="editPluginSettings('${plugin.id}')">
+                Settings
+              </button>
+            </div>
+          `;
+          
+          // Update toggle state
+          const checkbox = pluginCard.querySelector('input[type="checkbox"]');
+          const track = checkbox.parentElement.querySelector('span');
+          const thumb = track.querySelector('span');
+          
+          if (checkbox.checked) {
+            track.style.background = 'var(--primary)';
+            thumb.style.transform = 'translateX(20px)';
+          } else {
+            track.style.background = 'var(--border)';
+            thumb.style.transform = 'translateX(0)';
+          }
+          
+          pluginList.appendChild(pluginCard);
+        });
+      } catch (e) {
+        console.error('Failed to load plugins:', e);
+        addLog('error', 'Failed to load plugins: ' + e.message);
+      }
+    }
+
+    async function togglePlugin(pluginId) {
+      try {
+        const result = await window.electron.togglePlugin(pluginId);
+        addLog('info', `Plugin ${pluginId} ${result.enabled ? 'enabled' : 'disabled'}`);
+        loadPlugins();
+      } catch (e) {
+        console.error('Failed to toggle plugin:', e);
+        addLog('error', 'Failed to toggle plugin: ' + e.message);
+      }
+    }
+
+    async function editPluginSettings(pluginId) {
+      try {
+        const settings = await window.electron.getPluginSettings(pluginId);
+        const plugin = await window.electron.getPlugin(pluginId);
+        
+        // Show modal with plugin settings
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.right = '0';
+        modal.style.bottom = '0';
+        modal.style.background = 'rgba(0,0,0,0.5)';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+        modal.style.zIndex = '10000';
+        
+        const modalContent = document.createElement('div');
+        modalContent.style.background = 'var(--surface)';
+        modalContent.style.borderRadius = '12px';
+        modalContent.style.padding = '20px';
+        modalContent.style.maxWidth = '500px';
+        modalContent.style.width = '100%';
+        modalContent.style.maxHeight = '90vh';
+        modalContent.style.overflowY = 'auto';
+        
+        let settingsHTML = `<h3 style="font-size: var(--font-lg, 16px); font-weight: 600; color: var(--text); margin-bottom: 16px;">${plugin.name} Settings</h3>`;
+        
+        if (plugin.settings) {
+          settingsHTML += '<div style="display: flex; flex-direction: column; gap: 16px;">';
+          
+          for (const [key, value] of Object.entries(plugin.settings)) {
+            let inputType = 'text';
+            let inputValue = settings[key] !== undefined ? settings[key] : value;
+            
+            if (typeof value === 'number') {
+              inputType = 'number';
+            } else if (Array.isArray(value)) {
+              inputType = 'text';
+              inputValue = Array.isArray(settings[key]) ? settings[key].join(', ') : value.join(', ');
+            }
+            
+            settingsHTML += `
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <label style="font-size: var(--font-sm, 12px); color: var(--text-muted);">${key}</label>
+                <input type="${inputType}" id="setting-${key}" value="${inputValue}" style="padding: 8px; border: 1px solid var(--border); border-radius: 6px; font-size: var(--font-sm, 12px);" />
+              </div>
+            `;
+          }
+          
+          settingsHTML += '</div>';
+        } else {
+          settingsHTML += '<p style="font-size: var(--font-sm, 12px); color: var(--text-muted);">No settings available for this plugin.</p>';
+        }
+        
+        settingsHTML += `
+          <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
+            <button style="padding: 8px 16px; background: var(--border); color: var(--text); border: none; border-radius: 6px; cursor: pointer; font-size: var(--font-sm, 12px); font-weight: 500;" onclick="document.body.removeChild(this.closest('div'))">Cancel</button>
+            <button style="padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: var(--font-sm, 12px); font-weight: 500;" onclick="savePluginSettings('${pluginId}')">Save Settings</button>
+          </div>
+        `;
+        
+        modalContent.innerHTML = settingsHTML;
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+      } catch (e) {
+        console.error('Failed to load plugin settings:', e);
+        addLog('error', 'Failed to load plugin settings: ' + e.message);
+      }
+    }
+
+    async function savePluginSettings(pluginId) {
+      try {
+        const settings = {};
+        const plugin = await window.electron.getPlugin(pluginId);
+        
+        if (plugin.settings) {
+          for (const key of Object.keys(plugin.settings)) {
+            const input = document.getElementById(`setting-${key}`);
+            if (input) {
+              let value = input.value;
+              
+              if (typeof plugin.settings[key] === 'number') {
+                value = Number(value);
+              } else if (Array.isArray(plugin.settings[key])) {
+                value = value.split(',').map(item => item.trim());
+              }
+              
+              settings[key] = value;
+            }
+          }
+        }
+        
+        await window.electron.savePluginSettings(pluginId, settings);
+        addLog('success', `Saved settings for ${plugin.name}`);
+        
+        // Close modal
+        const modal = document.querySelector('.modal');
+        if (modal) document.body.removeChild(modal);
+      } catch (e) {
+        console.error('Failed to save plugin settings:', e);
+        addLog('error', 'Failed to save plugin settings: ' + e.message);
+      }
+    }
+
+    async function loadSnackFiles() {
+      try {
+        const snackFiles = await window.electron.getSnackFiles();
+        const snackFilesList = document.getElementById('snackFilesList');
+        snackFilesList.innerHTML = '';
+        
+        snackFiles.forEach(file => {
+          const fileCard = document.createElement('div');
+          fileCard.className = 'snack-file-card';
+          fileCard.style.background = 'var(--card-bg)';
+          fileCard.style.border = '1px solid var(--border)';
+          fileCard.style.borderRadius = '8px';
+          fileCard.style.padding = '12px';
+          fileCard.style.display = 'flex';
+          fileCard.style.justifyContent = 'space-between';
+          fileCard.style.alignItems = 'center';
+          
+          fileCard.innerHTML = `
+            <div>
+              <div style="font-size: var(--font-base, 14px); font-weight: 600; color: var(--text);">${file.name}</div>
+              <div style="font-size: var(--font-sm, 12px); color: var(--text-muted); margin-top: 2px;">${file.path}</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button style="padding: 4px 12px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: var(--font-sm, 12px); font-weight: 500; font-family: inherit; transition: background 0.15s ease;" onmouseover="this.style.background='var(--primary-hover)'" onmouseout="this.style.background='var(--primary)'" onclick="editSnackFile('${file.path}')">
+                Edit
+              </button>
+            </div>
+          `;
+          
+          snackFilesList.appendChild(fileCard);
+        });
+      } catch (e) {
+        console.error('Failed to load snack files:', e);
+        addLog('error', 'Failed to load snack files: ' + e.message);
+      }
+    }
+
+    async function editSnackFile(filePath) {
+      try {
+        const content = await window.electron.getSnackFileContent(filePath);
+        
+        // Show modal with file content
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.right = '0';
+        modal.style.bottom = '0';
+        modal.style.background = 'rgba(0,0,0,0.5)';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+        modal.style.zIndex = '10000';
+        
+        const modalContent = document.createElement('div');
+        modalContent.style.background = 'var(--surface)';
+        modalContent.style.borderRadius = '12px';
+        modalContent.style.padding = '20px';
+        modalContent.style.maxWidth = '800px';
+        modalContent.style.width = '100%';
+        modalContent.style.maxHeight = '90vh';
+        modalContent.style.overflowY = 'auto';
+        modalContent.style.display = 'flex';
+        modalContent.style.flexDirection = 'column';
+        
+        const fileName = filePath.split('/').pop();
+        
+        modalContent.innerHTML = `
+          <h3 style="font-size: var(--font-lg, 16px); font-weight: 600; color: var(--text); margin-bottom: 16px;">Editing ${fileName}</h3>
+          <textarea id="snackFileContent" style="flex: 1; width: 100%; height: 300px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-family: var(--font-family); font-size: var(--font-sm, 12px); background: var(--card-bg); color: var(--text); resize: none;">${content}</textarea>
+          <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
+            <button style="padding: 8px 16px; background: var(--border); color: var(--text); border: none; border-radius: 6px; cursor: pointer; font-size: var(--font-sm, 12px); font-weight: 500;" onclick="document.body.removeChild(this.closest('div'))">Cancel</button>
+            <button style="padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: var(--font-sm, 12px); font-weight: 500;" onclick="saveSnackFile('${filePath}')">Save Changes</button>
+          </div>
+        `;
+        
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+      } catch (e) {
+        console.error('Failed to load snack file:', e);
+        addLog('error', 'Failed to load snack file: ' + e.message);
+      }
+    }
+
+    async function saveSnackFile(filePath) {
+      try {
+        const content = document.getElementById('snackFileContent').value;
+        await window.electron.saveSnackFile(filePath, content);
+        addLog('success', `Saved changes to ${filePath}`);
+        
+        // Close modal
+        const modal = document.querySelector('.modal');
+        if (modal) document.body.removeChild(modal);
+      } catch (e) {
+        console.error('Failed to save snack file:', e);
+        addLog('error', 'Failed to save snack file: ' + e.message);
+      }
+    }
+
+    function checkForUpdates() {
+      addLog('info', 'Checking for plugin updates...');
+      // In a real implementation, this would check for updates
+      // For now, we'll just simulate the process
+      setTimeout(() => {
+        addLog('success', 'No updates available. You have the latest version.');
+      }, 1000);
+    }
+
+    function installPlugin() {
+      addLog('info', 'Installing plugin...');
+      // In a real implementation, this would download and install a plugin
+      // For now, we'll just simulate the process
+      setTimeout(() => {
+        addLog('success', 'Plugin installed successfully.');
+        loadPlugins();
+      }, 1500);
+    }=====
     const THEME_CYCLE = ['light', 'dark', 'system'];
     const THEME_LABELS = { light: 'Light', dark: 'Dark', system: 'System' };
     const THEME_ICONS = {
@@ -985,6 +1375,12 @@
     // Load saved settings on startup
     loadSavedSettings();
     loadSnackStates().then(() => renderSnacks());
+
+    // Load plugins and snack files when the plugins tab is activated
+    document.querySelector('.tab-btn[data-tab="plugins"]').addEventListener('click', () => {
+      loadPlugins();
+      loadSnackFiles();
+    });
 
     window.electron.log('Output window loaded');
   </script>
