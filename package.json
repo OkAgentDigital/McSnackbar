@@ -1,7 +1,7 @@
 {
   "name": "snackbar",
   "version": "2.0.1",
-  "description": "Snackbar — Menu bar automations for macOS",
+  "description": "Snackbar \u2014 Menu bar automations for macOS",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -26,8 +26,7 @@
       "output.html",
       "icon.png",
       "dist/icons/electron/icon-*.png",
-      "snack_tray-icon.png",
-      "tray-icon-white.svg",
+      "tray-icon.png",
       "dist/.icon-icns/*"
     ]
   },

@@ -31,7 +31,7 @@ try {
 let mainWindow = null;      // Output window
 let tray = null;            // Menu bar icon
 
-const APP_ICON_PATH = path.join(__dirname, "dist/icons/electron/icon-512.png");
+const APP_ICON_PATH = path.join(__dirname, "dist/icons/electron/icon-48.png");
 const TRAY_ICON_PATH = path.join(__dirname, "tray-icon.png");
 const SETTINGS_PATH = path.join(app.getPath('userData'), 'settings.json');
 
@@ -122,7 +122,7 @@ function createTray() {
     console.log(`Loading tray icon from: ${iconPath}`);
     icon = nativeImage.createFromPath(iconPath);
     try {
-      icon = icon.resize({ width: 16, height: 16 });
+      icon = icon.resize({ width: 18, height: 18 });
       console.log('Tray icon resized successfully');
     } catch (resizeError) {
       console.error('Failed to resize tray icon:', resizeError.message, 'Using original size');
@@ -210,16 +210,9 @@ ipcMain.handle('update-from-git', async () => {
 
 // ========== 4. APP LIFECYCLE ==========
 app.whenReady().then(() => {
-  // Set dock icon from PNG (black shape on white background)
+  // Dock icon uses the .icns bundle icon automatically (macOS applies rounded corners)
   if (app.dock) {
-    try {
-      console.log(`Loading dock icon from: ${APP_ICON_PATH}`);
-      const dockIcon = nativeImage.createFromPath(APP_ICON_PATH);
-      app.dock.setIcon(dockIcon);
-      console.log('Dock icon loaded successfully');
-    } catch (e) {
-      console.error('Failed to load dock icon:', e.message, 'Will use default icon');
-    }
+    // macOS automatically uses the app bundle's icon.icns for the dock
   }
   createOutputWindow();
   createTray();
